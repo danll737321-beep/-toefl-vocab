@@ -170,7 +170,7 @@
   .check-label{
     display:flex;
     align-items:center;
-    gap:7px;
+    gap:8px;
     font-size:13px;
     color:var(--muted);
     cursor:pointer;
@@ -178,12 +178,40 @@
     padding:6px 2px;
     min-height:32px;
   }
-  .check-label input{
+  .check-label input[type="checkbox"]{
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
     width:20px;
     height:20px;
-    accent-color:var(--teal);
+    min-width:20px;
+    min-height:20px;
+    max-width:20px;
+    max-height:20px;
+    margin:0;
+    padding:0;
+    border:2px solid var(--line);
+    border-radius:4px;
+    background:var(--card);
     cursor:pointer;
     flex-shrink:0;
+    position:relative;
+    box-sizing:border-box;
+  }
+  .check-label input[type="checkbox"]:checked{
+    background:var(--teal);
+    border-color:var(--teal);
+  }
+  .check-label input[type="checkbox"]:checked::after{
+    content:"";
+    position:absolute;
+    left:5px;
+    top:1px;
+    width:5px;
+    height:10px;
+    border:solid #fff;
+    border-width:0 2px 2px 0;
+    transform:rotate(45deg);
   }
   .word{
     font-size:clamp(20px, 5.5vw, 24px);
@@ -329,7 +357,7 @@
   <div class="controls">
     <input id="search" type="text" placeholder="Search word or meaning...">
     <select id="categoryFilter"></select>
-    <label class="check-label" style="white-space:nowrap;">
+    <label class="check-label">
       <input type="checkbox" id="hideKnown" checked>
       Hide known words
     </label>
