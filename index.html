@@ -249,6 +249,10 @@
   <div class="controls">
     <input id="search" type="text" placeholder="Search word or meaning...">
     <select id="categoryFilter"></select>
+    <label class="check-label" style="white-space:nowrap;">
+      <input type="checkbox" id="hideKnown" checked>
+      Hide known words
+    </label>
   </div>
 
   <div class="counter" id="counter"></div>
@@ -1223,6 +1227,7 @@ const CATEGORIES = ["All", ...Array.from(new Set(DATA.map(d => d.cat))), "Checke
 
 const search = document.getElementById('search');
 const categoryFilter = document.getElementById('categoryFilter');
+const hideKnown = document.getElementById('hideKnown');
 const cardList = document.getElementById('cardList');
 const counter = document.getElementById('counter');
 const emptyState = document.getElementById('emptyState');
@@ -1375,6 +1380,7 @@ let currentFiltered = DATA;
 function render(){
   const q = search.value.trim().toLowerCase();
   const cat = categoryFilter.value;
+  const shouldHideKnown = hideKnown.checked && cat !== "Checked ✓";
   const filtered = DATA.filter(d => {
     const matchQ = !q || d.w.toLowerCase().includes(q) || d.m.toLowerCase().includes(q) || d.mZh.includes(q);
     let matchCat;
@@ -1385,15 +1391,23 @@ function render(){
     } else {
       matchCat = d.cat === cat;
     }
-    return matchQ && matchCat;
+    const matchHide = !shouldHideKnown || !checkedWords.has(d.w);
+    return matchQ && matchCat && matchHide;
   });
   currentFiltered = filtered;
   const checkedCount = checkedWords.size;
-  counter.textContent = `Showing ${filtered.length} / ${DATA.length} words · ${checkedCount} checked`;
+  const hiddenNote = shouldHideKnown ? ' (known words hidden)' : '';
+  counter.textContent = `Showing ${filtered.length} / ${DATA.length} words · ${checkedCount} checked${hiddenNote}`;
   if(filtered.length === 0){
     cardList.innerHTML = '';
     emptyState.style.display = 'block';
-    emptyState.textContent = cat === "Checked ✓" ? "You haven't checked any words yet." : "No matching words. Try a different search term.";
+    if(cat === "Checked ✓"){
+      emptyState.textContent = "You haven't checked any words yet.";
+    } else if(shouldHideKnown && checkedCount > 0){
+      emptyState.textContent = "All matching words are marked known. Uncheck \"Hide known words\" to see them.";
+    } else {
+      emptyState.textContent = "No matching words. Try a different search term.";
+    }
   } else {
     emptyState.style.display = 'none';
     cardList.innerHTML = filtered.map((item, idx) => renderCard(item, idx)).join('');
@@ -1426,6 +1440,7 @@ function render(){
 
 search.addEventListener('input', render);
 categoryFilter.addEventListener('change', render);
+hideKnown.addEventListener('change', render);
 </script>
 </body>
 </html>
