@@ -258,15 +258,40 @@
     margin:0 0 14px;
     font-family:"Noto Serif TC", serif;
   }
+  .sentence-wrap{
+    position:relative;
+    margin-bottom:14px;
+  }
   .sentence{
     font-size:15px;
     line-height:1.7;
-    padding:12px 14px;
+    padding:12px 44px 12px 14px;
     background:var(--teal-soft);
     border-left:3px solid var(--teal);
-    margin-bottom:14px;
+    margin-bottom:0;
     color:#2a332f;
   }
+  .sentence-speak-btn{
+    position:absolute;
+    top:8px;
+    right:8px;
+    border:1px solid var(--teal);
+    background:var(--card);
+    color:var(--teal);
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    line-height:1;
+    padding:0;
+    flex-shrink:0;
+  }
+  .sentence-speak-btn:hover{background:var(--teal);color:#fff;}
+  .sentence-speak-btn:active{transform:scale(0.94);}
   .sentence mark{
     background:none;
     color:var(--accent);
@@ -1607,6 +1632,20 @@ function speak(word){
   }catch(e){ /* speech synthesis unavailable */ }
 }
 
+function speakSentence(word){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    const item = DATA.find(d => d.w === word);
+    if(!item) return;
+    const plainText = item.s.replace(/<\/?mark>/g, '');
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(plainText);
+    utter.lang = 'en-US';
+    utter.rate = 0.95;
+    window.speechSynthesis.speak(utter);
+  }catch(e){ /* speech synthesis unavailable */ }
+}
+
 function chip(part, gloss, examples, cls){
   const empty = part === "—";
   const exText = (examples && examples.length) ? `e.g. ${examples.join(', ')}` : '';
@@ -1635,7 +1674,10 @@ function renderCard(item, idx){
     <div class="pos" style="margin-bottom:6px;">${item.pos}. &middot; ${item.cat}</div>
     <div class="meaning">${item.m}</div>
     <div class="meaning-zh">${item.mZh}</div>
-    <div class="sentence">${item.s}</div>
+    <div class="sentence-wrap">
+      <div class="sentence">${item.s}</div>
+      <button class="sentence-speak-btn" data-word="${item.w}" title="Play sentence" aria-label="Play example sentence for ${item.w}">▶</button>
+    </div>
     <div class="morph-label">Word breakdown — Prefix / Root / Suffix</div>
     <div class="morph-row">
       ${chip(item.pre, item.preM, item.preEx, 'chip-prefix')}
@@ -1685,6 +1727,11 @@ function render(){
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-idx'), 10);
         speak(currentFiltered[idx].w);
+      });
+    });
+    cardList.querySelectorAll('.sentence-speak-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        speakSentence(btn.getAttribute('data-word'));
       });
     });
     cardList.querySelectorAll('.check-box').forEach(box => {
@@ -1744,6 +1791,9 @@ function pickRandomWord(){
 function wireCardEvents(container, items){
   container.querySelectorAll('.speak-btn').forEach((btn, i) => {
     btn.addEventListener('click', () => speak(items[i].w));
+  });
+  container.querySelectorAll('.sentence-speak-btn').forEach(btn => {
+    btn.addEventListener('click', () => speakSentence(btn.getAttribute('data-word')));
   });
   container.querySelectorAll('.check-box').forEach((box, i) => {
     box.addEventListener('change', () => {
