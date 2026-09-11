@@ -81,6 +81,50 @@
   }
   .sync-status.ok{color:var(--teal);}
   .sync-status.err{color:var(--accent);}
+  .random-btn{
+    font-family:var(--serif);
+    font-size:13px;
+    padding:7px 12px;
+    border:1px solid var(--teal);
+    border-radius:3px;
+    background:var(--teal-soft);
+    color:var(--teal);
+    cursor:pointer;
+    white-space:nowrap;
+    font-weight:600;
+  }
+  .random-btn:hover{background:var(--teal);color:#fff;}
+  .random-close-btn{
+    font-family:var(--serif);
+    font-size:13px;
+    padding:7px 12px;
+    border:1px solid var(--line);
+    border-radius:3px;
+    background:var(--card);
+    color:var(--muted);
+    cursor:pointer;
+  }
+  #randomSection{
+    margin-bottom:20px;
+    padding:18px;
+    border:2px dashed var(--teal);
+    border-radius:6px;
+    background:#fdfcf9;
+  }
+  .random-label{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--teal);
+    letter-spacing:0.5px;
+    margin-bottom:12px;
+    text-transform:uppercase;
+  }
+  .random-actions{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+    flex-wrap:wrap;
+  }
   .counter{
     font-size:13px;
     color:var(--muted);
@@ -253,6 +297,16 @@
       <input type="checkbox" id="hideKnown" checked>
       Hide known words
     </label>
+    <button id="randomBtn" class="random-btn" type="button">🔀 Random word</button>
+  </div>
+
+  <div id="randomSection" style="display:none;">
+    <div class="random-label">Random pick — mixed across all categories</div>
+    <div id="randomCard"></div>
+    <div class="random-actions">
+      <button id="randomAgainBtn" class="random-btn" type="button">🔀 Another random word</button>
+      <button id="randomCloseBtn" class="random-close-btn" type="button">Close</button>
+    </div>
   </div>
 
   <div class="counter" id="counter"></div>
@@ -1531,6 +1585,60 @@ function render(){
 search.addEventListener('input', render);
 categoryFilter.addEventListener('change', render);
 hideKnown.addEventListener('change', render);
+
+// ===== Random word feature (interleaved practice across all categories) =====
+const randomBtn = document.getElementById('randomBtn');
+const randomAgainBtn = document.getElementById('randomAgainBtn');
+const randomCloseBtn = document.getElementById('randomCloseBtn');
+const randomSection = document.getElementById('randomSection');
+const randomCard = document.getElementById('randomCard');
+let lastRandomWord = null;
+
+function pickRandomWord(){
+  // Pull from the whole dataset, across every category, ignoring the
+  // category dropdown and search box so review mixes topics together.
+  let pool = hideKnown.checked ? DATA.filter(d => !checkedWords.has(d.w)) : DATA;
+  if(pool.length === 0) pool = DATA; // fallback if everything is checked
+  let pick;
+  if(pool.length > 1){
+    do {
+      pick = pool[Math.floor(Math.random() * pool.length)];
+    } while (pick.w === lastRandomWord && pool.length > 1);
+  } else {
+    pick = pool[0];
+  }
+  lastRandomWord = pick.w;
+  const idx = DATA.indexOf(pick);
+  randomCard.innerHTML = renderCard(pick, idx);
+  randomSection.style.display = 'block';
+  wireCardEvents(randomCard, [pick]);
+  randomSection.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function wireCardEvents(container, items){
+  container.querySelectorAll('.speak-btn').forEach((btn, i) => {
+    btn.addEventListener('click', () => speak(items[i].w));
+  });
+  container.querySelectorAll('.check-box').forEach((box, i) => {
+    box.addEventListener('change', () => {
+      const word = items[i].w;
+      if(box.checked){
+        checkedWords.add(word);
+      } else {
+        checkedWords.delete(word);
+      }
+      saveChecked();
+      render();
+      box.closest('.card').classList.toggle('is-checked', box.checked);
+    });
+  });
+}
+
+randomBtn.addEventListener('click', pickRandomWord);
+randomAgainBtn.addEventListener('click', pickRandomWord);
+randomCloseBtn.addEventListener('click', () => {
+  randomSection.style.display = 'none';
+});
 </script>
 </body>
 </html>
