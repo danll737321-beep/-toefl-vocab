@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TOEFL Vocabulary Breakdown</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2f6f5e">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
   :root{
     --ink:#1b2430;
@@ -446,6 +450,57 @@
   .level-Basic{background:#e2ede9;color:var(--teal);}
   .level-Intermediate{background:#f1e8c8;color:#8a6d1a;}
   .level-Advanced{background:var(--accent-soft);color:var(--accent);}
+
+  /* --- Quiz & Review --- */
+  .quiz-panel{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 16px;
+  }
+  .quiz-setup-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;}
+  .quiz-setup-row label{font-size:12.5px;color:var(--muted);flex:1 1 140px;}
+  .quiz-setup-row select{
+    width:100%;margin-top:4px;padding:8px;border:1px solid var(--line);border-radius:6px;
+    font-family:var(--serif);font-size:14px;background:#fff;
+  }
+  .quiz-pool-note{font-size:13px;color:var(--muted);margin:8px 0;}
+  .quiz-progress{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:10px;}
+  .quiz-question-card{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:22px 18px;margin-bottom:16px;
+  }
+  .quiz-prompt-label{font-family:var(--mono);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;}
+  .quiz-prompt-main{font-size:19px;font-weight:600;margin-bottom:4px;}
+  .quiz-prompt-sub{font-size:14px;color:var(--muted);margin-bottom:2px;}
+  .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+  @media (max-width:520px){.quiz-options{grid-template-columns:1fr;}}
+  .quiz-option-btn{
+    text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:8px;
+    background:#fff;font-family:var(--serif);font-size:14.5px;cursor:pointer;
+  }
+  .quiz-option-btn:hover{background:var(--teal-soft);}
+  .quiz-option-btn.correct{background:var(--teal-soft);border-color:var(--teal);color:var(--teal);font-weight:600;}
+  .quiz-option-btn.wrong{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600;}
+  .quiz-option-btn:disabled{cursor:default;}
+  .quiz-next-btn{margin-top:16px;}
+  .quiz-result-summary{font-size:22px;font-weight:600;margin-bottom:10px;}
+  .quiz-result-row{
+    display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);font-size:14px;
+  }
+  .quiz-result-row.wrong-row{color:var(--accent);}
+  .review-card-front{font-size:24px;font-weight:600;margin-bottom:6px;}
+  .review-ipa{color:var(--muted);font-size:15px;margin-bottom:14px;}
+  .review-sentence{font-size:14.5px;line-height:1.6;margin:14px 0;padding:12px;background:var(--teal-soft);border-radius:8px;}
+  .review-rating-row{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;}
+  .review-rating-btn{
+    flex:1 1 22%;padding:12px 8px;border:none;border-radius:8px;font-family:var(--serif);
+    font-size:13.5px;font-weight:600;color:#fff;cursor:pointer;
+  }
+  .rb-again{background:#b04a3f;}
+  .rb-hard{background:#c98a2b;}
+  .rb-good{background:var(--teal);}
+  .rb-easy{background:#3d7a4a;}
 </style>
 </head>
 <body>
@@ -458,6 +513,8 @@
   <div class="tab-bar">
     <button id="tabVocabBtn" class="tab-btn active" type="button">📖 單字 Vocabulary</button>
     <button id="tabGrammarBtn" class="tab-btn" type="button">✍️ 文法 Grammar</button>
+    <button id="tabQuizBtn" class="tab-btn" type="button">📝 測驗 Quiz</button>
+    <button id="tabReviewBtn" class="tab-btn" type="button">🔁 複習 Review</button>
   </div>
 
   <div id="vocabView">
@@ -500,6 +557,71 @@
   <div id="grammarView" style="display:none;">
     <div class="counter" id="grammarCounter"></div>
     <div id="grammarList"></div>
+  </div>
+
+  <div id="quizView" style="display:none;">
+    <div id="quizSetup" class="quiz-panel">
+      <div class="quiz-setup-row">
+        <label>Category<br><select id="quizCategory"></select></label>
+        <label>Level<br>
+          <select id="quizLevel">
+            <option value="All">All levels</option>
+            <option value="Basic">Basic</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </label>
+        <label>Question type<br>
+          <select id="quizType">
+            <option value="mixed">Mixed 混合</option>
+            <option value="en2zh">EN → 中文意思</option>
+            <option value="zh2en">中文意思 → EN</option>
+            <option value="sentence">Fill in the blank</option>
+          </select>
+        </label>
+        <label># Questions<br>
+          <select id="quizCount">
+            <option value="10">10</option>
+            <option value="20" selected>20</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+          </select>
+        </label>
+      </div>
+      <button id="quizStartBtn" class="random-btn" type="button">▶ Start Quiz</button>
+      <div id="quizPoolNote" class="quiz-pool-note"></div>
+    </div>
+    <div id="quizPlay" style="display:none;"></div>
+    <div id="quizResult" style="display:none;"></div>
+  </div>
+
+  <div id="reviewView" style="display:none;">
+    <div id="reviewIntro" class="quiz-panel">
+      <div class="quiz-setup-row">
+        <label>Category<br><select id="reviewCategory"></select></label>
+        <label>Level<br>
+          <select id="reviewLevel">
+            <option value="All">All levels</option>
+            <option value="Basic">Basic</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+        </label>
+        <label>Session size<br>
+          <select id="reviewCount">
+            <option value="10">10</option>
+            <option value="20" selected>20</option>
+            <option value="30">30</option>
+            <option value="9999">All due</option>
+          </select>
+        </label>
+      </div>
+      <div id="reviewDueNote" class="quiz-pool-note"></div>
+      <button id="reviewStartBtn" class="random-btn" type="button">▶ Start Review</button>
+      <button id="reviewResetBtn" class="random-close-btn" type="button" style="margin-top:8px;">Reset all review progress</button>
+    </div>
+    <div id="reviewPlay" style="display:none;"></div>
+    <div id="reviewResult" style="display:none;"></div>
   </div>
 
   <footer>Original example sentences (not quoted from real sources) &middot; Pronunciation uses the browser's built-in speech synthesis &middot; List can be expanded further</footer>
@@ -2702,30 +2824,402 @@ function renderGrammar(){
 
 const tabVocabBtn = document.getElementById('tabVocabBtn');
 const tabGrammarBtn = document.getElementById('tabGrammarBtn');
+const tabQuizBtn = document.getElementById('tabQuizBtn');
+const tabReviewBtn = document.getElementById('tabReviewBtn');
 const vocabView = document.getElementById('vocabView');
 const grammarView = document.getElementById('grammarView');
+const quizView = document.getElementById('quizView');
+const reviewView = document.getElementById('reviewView');
 const grammarCounter = document.getElementById('grammarCounter');
 const grammarList = document.getElementById('grammarList');
 
 let grammarRendered = false;
 
-tabVocabBtn.addEventListener('click', () => {
-  tabVocabBtn.classList.add('active');
-  tabGrammarBtn.classList.remove('active');
-  vocabView.style.display = 'block';
-  grammarView.style.display = 'none';
-});
+const ALL_TABS = [
+  { btn: tabVocabBtn, view: vocabView },
+  { btn: tabGrammarBtn, view: grammarView },
+  { btn: tabQuizBtn, view: quizView },
+  { btn: tabReviewBtn, view: reviewView },
+];
+
+function switchTab(activeBtn){
+  ALL_TABS.forEach(t => {
+    const isActive = t.btn === activeBtn;
+    t.btn.classList.toggle('active', isActive);
+    t.view.style.display = isActive ? 'block' : 'none';
+  });
+}
+
+tabVocabBtn.addEventListener('click', () => switchTab(tabVocabBtn));
 
 tabGrammarBtn.addEventListener('click', () => {
-  tabGrammarBtn.classList.add('active');
-  tabVocabBtn.classList.remove('active');
-  vocabView.style.display = 'none';
-  grammarView.style.display = 'block';
+  switchTab(tabGrammarBtn);
   if(!grammarRendered){
     renderGrammar();
     grammarRendered = true;
   }
 });
+
+tabQuizBtn.addEventListener('click', () => {
+  switchTab(tabQuizBtn);
+  updateQuizPoolNote();
+});
+
+tabReviewBtn.addEventListener('click', () => {
+  switchTab(tabReviewBtn);
+  updateReviewDueNote();
+});
+
+/* ================= Quiz Mode ================= */
+const quizCategory = document.getElementById('quizCategory');
+const quizLevel = document.getElementById('quizLevel');
+const quizType = document.getElementById('quizType');
+const quizCount = document.getElementById('quizCount');
+const quizStartBtn = document.getElementById('quizStartBtn');
+const quizPoolNote = document.getElementById('quizPoolNote');
+const quizSetup = document.getElementById('quizSetup');
+const quizPlay = document.getElementById('quizPlay');
+const quizResult = document.getElementById('quizResult');
+
+CATEGORIES.filter(c => c !== 'Checked ✓').forEach(c => {
+  const opt = document.createElement('option');
+  opt.value = c;
+  opt.textContent = c;
+  quizCategory.appendChild(opt);
+});
+
+function getQuizPool(){
+  const cat = quizCategory.value;
+  const lvl = quizLevel.value;
+  return DATA.filter(d => (cat === 'All' || d.cat === cat) && (lvl === 'All' || d.level === lvl));
+}
+
+function updateQuizPoolNote(){
+  const n = getQuizPool().length;
+  quizPoolNote.textContent = `${n} words match this filter.`;
+}
+quizCategory.addEventListener('change', updateQuizPoolNote);
+quizLevel.addEventListener('change', updateQuizPoolNote);
+
+function shuffleArr(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function pickDistractors(correct, pool, n){
+  const sameCat = pool.filter(d => d.w !== correct.w && d.cat === correct.cat);
+  let candidates = shuffleArr(sameCat);
+  if(candidates.length < n){
+    const rest = shuffleArr(DATA.filter(d => d.w !== correct.w && !candidates.includes(d)));
+    candidates = candidates.concat(rest);
+  }
+  return candidates.slice(0, n);
+}
+
+let quizQuestions = [];
+let quizIdx = 0;
+let quizScore = 0;
+let quizWrongList = [];
+
+function buildQuestion(word, pool, forcedType){
+  const type = forcedType === 'mixed' ? ['en2zh','zh2en','sentence'][Math.floor(Math.random()*3)] : forcedType;
+  const distractors = pickDistractors(word, pool, 3);
+  if(type === 'en2zh'){
+    const options = shuffleArr([word, ...distractors]);
+    return {
+      type, word,
+      promptLabel: 'What does this word mean?',
+      promptMain: word.w,
+      promptSub: `${word.ipa}  ·  ${word.pos}.`,
+      options: options.map(o => o.mZh),
+      correctText: word.mZh,
+    };
+  } else if(type === 'zh2en'){
+    const options = shuffleArr([word, ...distractors]);
+    return {
+      type, word,
+      promptLabel: 'Which word matches this meaning?',
+      promptMain: word.mZh,
+      promptSub: word.m,
+      options: options.map(o => o.w),
+      correctText: word.w,
+    };
+  } else {
+    const options = shuffleArr([word, ...distractors]);
+    const blanked = word.s.replace(/<mark>.*?<\/mark>/, '<mark>_____</mark>');
+    return {
+      type, word,
+      promptLabel: 'Fill in the blank',
+      promptMain: blanked,
+      promptSub: '',
+      options: options.map(o => o.w),
+      correctText: word.w,
+      isSentence: true,
+    };
+  }
+}
+
+quizStartBtn.addEventListener('click', () => {
+  const pool = getQuizPool();
+  const n = Math.min(parseInt(quizCount.value, 10), pool.length);
+  if(n === 0){
+    alert('No words match this filter. Try a broader category or level.');
+    return;
+  }
+  const chosen = shuffleArr(pool).slice(0, n);
+  quizQuestions = chosen.map(w => buildQuestion(w, pool, quizType.value));
+  quizIdx = 0;
+  quizScore = 0;
+  quizWrongList = [];
+  quizSetup.style.display = 'none';
+  quizResult.style.display = 'none';
+  quizPlay.style.display = 'block';
+  renderQuizQuestion();
+});
+
+function renderQuizQuestion(){
+  const q = quizQuestions[quizIdx];
+  const mainHtml = q.isSentence ? q.promptMain : `<div class="quiz-prompt-main">${q.promptMain}</div>`;
+  quizPlay.innerHTML = `
+    <div class="quiz-progress">Question ${quizIdx + 1} / ${quizQuestions.length} &middot; Score: ${quizScore}</div>
+    <div class="quiz-question-card">
+      <div class="quiz-prompt-label">${q.promptLabel}</div>
+      ${q.isSentence ? `<div class="quiz-prompt-sub" style="font-size:16px;line-height:1.6;">${q.promptMain}</div>` : mainHtml}
+      ${q.promptSub && !q.isSentence ? `<div class="quiz-prompt-sub">${q.promptSub}</div>` : ''}
+      <div class="quiz-options">
+        ${q.options.map((opt, i) => `<button class="quiz-option-btn" data-i="${i}">${opt}</button>`).join('')}
+      </div>
+    </div>`;
+  quizPlay.querySelectorAll('.quiz-option-btn').forEach(btn => {
+    btn.addEventListener('click', () => handleQuizAnswer(btn, q));
+  });
+}
+
+function handleQuizAnswer(btn, q){
+  const chosenText = btn.textContent;
+  const isCorrect = chosenText === q.correctText;
+  quizPlay.querySelectorAll('.quiz-option-btn').forEach(b => {
+    b.disabled = true;
+    if(b.textContent === q.correctText) b.classList.add('correct');
+    else if(b === btn) b.classList.add('wrong');
+  });
+  if(isCorrect){
+    quizScore++;
+  } else {
+    quizWrongList.push(q.word);
+  }
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'random-btn quiz-next-btn';
+  nextBtn.type = 'button';
+  nextBtn.textContent = (quizIdx < quizQuestions.length - 1) ? 'Next question →' : 'See results';
+  nextBtn.addEventListener('click', () => {
+    quizIdx++;
+    if(quizIdx < quizQuestions.length){
+      renderQuizQuestion();
+    } else {
+      showQuizResult();
+    }
+  });
+  quizPlay.querySelector('.quiz-question-card').appendChild(nextBtn);
+}
+
+function showQuizResult(){
+  quizPlay.style.display = 'none';
+  quizResult.style.display = 'block';
+  const pct = Math.round((quizScore / quizQuestions.length) * 100);
+  quizResult.innerHTML = `
+    <div class="quiz-question-card">
+      <div class="quiz-result-summary">Score: ${quizScore} / ${quizQuestions.length} (${pct}%)</div>
+      ${quizWrongList.length ? `<div class="quiz-prompt-label">Words to review</div>` +
+        quizWrongList.map(w => `<div class="quiz-result-row wrong-row"><span>${w.w}</span><span>${w.mZh}</span></div>`).join('')
+        : `<div class="quiz-prompt-sub">Perfect score — nice work!</div>`}
+      <button id="quizRetryBtn" class="random-btn" type="button" style="margin-top:16px;">↺ New quiz</button>
+    </div>`;
+  document.getElementById('quizRetryBtn').addEventListener('click', () => {
+    quizResult.style.display = 'none';
+    quizSetup.style.display = 'block';
+    updateQuizPoolNote();
+  });
+}
+
+/* ================= SRS Review Mode ================= */
+const SRS_KEY = 'toefl-srs-v1';
+
+function loadSrs(){
+  try {
+    return JSON.parse(localStorage.getItem(SRS_KEY)) || {};
+  } catch(e){
+    return {};
+  }
+}
+function saveSrs(data){
+  localStorage.setItem(SRS_KEY, JSON.stringify(data));
+}
+
+function getDueWords(pool){
+  const srs = loadSrs();
+  const now = Date.now();
+  return pool.filter(d => {
+    const rec = srs[d.w];
+    return !rec || rec.due <= now;
+  });
+}
+
+function applyRating(word, rating){
+  const srs = loadSrs();
+  const rec = srs[word.w] || { ease: 2.5, interval: 0, reps: 0, due: Date.now() };
+  if(rating === 'again'){
+    rec.reps = 0;
+    rec.interval = 0;
+    rec.ease = Math.max(1.3, rec.ease - 0.2);
+    rec.due = Date.now(); // available again in this session / today
+  } else {
+    rec.reps += 1;
+    if(rec.reps === 1) rec.interval = 1;
+    else if(rec.reps === 2) rec.interval = 6;
+    else rec.interval = Math.round(rec.interval * rec.ease);
+    if(rating === 'hard'){
+      rec.ease = Math.max(1.3, rec.ease - 0.15);
+      rec.interval = Math.max(1, Math.round(rec.interval * 0.8));
+    } else if(rating === 'easy'){
+      rec.ease = rec.ease + 0.15;
+    }
+    rec.due = Date.now() + rec.interval * 24 * 60 * 60 * 1000;
+  }
+  srs[word.w] = rec;
+  saveSrs(srs);
+}
+
+const reviewCategory = document.getElementById('reviewCategory');
+const reviewLevel = document.getElementById('reviewLevel');
+const reviewCount = document.getElementById('reviewCount');
+const reviewStartBtn = document.getElementById('reviewStartBtn');
+const reviewResetBtn = document.getElementById('reviewResetBtn');
+const reviewDueNote = document.getElementById('reviewDueNote');
+const reviewIntro = document.getElementById('reviewIntro');
+const reviewPlay = document.getElementById('reviewPlay');
+const reviewResult = document.getElementById('reviewResult');
+
+CATEGORIES.filter(c => c !== 'Checked ✓').forEach(c => {
+  const opt = document.createElement('option');
+  opt.value = c;
+  opt.textContent = c;
+  reviewCategory.appendChild(opt);
+});
+
+function getReviewPool(){
+  const cat = reviewCategory.value;
+  const lvl = reviewLevel.value;
+  return DATA.filter(d => (cat === 'All' || d.cat === cat) && (lvl === 'All' || d.level === lvl));
+}
+
+function updateReviewDueNote(){
+  const pool = getReviewPool();
+  const due = getDueWords(pool);
+  reviewDueNote.textContent = `${due.length} of ${pool.length} words are due for review right now.`;
+}
+reviewCategory.addEventListener('change', updateReviewDueNote);
+reviewLevel.addEventListener('change', updateReviewDueNote);
+
+reviewResetBtn.addEventListener('click', () => {
+  if(confirm('This clears all spaced-repetition progress on this device. Continue?')){
+    localStorage.removeItem(SRS_KEY);
+    updateReviewDueNote();
+  }
+});
+
+let reviewQueue = [];
+let reviewIdx = 0;
+let reviewStats = { again: 0, hard: 0, good: 0, easy: 0 };
+
+reviewStartBtn.addEventListener('click', () => {
+  const pool = getReviewPool();
+  let due = shuffleArr(getDueWords(pool));
+  const n = Math.min(parseInt(reviewCount.value, 10), due.length);
+  if(n === 0){
+    alert('No words are due for review with this filter right now.');
+    return;
+  }
+  reviewQueue = due.slice(0, n);
+  reviewIdx = 0;
+  reviewStats = { again: 0, hard: 0, good: 0, easy: 0 };
+  reviewIntro.style.display = 'none';
+  reviewResult.style.display = 'none';
+  reviewPlay.style.display = 'block';
+  renderReviewCard();
+});
+
+function renderReviewCard(){
+  const w = reviewQueue[reviewIdx];
+  reviewPlay.innerHTML = `
+    <div class="quiz-progress">Card ${reviewIdx + 1} / ${reviewQueue.length}</div>
+    <div class="quiz-question-card">
+      <div class="review-card-front">${w.w}</div>
+      <div class="review-ipa">${w.ipa} &middot; ${w.pos}.</div>
+      <button id="revealBtn" class="random-btn" type="button">Show answer</button>
+      <div id="revealArea" style="display:none;">
+        <div class="meaning" style="margin-top:14px;">${w.m}</div>
+        <div class="meaning-zh">${w.mZh}</div>
+        <div class="review-sentence">${w.s}</div>
+        <div class="review-rating-row">
+          <button class="review-rating-btn rb-again" data-r="again">Again 忘記了</button>
+          <button class="review-rating-btn rb-hard" data-r="hard">Hard 有點難</button>
+          <button class="review-rating-btn rb-good" data-r="good">Good 記得</button>
+          <button class="review-rating-btn rb-easy" data-r="easy">Easy 很簡單</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('revealBtn').addEventListener('click', () => {
+    document.getElementById('revealArea').style.display = 'block';
+    document.getElementById('revealBtn').style.display = 'none';
+    speak(w.w);
+  });
+  reviewPlay.querySelectorAll('.review-rating-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rating = btn.getAttribute('data-r');
+      applyRating(w, rating);
+      reviewStats[rating]++;
+      reviewIdx++;
+      if(reviewIdx < reviewQueue.length){
+        renderReviewCard();
+      } else {
+        showReviewResult();
+      }
+    });
+  });
+}
+
+function showReviewResult(){
+  reviewPlay.style.display = 'none';
+  reviewResult.style.display = 'block';
+  const total = reviewQueue.length;
+  reviewResult.innerHTML = `
+    <div class="quiz-question-card">
+      <div class="quiz-result-summary">Reviewed ${total} words</div>
+      <div class="quiz-result-row"><span>Again 忘記了</span><span>${reviewStats.again}</span></div>
+      <div class="quiz-result-row"><span>Hard 有點難</span><span>${reviewStats.hard}</span></div>
+      <div class="quiz-result-row"><span>Good 記得</span><span>${reviewStats.good}</span></div>
+      <div class="quiz-result-row"><span>Easy 很簡單</span><span>${reviewStats.easy}</span></div>
+      <button id="reviewDoneBtn" class="random-btn" type="button" style="margin-top:16px;">Done</button>
+    </div>`;
+  document.getElementById('reviewDoneBtn').addEventListener('click', () => {
+    reviewResult.style.display = 'none';
+    reviewIntro.style.display = 'block';
+    updateReviewDueNote();
+  });
+}
+
+/* ================= PWA: service worker registration ================= */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
+
 </html>
