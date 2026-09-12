@@ -364,6 +364,73 @@
     .random-actions button{width:100%;}
     #randomSection{padding:14px;}
   }
+
+  /* --- Grammar section --- */
+  .tab-bar{display:flex;gap:8px;margin-bottom:18px;}
+  .tab-btn{
+    flex:1;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--muted);
+    border-radius:8px;
+    font-family:var(--serif);
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .tab-btn.active{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .gram-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 16px;
+    margin-bottom:16px;
+  }
+  .gram-title-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px;}
+  .gram-title{font-size:19px;font-weight:600;}
+  .gram-title-zh{font-size:15px;color:var(--accent);font-weight:600;}
+  .gram-usage{margin:10px 0;line-height:1.6;font-size:14.5px;}
+  .gram-usage-zh{margin:2px 0 10px;line-height:1.7;font-size:14px;color:var(--muted);}
+  .gram-pattern-label, .gram-ex-label, .gram-mistake-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin:14px 0 6px;
+    font-weight:600;
+  }
+  .gram-pattern{
+    background:var(--teal-soft);
+    border-radius:8px;
+    padding:10px 12px;
+    font-family:var(--mono);
+    font-size:13px;
+    white-space:pre-line;
+    line-height:1.6;
+  }
+  .gram-example{margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed var(--line);}
+  .gram-example:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .gram-example-en{font-size:14.5px;line-height:1.6;}
+  .gram-example-zh{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.6;}
+  .gram-mistake{
+    background:var(--accent-soft);
+    border-radius:8px;
+    padding:10px 12px;
+    margin-bottom:8px;
+    font-size:13.5px;
+    line-height:1.6;
+  }
+  .gram-mistake:last-child{margin-bottom:0;}
+  .gram-wrong{color:var(--accent);text-decoration:line-through;}
+  .gram-right{color:var(--teal);font-weight:600;}
+  .gram-mistake-note{color:var(--muted);margin-top:4px;font-size:13px;}
+  mark{background:#f5d99a;padding:0 2px;border-radius:3px;}
 </style>
 </head>
 <body>
@@ -373,34 +440,46 @@
     <p>Each word includes pronunciation (IPA + play button), a full-paragraph example in context, and a prefix / root / suffix breakdown with two additional example words for each morpheme.</p>
   </header>
 
-  <div class="sync-bar">
-    <span>Student ID:</span>
-    <input id="studentId" type="text" placeholder="e.g. your name or student no.">
-    <span class="sync-status" id="syncStatus"></span>
+  <div class="tab-bar">
+    <button id="tabVocabBtn" class="tab-btn active" type="button">📖 單字 Vocabulary</button>
+    <button id="tabGrammarBtn" class="tab-btn" type="button">✍️ 文法 Grammar</button>
   </div>
 
-  <div class="controls">
-    <input id="search" type="text" placeholder="Search word or meaning...">
-    <select id="categoryFilter"></select>
-    <label class="check-label">
-      <input type="checkbox" id="hideKnown" checked>
-      Hide known words
-    </label>
-    <button id="randomBtn" class="random-btn" type="button">🔀 Random word</button>
-  </div>
-
-  <div id="randomSection" style="display:none;">
-    <div class="random-label">Random pick — mixed across all categories</div>
-    <div id="randomCard"></div>
-    <div class="random-actions">
-      <button id="randomAgainBtn" class="random-btn" type="button">🔀 Another random word</button>
-      <button id="randomCloseBtn" class="random-close-btn" type="button">Close</button>
+  <div id="vocabView">
+    <div class="sync-bar">
+      <span>Student ID:</span>
+      <input id="studentId" type="text" placeholder="e.g. your name or student no.">
+      <span class="sync-status" id="syncStatus"></span>
     </div>
+
+    <div class="controls">
+      <input id="search" type="text" placeholder="Search word or meaning...">
+      <select id="categoryFilter"></select>
+      <label class="check-label">
+        <input type="checkbox" id="hideKnown" checked>
+        Hide known words
+      </label>
+      <button id="randomBtn" class="random-btn" type="button">🔀 Random word</button>
+    </div>
+
+    <div id="randomSection" style="display:none;">
+      <div class="random-label">Random pick — mixed across all categories</div>
+      <div id="randomCard"></div>
+      <div class="random-actions">
+        <button id="randomAgainBtn" class="random-btn" type="button">🔀 Another random word</button>
+        <button id="randomCloseBtn" class="random-close-btn" type="button">Close</button>
+      </div>
+    </div>
+
+    <div class="counter" id="counter"></div>
+    <div id="cardList"></div>
+    <div class="empty-state" id="emptyState" style="display:none;">No matching words. Try a different search term.</div>
   </div>
 
-  <div class="counter" id="counter"></div>
-  <div id="cardList"></div>
-  <div class="empty-state" id="emptyState" style="display:none;">No matching words. Try a different search term.</div>
+  <div id="grammarView" style="display:none;">
+    <div class="counter" id="grammarCounter"></div>
+    <div id="grammarList"></div>
+  </div>
 
   <footer>Original example sentences (not quoted from real sources) &middot; Pronunciation uses the browser's built-in speech synthesis &middot; List can be expanded further</footer>
 </div>
@@ -2218,6 +2297,19 @@ const DATA = [
 {w:"terracing",ipa:"/ˈtɛrəsɪŋ/",pos:"n",m:"the practice of creating stepped, level platforms on hillsides for farming",mZh:"梯田（種植法）",cat:"Agriculture",s:"Rather than accepting the constant erosion caused by farming on a steep hillside, ancient farmers carved the slope into a series of flat, stepped platforms, a technique called <mark>terracing</mark> that dramatically reduced soil loss.",pre:"—",preM:"none",preEx:[],root:"terr",rootM:"land, earth (Latin terra)",rootEx:["terrace","terrain"],suf:"-ing",sufM:"forms nouns of process",sufEx:["farming","plowing"]},
 {w:"silt",ipa:"/sɪlt/",pos:"n",m:"fine sediment carried by water and deposited as a layer on soil or a riverbed",mZh:"淤泥",cat:"Agriculture",s:"Each spring flood deposited a fresh layer of nutrient-rich <mark>silt</mark> across the river valley, naturally replenishing the soil’s fertility without any need for artificial fertilizer.",pre:"—",preM:"none",preEx:[],root:"sylt",rootM:"salt marsh, sediment (Scandinavian origin)",rootEx:["silted","siltation"],suf:"—",sufM:"none",sufEx:[]}
 ];
+const GRAMMAR = [
+{id:"subjunctive",title:"Subjunctive Mood",titleZh:"假設語氣",usage:"Used to express hypothetical, wished-for, or contrary-to-fact situations — things that are not real or not currently true.",usageZh:"用來表達假設、願望或與事實相反的情況——並非真實或目前並非事實的狀態。",pattern:"現在假設（與現在事實相反）：If + 主詞 + 過去式動詞, 主詞 + would/could/might + 原形動詞\n過去假設（與過去事實相反）：If + 主詞 + had + 過去分詞, 主詞 + would/could/might + have + 過去分詞\n祈願/建議動詞後：suggest / insist / demand / require + that + 主詞 + 原形動詞",examples:[{en:"If I <mark>had</mark> more time, I would travel more often.",zh:"如果我有更多時間，我會更常去旅行。（現在假設，事實是我沒有很多時間）"},{en:"If she <mark>had studied</mark> harder, she would have passed the exam.",zh:"如果她當初更努力唸書，她就會通過考試了。（過去假設，事實是她沒有通過）"},{en:"The professor insisted that every student <mark>submit</mark> the essay by Friday.",zh:"教授堅持每位學生都必須在星期五前繳交論文。（insist 後接原形動詞，不加 -s）"},{en:"If I <mark>were</mark> you, I would accept the offer.",zh:"如果我是你，我會接受這個提議。（be 動詞的假設語氣一律用 were，不論主詞為何）"}],mistakes:[{wrong:"If I would have more time, I would travel more.",right:"If I had more time, I would travel more.",noteZh:"if 子句中不可用 would，只能用過去式（現在假設）或 had + 過去分詞（過去假設）"},{wrong:"If I was you, I would accept the offer.",right:"If I were you, I would accept the offer.",noteZh:"正式英文的假設語氣中，be 動詞一律用 were，即使主詞是 I / he / she"},{wrong:"The professor insisted that every student submits the essay by Friday.",right:"The professor insisted that every student submit the essay by Friday.",noteZh:"insist / suggest / demand / require 等動詞後的 that 子句要用原形動詞，不隨主詞變化"}]},
+{id:"inversion",title:"Inversion",titleZh:"倒裝句",usage:"Used for emphasis, formal style, or after certain negative/limiting adverbials placed at the start of a sentence. The normal subject-verb order is reversed.",usageZh:"用於強調語氣、正式文體，或當否定/限定意義的副詞片語置於句首時，主詞與動詞的順序需要倒裝。",pattern:"Negative adverbial + 助動詞 + 主詞 + 原形動詞：Never / Rarely / Not only / Seldom + have/has/did + 主詞 + 動詞\n條件句省略 if：Had + 主詞 + 過去分詞 (= If 主詞 had + 過去分詞)\nSo/Such 開頭的強調句：So + 形容詞 + be動詞 + 主詞 + that...",examples:[{en:"<mark>Never have</mark> I seen such a beautiful sunset.",zh:"我從未見過如此美麗的日落。（Never 置於句首，需倒裝：have + 主詞 + 過去分詞）"},{en:"<mark>Not only did</mark> she finish the project early, but she also exceeded expectations.",zh:"她不僅提早完成了專案，還超乎預期。（Not only 開頭需倒裝，句子後半用 but also 連接）"},{en:"<mark>Had I known</mark> about the traffic, I would have left earlier.",zh:"要是我早知道會塞車，我就會提早出發了。（省略 if 的假設句：Had + 主詞 + 過去分詞）"},{en:"<mark>So exhausted was</mark> the runner that she collapsed at the finish line.",zh:"那位跑者累到在終點線倒下。（So + 形容詞開頭的強調倒裝句）"}],mistakes:[{wrong:"Never I have seen such a beautiful sunset.",right:"Never have I seen such a beautiful sunset.",noteZh:"倒裝時是「助動詞＋主詞」，不是「主詞＋助動詞」"},{wrong:"If I had known about the traffic, I would have left earlier. (省略if時寫成) I had known about the traffic...",right:"Had I known about the traffic, I would have left earlier.",noteZh:"省略 if 的倒裝句，助動詞 had 要移到主詞前面"}]},
+{id:"relative-clauses",title:"Relative Clauses",titleZh:"關係子句",usage:"Used to add extra information about a noun without starting a new sentence, connecting two ideas using a relative pronoun (who, which, that, whose, where, when).",usageZh:"用來對名詞補充額外資訊，不必另起新句，透過關係代名詞（who, which, that, whose, where, when）將兩個概念連接起來。",pattern:"限定性子句（無逗號，資訊必要）：先行詞 + who/which/that + 子句\n非限定性子句（有逗號，資訊補充）：先行詞, who/which + 子句,\n所有格關係代名詞：先行詞 + whose + 名詞 + 子句",examples:[{en:"The scientist <mark>who discovered the vaccine</mark> won a Nobel Prize.",zh:"發現這個疫苗的科學家獲得了諾貝爾獎。（限定性子句，指出是哪一位科學家，不可省略逗號規則）"},{en:"My grandmother, <mark>who is ninety years old</mark>, still walks two miles every day.",zh:"我的祖母，她已經九十歲了，仍然每天走兩英里。（非限定性子句，補充資訊，需用逗號）"},{en:"This is the company <mark>whose products</mark> we discussed yesterday.",zh:"這就是我們昨天討論過其產品的那家公司。（whose 表示所有關係）"},{en:"The town <mark>where I grew up</mark> has changed dramatically.",zh:"我成長的那個小鎮已經徹底改變了。（where 用於指地方的關係子句）"}],mistakes:[{wrong:"My grandmother who is ninety years old still walks two miles every day. (省略逗號，且此處應為非限定)",right:"My grandmother, who is ninety years old, still walks two miles every day.",noteZh:"非限定性子句（補充資訊，去掉也不影響句意）前後一定要加逗號"},{wrong:"The company which products we discussed is well known.",right:"The company whose products we discussed is well known.",noteZh:"表示所有格關係時要用 whose，不能用 which"},{wrong:"This is the man which I met yesterday.",right:"This is the man who(m) I met yesterday.",noteZh:"指人時通常用 who / whom，不用 which（which 用於指事物）"}]},
+{id:"passive-voice",title:"Passive Voice",titleZh:"被動語態",usage:"Used when the focus is on the action or the receiver of the action rather than who performed it — common in academic and scientific writing.",usageZh:"當重點在於動作本身或動作的承受者，而非執行動作的人時使用——常見於學術與科學寫作。",pattern:"be動詞 + 過去分詞：主詞(承受者) + am/is/are/was/were/been + p.p. (+ by + 執行者)\n完成式被動：have/has/had + been + 過去分詞\n情態動詞被動：can/should/must + be + 過去分詞",examples:[{en:"The bridge <mark>was built</mark> in 1932 by local engineers.",zh:"這座橋是在1932年由當地工程師建造的。（過去式被動語態）"},{en:"New safety regulations <mark>have been implemented</mark> across the industry.",zh:"整個產業已經實施了新的安全規範。（現在完成式被動語態）"},{en:"The results <mark>must be verified</mark> before publication.",zh:"這些結果在發表前必須經過驗證。（情態動詞的被動語態）"},{en:"The proposal <mark>is being reviewed</mark> by the committee this week.",zh:"這項提案本週正由委員會審核中。（現在進行式被動語態）"}],mistakes:[{wrong:"The bridge was build in 1932.",right:"The bridge was built in 1932.",noteZh:"被動語態要用「過去分詞」而非原形動詞，build 的過去分詞是 built"},{wrong:"New regulations have implemented across the industry.",right:"New regulations have been implemented across the industry.",noteZh:"完成式被動語態需要 have/has/had + been + 過去分詞，不能漏掉 been"}]},
+{id:"gerunds-infinitives",title:"Gerunds vs. Infinitives",titleZh:"動名詞 vs. 不定詞",usage:"Certain verbs are followed only by a gerund (-ing form), others only by an infinitive (to + verb), and some can take either with a change in meaning.",usageZh:"某些動詞後面只能接動名詞（-ing），有些只能接不定詞（to + 動詞），還有些兩者皆可但意思會改變。",pattern:"僅接動名詞：enjoy / avoid / consider / suggest / finish + V-ing\n僅接不定詞：decide / want / plan / hope / agree + to V\n兩者皆可但意義不同：remember/forget/stop + V-ing (過去發生的事) vs. + to V (未來要做的事)",examples:[{en:"She <mark>avoided answering</mark> the reporter’s question directly.",zh:"她避免直接回答記者的問題。（avoid 後接動名詞）"},{en:"They <mark>decided to postpone</mark> the meeting until next week.",zh:"他們決定將會議延到下週。（decide 後接不定詞）"},{en:"I remember <mark>locking</mark> the door before I left.",zh:"我記得離開前有鎖門。（remember + V-ing，表示記得過去做過的事）"},{en:"Please remember <mark>to lock</mark> the door before you leave.",zh:"請記得離開前要鎖門。（remember + to V，表示要記得去做未來的事）"}],mistakes:[{wrong:"She avoided to answer the reporter's question.",right:"She avoided answering the reporter's question.",noteZh:"avoid 只能接動名詞（V-ing），不能接不定詞"},{wrong:"They decided postponing the meeting.",right:"They decided to postpone the meeting.",noteZh:"decide 只能接不定詞（to V），不能接動名詞"},{wrong:"I remember to lock the door before I left. (想表達「記得過去鎖過門」)",right:"I remember locking the door before I left.",noteZh:"表達「記得過去做過的事」要用 remember + V-ing，remember + to V 是指未來要做的事"}]},
+{id:"parallel-structure",title:"Parallel Structure",titleZh:"平行結構",usage:"Used to keep items in a list, comparison, or joined by conjunctions (and, or, but) in the same grammatical form for clarity and balance.",usageZh:"用於使清單、比較或由連接詞（and, or, but）連接的項目維持相同的文法形式，以求清晰與平衡。",pattern:"對等連接詞前後結構一致：A, B, and C (皆為名詞 / 皆為動名詞 / 皆為不定詞...)\n比較句中也需平行：not only...but also / either...or / both...and",examples:[{en:"The manager’s job includes <mark>hiring staff, managing budgets, and resolving conflicts</mark>.",zh:"經理的工作包括招募員工、管理預算，以及解決衝突。（三個項目都是動名詞形式，結構一致）"},{en:"She is <mark>not only talented but also hardworking</mark>.",zh:"她不僅有才華，而且很努力。（not only...but also 前後都接形容詞）"},{en:"The report was <mark>clear, concise, and well organized</mark>.",zh:"這份報告清楚、簡潔且條理分明。（三個並列的形容詞結構一致）"},{en:"Learning a language requires <mark>patience, practice, and persistence</mark>.",zh:"學習語言需要耐心、練習與毅力。（三個並列名詞，且刻意押頭韻加強效果）"}],mistakes:[{wrong:"The manager's job includes hiring staff, managing budgets, and to resolve conflicts.",right:"The manager's job includes hiring staff, managing budgets, and resolving conflicts.",noteZh:"並列項目文法形式要一致，前兩項是動名詞，第三項也要用動名詞，不能換成不定詞"},{wrong:"She is not only talented but also she works hard.",right:"She is not only talented but also hardworking.",noteZh:"not only...but also 前後連接的結構要對等，此處前面是形容詞 talented，後面也應接形容詞"}]},
+{id:"subject-verb-agreement",title:"Subject-Verb Agreement",titleZh:"主詞動詞一致",usage:"The verb must agree in number (singular/plural) with its subject, even when other words come between them.",usageZh:"動詞必須與主詞的單複數一致，即使主詞與動詞之間夾著其他修飾語也一樣。",pattern:"單數主詞 + 單數動詞；複數主詞 + 複數動詞\n主詞與動詞之間的片語（如 along with, as well as, together with）不影響動詞單複數，仍以主詞為準\n集合名詞（team, family, committee）視為一個整體時用單數動詞",examples:[{en:"The list of instructions <mark>is</mark> posted on the wall.",zh:"這份指示清單張貼在牆上。（主詞是 list，單數，儘管 of instructions 是複數，動詞仍用單數 is）"},{en:"Neither the manager nor the employees <mark>were</mark> aware of the change.",zh:"經理和員工都不知道這項變更。（neither...nor 連接時，動詞與最靠近的主詞一致，此處 employees 為複數）"},{en:"The committee <mark>has</mark> reached a unanimous decision.",zh:"委員會已經做出了一致的決定。（committee 視為一個整體時用單數動詞）"},{en:"Each of the students <mark>has</mark> submitted the assignment.",zh:"每位學生都已經繳交了作業。（Each of + 複數名詞，動詞仍用單數，因為 each 是單數概念）"}],mistakes:[{wrong:"The list of instructions are posted on the wall.",right:"The list of instructions is posted on the wall.",noteZh:"動詞要與真正的主詞 list 一致，而不是與緊鄰的名詞 instructions 一致"},{wrong:"Each of the students have submitted the assignment.",right:"Each of the students has submitted the assignment.",noteZh:"Each 本身是單數概念，即使後面接複數名詞，動詞仍要用單數"}]},
+{id:"participial-phrases",title:"Participial Phrases",titleZh:"分詞構句",usage:"Used to combine two related sentences into one by turning a verb into a present or past participle, adding variety and conciseness to writing.",usageZh:"將動詞轉換為現在分詞或過去分詞，把兩個相關句子合併成一句，讓寫作更精簡且富有變化。",pattern:"現在分詞構句（主動意義）：V-ing + 主詞 + 動詞...\n過去分詞構句（被動意義）：V-ed/p.p. + 主詞 + 動詞...\n需確認分詞的邏輯主詞與主要子句的主詞相同，否則會產生「垂懸分詞」錯誤",examples:[{en:"<mark>Walking</mark> through the forest, she noticed unusual footprints in the mud.",zh:"走過森林時，她注意到泥地上有不尋常的腳印。（現在分詞構句，主動意義，邏輯主詞是 she）"},{en:"<mark>Exhausted</mark> by the long journey, the travelers immediately fell asleep.",zh:"被漫長的旅程搞得筋疲力盡，旅人們立刻就睡著了。（過去分詞構句，被動意義）"},{en:"<mark>Having finished</mark> the report, she went home early.",zh:"完成報告後，她提早回家了。（完成式分詞構句，表示先發生的動作）"},{en:"The company, <mark>facing declining sales</mark>, decided to cut costs.",zh:"這家公司面臨銷售下滑，決定削減成本。（分詞片語插入句中修飾主詞）"}],mistakes:[{wrong:"Walking through the forest, unusual footprints were noticed in the mud.",right:"Walking through the forest, she noticed unusual footprints in the mud.",noteZh:"垂懸分詞錯誤：Walking 的邏輯主詞應該是「她」，但句子主詞卻變成了 footprints，造成邏輯不通"},{wrong:"Exhausting by the long journey, the travelers immediately fell asleep.",right:"Exhausted by the long journey, the travelers immediately fell asleep.",noteZh:"旅人是「被搞得疲累」（被動意義），應該用過去分詞 Exhausted，而非現在分詞 Exhausting"}]},
+{id:"comparatives-superlatives",title:"Comparative & Superlative Structures",titleZh:"比較級與最高級句型",usage:"Used to compare two things (comparative) or to show that something is the highest or lowest degree among three or more things (superlative).",usageZh:"用於比較兩者之間的差異（比較級），或表達在三者以上之中程度最高或最低（最高級）。",pattern:"比較級：形容詞+er / more+形容詞 + than\n最高級：the +形容詞+est / the most +形容詞\n倍數比較：as + 形容詞 + as / twice as + 形容詞 + as\n越來越...：比較級 + and + 比較級 (e.g. more and more)；the + 比較級..., the + 比較級...",examples:[{en:"This year’s harvest was <mark>far more abundant than</mark> last year’s.",zh:"今年的收成遠比去年豐富得多。（比較級 more abundant than，前面加 far 加強語氣）"},{en:"Mount Everest is <mark>the highest</mark> mountain in the world.",zh:"珠穆朗瑪峰是世界上最高的山。（最高級 the highest）"},{en:"The new phone is <mark>twice as expensive as</mark> the old model.",zh:"這款新手機的價格是舊型號的兩倍。（倍數比較句型）"},{en:"<mark>The more</mark> she practiced, <mark>the more confident</mark> she became.",zh:"她練習得越多，就變得越有自信。（the + 比較級..., the + 比較級... 句型，表示相關程度同步變化）"}],mistakes:[{wrong:"This year's harvest was more abundant that last year's.",right:"This year's harvest was more abundant than last year's.",noteZh:"比較級後面要接 than，不是 that"},{wrong:"Mount Everest is the more high mountain in the world.",right:"Mount Everest is the highest mountain in the world.",noteZh:"三者以上比較要用最高級（the +est 或 the most），不是比較級 more high"}]},
+{id:"noun-clauses",title:"Noun Clauses",titleZh:"名詞子句",usage:"A clause that functions as a noun within a sentence — it can act as the subject, object, or complement of a verb or preposition.",usageZh:"在句子中扮演名詞角色的子句——可以作為動詞或介系詞的主詞、受詞或補語。",pattern:"that 引導：主詞/受詞 + that + 完整子句\nwh- 疑問詞引導：what/who/where/when/why/how + 完整子句 (直述語序，非疑問語序)\nwhether/if 引導：表達「是否」的名詞子句",examples:[{en:"<mark>What the committee decided</mark> remains confidential.",zh:"委員會決定了什麼目前仍是機密。（what 引導的名詞子句作句子主詞）"},{en:"The scientist explained <mark>why the experiment had failed</mark>.",zh:"這位科學家解釋了為什麼實驗失敗了。（why 子句作動詞 explained 的受詞，注意語序是直述句而非疑問句）"},{en:"I am not sure <mark>whether she will attend</mark> the conference.",zh:"我不確定她是否會出席這場會議。（whether 引導的名詞子句表示「是否」）"},{en:"The fact <mark>that he apologized</mark> did not change her mind.",zh:"他道歉這個事實並沒有改變她的想法。（that 子句作為 fact 的同位語）"}],mistakes:[{wrong:"The scientist explained why had the experiment failed.",right:"The scientist explained why the experiment had failed.",noteZh:"名詞子句中要用直述句語序（主詞+動詞），不能用疑問句的倒裝語序"},{wrong:"I am not sure if she will attend the conference or not she will not.",right:"I am not sure whether she will attend the conference.",noteZh:"whether 比 if 更適合用在正式的名詞子句中，尤其後面接 or not 時通常用 whether 而非 if"}]}
+];
+
 const CATEGORIES = ["All", ...Array.from(new Set(DATA.map(d => d.cat))), "Checked ✓"];
 
 const search = document.getElementById('search');
@@ -2514,6 +2606,68 @@ randomBtn.addEventListener('click', pickRandomWord);
 randomAgainBtn.addEventListener('click', pickRandomWord);
 randomCloseBtn.addEventListener('click', () => {
   randomSection.style.display = 'none';
+});
+
+/* ---------- Grammar section ---------- */
+function renderGrammarCard(item){
+  const examplesHtml = item.examples.map(ex => `
+    <div class="gram-example">
+      <div class="gram-example-en">${ex.en}</div>
+      <div class="gram-example-zh">${ex.zh}</div>
+    </div>`).join('');
+  const mistakesHtml = item.mistakes.map(m => `
+    <div class="gram-mistake">
+      <span class="gram-wrong">✗ ${m.wrong}</span><br>
+      <span class="gram-right">✓ ${m.right}</span>
+      <div class="gram-mistake-note">${m.noteZh}</div>
+    </div>`).join('');
+  return `
+  <div class="gram-card">
+    <div class="gram-title-row">
+      <span class="gram-title">${item.title}</span>
+      <span class="gram-title-zh">${item.titleZh}</span>
+    </div>
+    <div class="gram-usage">${item.usage}</div>
+    <div class="gram-usage-zh">${item.usageZh}</div>
+    <div class="gram-pattern-label">Pattern 句型</div>
+    <div class="gram-pattern">${item.pattern}</div>
+    <div class="gram-ex-label">Examples 例句</div>
+    ${examplesHtml}
+    <div class="gram-mistake-label">Common Mistakes 常見錯誤</div>
+    ${mistakesHtml}
+  </div>`;
+}
+
+function renderGrammar(){
+  grammarCounter.textContent = `${GRAMMAR.length} grammar topics`;
+  grammarList.innerHTML = GRAMMAR.map(renderGrammarCard).join('');
+}
+
+const tabVocabBtn = document.getElementById('tabVocabBtn');
+const tabGrammarBtn = document.getElementById('tabGrammarBtn');
+const vocabView = document.getElementById('vocabView');
+const grammarView = document.getElementById('grammarView');
+const grammarCounter = document.getElementById('grammarCounter');
+const grammarList = document.getElementById('grammarList');
+
+let grammarRendered = false;
+
+tabVocabBtn.addEventListener('click', () => {
+  tabVocabBtn.classList.add('active');
+  tabGrammarBtn.classList.remove('active');
+  vocabView.style.display = 'block';
+  grammarView.style.display = 'none';
+});
+
+tabGrammarBtn.addEventListener('click', () => {
+  tabGrammarBtn.classList.add('active');
+  tabVocabBtn.classList.remove('active');
+  vocabView.style.display = 'none';
+  grammarView.style.display = 'block';
+  if(!grammarRendered){
+    renderGrammar();
+    grammarRendered = true;
+  }
 });
 </script>
 </body>
