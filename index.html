@@ -2828,8 +2828,11 @@ function renderCard(item, idx){
 }
 
 let currentFiltered = DATA;
+const PAGE_SIZE = 60;
+let renderedCount = PAGE_SIZE;
 
-function render(){
+function render(resetPage = true){
+  if(resetPage) renderedCount = PAGE_SIZE;
   const q = search.value.trim().toLowerCase();
   const cat = categoryFilter.value;
   const lvl = levelFilter.value;
@@ -2851,7 +2854,7 @@ function render(){
   currentFiltered = filtered;
   const checkedCount = checkedWords.size;
   const hiddenNote = shouldHideKnown ? ' (known words hidden)' : '';
-  counter.textContent = `Showing ${filtered.length} / ${DATA.length} words · ${checkedCount} checked${hiddenNote}`;
+  counter.textContent = `Showing ${Math.min(renderedCount, filtered.length)} of ${filtered.length} / ${DATA.length} words · ${checkedCount} checked${hiddenNote}`;
   if(filtered.length === 0){
     cardList.innerHTML = '';
     emptyState.style.display = 'block';
@@ -2864,7 +2867,19 @@ function render(){
     }
   } else {
     emptyState.style.display = 'none';
-    cardList.innerHTML = filtered.map((item, idx) => renderCard(item, idx)).join('');
+    const pageItems = filtered.slice(0, renderedCount);
+    let html = pageItems.map((item, idx) => renderCard(item, idx)).join('');
+    if(filtered.length > renderedCount){
+      html += `<button id="loadMoreBtn" class="random-btn" type="button" style="width:100%;margin:12px 0 24px;">Load ${Math.min(PAGE_SIZE, filtered.length - renderedCount)} more (${filtered.length - renderedCount} remaining)</button>`;
+    }
+    cardList.innerHTML = html;
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    if(loadMoreBtn){
+      loadMoreBtn.addEventListener('click', () => {
+        renderedCount += PAGE_SIZE;
+        render(false);
+      });
+    }
     cardList.querySelectorAll('.speak-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-idx'), 10);
@@ -2886,7 +2901,7 @@ function render(){
           checkedWords.delete(word);
         }
         saveChecked();
-        render();
+        render(false);
       });
     });
   }
@@ -2897,7 +2912,15 @@ function render(){
   render();
 })();
 
-search.addEventListener('input', render);
+function debounce(fn, delay){
+  let timer = null;
+  return function(...args){
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}
+
+search.addEventListener('input', debounce(() => render(true), 250));
 categoryFilter.addEventListener('change', render);
 levelFilter.addEventListener('change', render);
 hideKnown.addEventListener('change', render);
