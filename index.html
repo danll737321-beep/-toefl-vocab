@@ -501,6 +501,15 @@
   .rb-hard{background:#c98a2b;}
   .rb-good{background:var(--teal);}
   .rb-easy{background:#3d7a4a;}
+
+  #voiceSelect{
+    flex:1 1 200px;min-width:0;padding:6px 8px;border:1px solid var(--line);
+    border-radius:6px;font-family:var(--serif);font-size:13.5px;background:#fff;
+  }
+  .voice-test-btn{
+    padding:6px 12px;border:1px solid var(--teal);border-radius:6px;background:var(--teal-soft);
+    color:var(--teal);font-family:var(--serif);font-size:13px;font-weight:600;cursor:pointer;
+  }
 </style>
 </head>
 <body>
@@ -522,6 +531,12 @@
       <span>Student ID:</span>
       <input id="studentId" type="text" placeholder="e.g. your name or student no.">
       <span class="sync-status" id="syncStatus"></span>
+    </div>
+
+    <div class="sync-bar" id="voiceBar">
+      <span>🔊 Voice:</span>
+      <select id="voiceSelect"></select>
+      <button id="voiceTestBtn" type="button" class="voice-test-btn">▶ Test</button>
     </div>
 
     <div class="controls">
@@ -2689,6 +2704,59 @@ CATEGORIES.forEach(c => {
   categoryFilter.appendChild(opt);
 });
 
+const VOICE_KEY = 'toefl-voice-uri';
+const voiceSelect = document.getElementById('voiceSelect');
+const voiceTestBtn = document.getElementById('voiceTestBtn');
+let availableVoices = [];
+
+function pickDefaultVoice(voices){
+  const enVoices = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith('en'));
+  const pool = enVoices.length ? enVoices : voices;
+  const preferredNamePatterns = [/Google US English/i, /Natural/i, /Samantha/i, /Microsoft.*Online/i, /Aria/i];
+  for(const pattern of preferredNamePatterns){
+    const match = pool.find(v => pattern.test(v.name));
+    if(match) return match;
+  }
+  const usVoice = pool.find(v => v.lang && v.lang.toLowerCase() === 'en-us');
+  return usVoice || pool[0] || null;
+}
+
+function populateVoiceList(){
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  if(!voices.length) return;
+  availableVoices = voices;
+  const savedUri = localStorage.getItem(VOICE_KEY);
+  voiceSelect.innerHTML = '';
+  voices.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.voiceURI;
+    opt.textContent = `${v.name} (${v.lang})`;
+    voiceSelect.appendChild(opt);
+  });
+  const savedVoice = savedUri && voices.find(v => v.voiceURI === savedUri);
+  const defaultVoice = savedVoice || pickDefaultVoice(voices);
+  if(defaultVoice) voiceSelect.value = defaultVoice.voiceURI;
+}
+
+function getSelectedVoice(){
+  if(!availableVoices.length) return null;
+  const uri = voiceSelect.value || localStorage.getItem(VOICE_KEY);
+  return availableVoices.find(v => v.voiceURI === uri) || pickDefaultVoice(availableVoices);
+}
+
+if('speechSynthesis' in window){
+  populateVoiceList();
+  window.speechSynthesis.addEventListener('voiceschanged', populateVoiceList);
+}
+
+voiceSelect.addEventListener('change', () => {
+  localStorage.setItem(VOICE_KEY, voiceSelect.value);
+});
+
+voiceTestBtn.addEventListener('click', () => {
+  speak('vocabulary');
+});
+
 function speak(word){
   try{
     if(!('speechSynthesis' in window)) return;
@@ -2696,6 +2764,8 @@ function speak(word){
     const utter = new SpeechSynthesisUtterance(word);
     utter.lang = 'en-US';
     utter.rate = 0.9;
+    const v = getSelectedVoice();
+    if(v) utter.voice = v;
     window.speechSynthesis.speak(utter);
   }catch(e){ /* speech synthesis unavailable */ }
 }
@@ -2710,6 +2780,8 @@ function speakSentence(word){
     const utter = new SpeechSynthesisUtterance(plainText);
     utter.lang = 'en-US';
     utter.rate = 0.95;
+    const v = getSelectedVoice();
+    if(v) utter.voice = v;
     window.speechSynthesis.speak(utter);
   }catch(e){ /* speech synthesis unavailable */ }
 }
