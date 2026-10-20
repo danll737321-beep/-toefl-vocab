@@ -3746,6 +3746,24 @@ if('serviceWorker' in navigator){
     '<button type="button" class="c" data-k="C" aria-label="Clear">C</button><button type="button" data-k="0" aria-label="0">0</button><button type="button" class="d" data-k="<" aria-label="Delete">&lt;</button></div>';
   const dots = n => '<div class="km-dots" aria-label="Secret number">' + [0,1,2,3].map(i => `<div class="${i < n ? 'on' : ''}"></div>`).join('') + '</div>';
   const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const dayStr = d => d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  const daysAgo = n => { const d = new Date(); d.setDate(d.getDate() - n); return d; };
+  const TEACHER_KEY = 'toefl-teacher-pin';
+  function readJSON(k, dflt){ try{ const v = JSON.parse(localStorage.getItem(k)); return v == null ? dflt : v; }catch(e){ return dflt; } }
+  function kidSummary(p){
+    const P = readJSON('p:' + p.id + ':kids-progress', {});
+    const t = dayStr(new Date()), y = dayStr(daysAgo(1)), h = P.history || {};
+    let week = 0; for(let i = 0; i < 7; i++) week += h[dayStr(daysAgo(i))] || 0;
+    return { known: (P.known || []).length, stars: P.stars || 0,
+             streak: (P.lastDay === t || P.lastDay === y) ? (P.streak || 0) : 0,
+             today: P.todayDay === t ? (P.todayCount || 0) : 0, week, last: P.lastDay || '', practice: (P.missed || []).length };
+  }
+  function adultSummary(p){
+    return { known: readJSON('p:' + p.id + ':toefl-checked-words', []).length,
+             review: Object.keys(readJSON('p:' + p.id + ':toefl-srs-v1', {})).length };
+  }
+  const prettyDay = s => { if(!s) return 'never'; if(s === dayStr(new Date())) return 'today'; if(s === dayStr(daysAgo(1))) return 'yesterday';
+    const [Y, M, D] = s.split('-').map(Number); return new Date(Y, M - 1, D).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); };
 
   function migrateOldData(id){
     // First adult profile on this device inherits progress saved before profiles existed.
@@ -3780,10 +3798,12 @@ if('serviceWorker' in navigator){
           <span><span class="km-display" style="font-size:30px;display:block">Kids</span><span style="font-family:Nunito,sans-serif;font-size:16px">兒童 · Grades 1–6</span></span>
         </button>
         <button type="button" class="km-btn km-choice" data-go="adult">
-          <span class="km-avatar-lg" style="background:#dfe3ff">${ICON.cap}</span>
           <span><span class="km-display" style="font-size:30px;display:block">Adult</span><span style="font-family:Nunito,sans-serif;font-size:16px">成人 · TOEFL prep</span></span>
         </button>
-        <div class="km-muted" style="margin-top:auto;text-align:center;font-size:14px">Progress is saved on this device for each person.</div>
+        <div style="margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:4px">
+          <button type="button" class="km-link" data-go="tpin">Parents &amp; teachers · 家長／老師</button>
+          <div class="km-muted" style="text-align:center;font-size:14px">Progress is saved on this device for each person.</div>
+        </div>
       </div>`;
     } else if(v === 'kids'){
       const kids = TV.profiles().filter(p => p.type === 'kid');
@@ -3838,8 +3858,47 @@ if('serviceWorker' in navigator){
         <div style="display:flex;justify-content:space-between;flex-wrap:wrap">
           <button type="button" class="km-link" data-act="adult-toggle">${create ? 'I already have a profile' : 'New here? Create profile'}</button>
         </div>
-        <div class="km-muted" style="font-size:14px">Forgot PIN? Create a new profile. Progress is saved on this device.</div>
+        <div class="km-muted" style="font-size:14px">Forgot PIN? A parent or teacher can reset it in Parents &amp; teachers.</div>
       </div></div>`;
+    }
+    if(v === 'tpin' || v === 'reset'){
+      const isSet = !localStorage.getItem(TEACHER_KEY);
+      let title, sub;
+      if(v === 'reset'){ const rp = TV.profiles().find(x => x.id === A.resetId); title = 'New PIN for ' + (rp ? rp.name : ''); sub = 'Type 4 new numbers'; }
+      else if(isSet){ title = 'Set a teacher PIN'; sub = A.tFirst ? 'Type it again to confirm' : 'Only parents and teachers should know it'; }
+      else { title = 'Parents & teachers'; sub = 'Enter the teacher PIN'; }
+      h = `<div class="km">
+        <div class="km-row"><button type="button" class="km-icon-btn" data-go="${v === 'reset' ? 'teacher' : 'welcome'}" aria-label="Back">${ICON.back}</button><h2>${esc(title)}</h2></div>
+        <div class="km-card" style="display:flex;flex-direction:column;gap:14px" id="kmPinCard">
+          <div class="km-display" style="font-size:19px;text-align:center">${esc(sub)}</div>
+          ${dots(A.pin.length)}
+          ${keypad()}
+          <div class="km-msg ${A.msgCls}" role="status">${esc(A.msg)}</div>
+        </div>
+      </div>`;
+    } else if(v === 'teacher'){
+      const all = TV.profiles();
+      const kids = all.filter(p => p.type === 'kid'), adults = all.filter(p => p.type === 'adult');
+      const stat = (n, l) => `<div><b style="font-family:'Baloo 2',sans-serif;font-size:22px;display:block;line-height:1.1">${n}</b><span class="km-muted" style="font-size:12px">${l}</span></div>`;
+      h = `<div class="km" style="max-width:640px">
+        <div class="km-row"><button type="button" class="km-icon-btn" data-go="welcome" aria-label="Lock and go back">${ICON.back}</button><h2>Progress overview</h2></div>
+        <div class="km-muted">${A.msg ? esc(A.msg) : 'Everyone who learns on this device.'}</div>
+        <div class="km-display" style="font-size:20px;margin-top:4px">Kids · 兒童 (${kids.length})</div>
+        ${kids.length ? kids.map(p => { const k = kidSummary(p); return `<div class="km-card" style="display:flex;flex-direction:column;gap:12px;padding:16px">
+            <div class="km-row" style="justify-content:space-between">
+              <div class="km-row">${face(esc(p.color || COLORS[0]), 44, p.name)}<div><div class="km-display" style="font-size:20px">${esc(p.name)}</div><div class="km-muted" style="font-size:13px">Last learned: ${prettyDay(k.last)}</div></div></div>
+              <button type="button" class="km-link" data-reset="${esc(p.id)}" style="font-size:14px">Reset PIN</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;text-align:center">
+              ${stat(k.known, 'words known')}${stat(k.today + '/10', 'today')}${stat(k.week, 'this week')}${stat(k.streak, 'day streak')}${stat(k.practice, 'to practice')}
+            </div></div>`; }).join('') : '<div class="km-card km-muted">No kids yet.</div>'}
+        <div class="km-display" style="font-size:20px;margin-top:8px">Adults · 成人 (${adults.length})</div>
+        ${adults.length ? adults.map(p => { const a = adultSummary(p); return `<div class="km-card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;flex-wrap:wrap">
+            <div class="km-display" style="font-size:20px">${esc(p.name)}</div>
+            <div style="display:flex;gap:18px;text-align:center">${stat(a.known, 'words known')}${stat(a.review, 'in review')}</div>
+            <button type="button" class="km-link" data-reset="${esc(p.id)}" style="font-size:14px">Reset PIN</button></div>`; }).join('') : '<div class="km-card km-muted">No adults yet.</div>'}
+        <div class="km-muted" style="font-size:13px">Data stays on this device. Leaving this page locks it again.</div>
+      </div>`;
     }
     auth.innerHTML = h;
     const nameIn = document.getElementById('kmNewName');
@@ -3865,6 +3924,24 @@ if('serviceWorker' in navigator){
         A.msg = 'Oops, try again!'; A.msgCls = 'err'; A.pin = '';
         renderAuth(); const c = document.getElementById('kmPinCard'); if(c){ c.classList.add('km-shake'); }
         return;
+      }
+      if(A.view === 'tpin'){
+        const stored = localStorage.getItem(TEACHER_KEY);
+        if(!stored){
+          if(!A.tFirst){ A.tFirst = A.pin; A.pin = ''; renderAuth(); return; }
+          if(A.tFirst !== A.pin){ A.tFirst = ''; A.pin = ''; A.msg = 'They did not match. Start again.'; A.msgCls = 'err'; renderAuth(); return; }
+          try{ localStorage.setItem(TEACHER_KEY, TV.hash(A.pin)); }catch(e){}
+          A.tFirst = ''; setView('teacher'); return;
+        }
+        if(stored === TV.hash(A.pin)){ setView('teacher'); return; }
+        A.pin = ''; A.msg = 'Wrong PIN.'; A.msgCls = 'err'; renderAuth();
+        const c = document.getElementById('kmPinCard'); if(c) c.classList.add('km-shake');
+        return;
+      }
+      if(A.view === 'reset'){
+        const all = TV.profiles(), rp = all.find(x => x.id === A.resetId);
+        if(rp){ rp.pin = TV.hash(A.pin); TV.saveProfiles(all); }
+        setView('teacher'); A.msg = rp ? 'PIN for ' + rp.name + ' was changed.' : ''; renderAuth(); return;
       }
       if(A.view === 'newkid'){
         const p = createProfile({ id: newId(), type: 'kid', name: A.newName.trim(), color: A.newColor, pin: TV.hash(A.pin), created: Date.now() });
@@ -3900,9 +3977,11 @@ if('serviceWorker' in navigator){
     auth.addEventListener('click', e => {
       const t = e.target.closest('button'); if(!t || !auth.contains(t)) return;
       if(t.dataset.go){
+        if(t.dataset.go === 'tpin') A.tFirst = '';
         if(t.dataset.go === 'adult') A.adultMode = TV.profiles().some(p => p.type === 'adult') ? 'login' : 'create';
         setView(t.dataset.go); return;
       }
+      if(t.dataset.reset){ A.resetId = t.dataset.reset; setView('reset'); return; }
       if(t.dataset.kid){ A.kid = t.dataset.kid; A.pin = ''; A.msg = ''; renderAuth(); return; }
       if(t.dataset.k){ onKey(t.dataset.k); return; }
       if(t.dataset.color){ A.newColor = t.dataset.color; renderAuth(); return; }
@@ -3957,13 +4036,20 @@ if('serviceWorker' in navigator){
 
   const KEY = TV.pk('kids-progress');
   const today = () => { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
-  let P = { known: [], stars: 0, streak: 0, lastDay: '', todayDay: '', todayCount: 0 };
+  let P = { known: [], stars: 0, streak: 0, lastDay: '', todayDay: '', todayCount: 0, history: {}, missed: [] };
   try{ P = Object.assign(P, JSON.parse(localStorage.getItem(KEY)) || {}); }catch(e){}
+  P.history = P.history || {}; P.missed = P.missed || [];
   P.known.forEach(w => known.add(w));
   if(P.todayDay !== today()){ P.todayDay = today(); P.todayCount = 0; }
   const GOAL = 10;
 
-  function save(){ P.known = Array.from(known); try{ localStorage.setItem(KEY, JSON.stringify(P)); }catch(e){} }
+  function save(){
+    P.known = Array.from(known);
+    const keep = {}; for(let i = 0; i < 60; i++){ const k = dayStr(daysAgo(i)); if(P.history[k]) keep[k] = P.history[k]; } P.history = keep;
+    try{ localStorage.setItem(KEY, JSON.stringify(P)); }catch(e){}
+  }
+  const addMissed = w => { if(!P.missed.includes(w)) P.missed.unshift(w); P.missed = P.missed.slice(0, 40); };
+  const dropMissed = w => { P.missed = P.missed.filter(x => x !== w); };
   function touchStreak(){
     const t = today(); if(P.lastDay === t) return;
     const y = new Date(); y.setDate(y.getDate() - 1);
@@ -3993,7 +4079,7 @@ if('serviceWorker' in navigator){
         <div class="km-bar"><div style="width:${pct}%"></div></div>
         <div class="km-muted" style="font-size:14px">${left ? left + ' more ' + (left === 1 ? 'word' : 'words') + ' to reach today\'s goal!' : 'Goal done! You are a word star!'}</div>
       </div>
-      <div class="km-row" style="justify-content:space-between"><span class="km-display" style="font-size:20px">Pick a world</span><span class="km-pill">${ICON.star}<span>${P.stars}</span></span></div>
+      <div class="km-row" style="justify-content:space-between"><span class="km-display" style="font-size:20px">Pick a world</span><button type="button" class="km-pill" data-act="progress" aria-label="My progress, ${P.stars} stars" style="cursor:pointer;color:#1b2a4a">${ICON.star}<span>${P.stars}</span></button></div>
       <div class="km-grid2">
         ${WORLDS.map(w => {
           const got = w.words.filter(d => known.has(d.w)).length;
@@ -4003,6 +4089,7 @@ if('serviceWorker' in navigator){
         }).join('')}
       </div>
       <button type="button" class="km-btn sun" data-act="quiz" style="min-height:64px;font-size:22px;margin-top:6px">${ICON.play} Play a quiz</button>
+      <button type="button" class="km-btn" data-act="progress">My progress · 我的進度</button>
       <button type="button" class="km-link" data-act="logout" style="align-self:center">Switch player</button>
     </div>`;
   }
@@ -4107,9 +4194,46 @@ if('serviceWorker' in navigator){
     </div></div>`;
   }
 
+  function progressView(){
+    const days = []; for(let i = 6; i >= 0; i--){ const d = daysAgo(i); days.push({ n: P.history[dayStr(d)] || 0, label: i === 0 ? 'Today' : d.toLocaleDateString('en-US', { weekday: 'short' }) }); }
+    const max = Math.max(GOAL, ...days.map(x => x.n));
+    const yd = dayStr(daysAgo(1)), streak = (P.lastDay === today() || P.lastDay === yd) ? (P.streak || 0) : 0;
+    const missed = P.missed.map(w => POOL.find(d => d.w === w)).filter(Boolean);
+    return `<div class="km">
+      <div class="km-row"><button type="button" class="km-icon-btn" data-act="home" aria-label="Back to home">${ICON.back}</button><h2>My progress</h2></div>
+      <div class="km-stats">
+        <div class="km-card"><b>${known.size}</b><span class="km-muted" style="font-size:13px">words I know</span></div>
+        <div class="km-card"><b>${P.stars}</b><span class="km-muted" style="font-size:13px">stars</span></div>
+        <div class="km-card"><b>${streak}</b><span class="km-muted" style="font-size:13px">day streak</span></div>
+      </div>
+      <div class="km-card">
+        <div class="km-display" style="font-size:20px">Last 7 days</div>
+        <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:end;height:150px;margin-top:12px" role="img" aria-label="Words learned each day: ${days.map(x => x.label + ' ' + x.n).join(', ')}">
+          ${days.map(x => `<div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px">
+            <b style="font-size:14px">${x.n || ''}</b>
+            <div style="width:100%;max-width:30px;height:${Math.max(4, Math.round(x.n / max * 100))}px;background:${x.n >= GOAL ? '#2bb673' : x.n ? '#ffc83d' : '#dbe7f5'};border:2px solid #1b2a4a;border-radius:8px"></div>
+          </div>`).join('')}
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:6px;text-align:center;font-size:12px;font-weight:800" class="km-muted">${days.map(x => `<span>${x.label}</span>`).join('')}</div>
+      </div>
+      <div class="km-card" style="display:flex;flex-direction:column;gap:12px">
+        <div class="km-display" style="font-size:20px">My worlds</div>
+        ${WORLDS.map(w => { const got = w.words.filter(d => known.has(d.w)).length, pct = w.words.length ? Math.round(got / w.words.length * 100) : 0;
+          return `<div><div style="display:flex;justify-content:space-between;font-weight:800;font-size:15px"><span>${w.name}</span><span>${got} / ${w.words.length}</span></div>
+            <div class="km-bar" style="height:14px;margin-top:4px"><div style="width:${pct}%;background:${w.bg === '#fff3a8' ? '#e0b400' : '#2bb673'}"></div></div></div>`; }).join('')}
+      </div>
+      <div class="km-card" style="display:flex;flex-direction:column;gap:10px">
+        <div class="km-display" style="font-size:20px">Words to practice</div>
+        ${missed.length ? missed.slice(0, 12).map(d => `<div style="display:flex;justify-content:space-between;gap:10px;font-weight:800;font-size:17px"><span>${esc(d.w)}</span><span style="color:#1d4ed8">${esc(d.mZh)}</span></div>`).join('')
+          : '<div class="km-muted">Nothing to practice right now. Great!</div>'}
+        ${missed.length >= 4 ? '<button type="button" class="km-btn sun" data-act="quiz-missed">Practice these</button>' : ''}
+      </div>
+    </div>`;
+  }
+
   function renderKids(){
     const v = K.view;
-    kidsRoot.innerHTML = v === 'card' ? card() : v === 'done' ? worldDone() : v === 'quiz' ? quiz() : v === 'reward' ? reward() : home();
+    kidsRoot.innerHTML = v === 'card' ? card() : v === 'done' ? worldDone() : v === 'quiz' ? quiz() : v === 'reward' ? reward() : v === 'progress' ? progressView() : home();
     window.scrollTo(0, 0);
   }
 
@@ -4128,7 +4252,7 @@ if('serviceWorker' in navigator){
     if(t.dataset.pick){
       const q = K.quiz.qs[K.quiz.i]; if(q.picked != null) return;
       q.picked = t.dataset.pick;
-      if(q.picked === q.d.w){ K.quiz.score++; K.quiz.earned++; P.stars++; }
+      if(q.picked === q.d.w){ K.quiz.score++; K.quiz.earned++; P.stars++; dropMissed(q.d.w); } else { addMissed(q.d.w); }
       touchStreak(); save(); renderKids(); return;
     }
     if(act === 'home'){ K.view = 'home'; renderKids(); }
@@ -4136,11 +4260,16 @@ if('serviceWorker' in navigator){
     else if(act === 'say'){ sayWord(K.queue[K.idx].w); }
     else if(act === 'know' || act === 'later'){
       const d = K.queue[K.idx];
-      if(act === 'know' && !known.has(d.w)){ known.add(d.w); P.stars++; P.todayCount++; }
+      if(act === 'know'){
+        dropMissed(d.w);
+        if(!known.has(d.w)){ known.add(d.w); P.stars++; P.todayCount++; P.history[today()] = (P.history[today()] || 0) + 1; }
+      } else { addMissed(d.w); }
       touchStreak(); save();
       K.idx++; K.view = K.idx < K.queue.length ? 'card' : 'done'; renderKids();
     }
     else if(act === 'quiz'){ startQuiz(null); }
+    else if(act === 'progress'){ K.view = 'progress'; renderKids(); }
+    else if(act === 'quiz-missed'){ startQuiz(P.missed.map(w => POOL.find(d => d.w === w)).filter(Boolean)); }
     else if(act === 'quiz-world'){ startQuiz(K.queue); }
     else if(act === 'next'){ K.quiz.i++; K.view = K.quiz.i < K.quiz.qs.length ? 'quiz' : 'reward'; renderKids(); }
   });
