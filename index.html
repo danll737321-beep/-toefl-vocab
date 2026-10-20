@@ -4115,7 +4115,7 @@ if('serviceWorker' in navigator){
       ${parts.length > 1 ? `<div class="km-parts-eq" aria-hidden="true">${parts.map(x => `<span class="chip ${x.cls}">${esc(x.bit.replace(/^-|-$/g, ''))}</span>`).join('<span>+</span>')}</div>` : ''}
       ${parts.map(x => `<div class="km-part ${x.cls}">
         <span class="tag">${x.tag}</span>
-        <span class="bit">${esc(x.bit)} <span style="font-family:Nunito,sans-serif;font-size:16px;font-weight:700">= ${esc(x.m)}</span></span>
+        <span class="bit">${esc(x.bit)} <span style="font-family:Nunito,sans-serif;font-size:16px;font-weight:700">= ${esc(String(x.m || '').replace(/\s*\([^)]*\)/g, '').replace(/\s+,/g, ',').trim())}</span></span>
         ${(x.ex || []).length ? `<span class="ex">Also in: ${x.ex.map(esc).join(', ')}</span>` : ''}
       </div>`).join('')}
     </div>`;
