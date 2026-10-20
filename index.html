@@ -579,6 +579,15 @@
   .km-def .zh { font-size:22px; font-weight:800; color:#1d4ed8; margin-top:6px; }
   .km-sent { font-size:17px; font-weight:600; line-height:1.55; }
   .km-sent mark { background:var(--sun); color:var(--ink); padding:0 4px; border-radius:6px; }
+  .km-parts-eq { display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-family:'Baloo 2',sans-serif; font-weight:800; font-size:22px; }
+  .km-parts-eq .chip { border:2px solid var(--ink); border-radius:12px; padding:2px 10px; }
+  .km-part { border:2px solid var(--ink); border-radius:16px; padding:10px 12px; display:flex; flex-direction:column; gap:4px; }
+  .km-part .tag { font-size:12px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; }
+  .km-part .bit { font-family:'Baloo 2',sans-serif; font-size:21px; font-weight:800; line-height:1.1; }
+  .km-part .ex { font-size:15px; font-weight:700; }
+  .km-part.pre, .km-parts-eq .pre { background:#dbeafe; }
+  .km-part.root, .km-parts-eq .root { background:#fff1c2; }
+  .km-part.suf, .km-parts-eq .suf { background:#d4f5e2; }
   .km-q { font-family:'Baloo 2',sans-serif; font-size:22px; font-weight:700; line-height:1.35; }
   .km-blank { display:inline-block; min-width:100px; border-bottom:4px solid var(--ink); text-align:center; color:#1d4ed8; }
   .km-opt { justify-content:flex-start; text-align:left; }
@@ -4094,6 +4103,24 @@ if('serviceWorker' in navigator){
     </div>`;
   }
 
+  function wordParts(d){
+    const has = v => v && v !== '—' && v !== '-';
+    const parts = [];
+    if(has(d.pre)) parts.push({ cls: 'pre', tag: 'Prefix · 字首', bit: d.pre, m: d.preM, ex: d.preEx });
+    if(has(d.root)) parts.push({ cls: 'root', tag: 'Root · 字根', bit: d.root, m: d.rootM, ex: d.rootEx });
+    if(has(d.suf)) parts.push({ cls: 'suf', tag: 'Suffix · 字尾', bit: d.suf, m: d.sufM, ex: d.sufEx });
+    if(!parts.length) return '';
+    return `<div style="border-top:2px dashed #c7d0e0;padding-top:14px;display:flex;flex-direction:column;gap:10px">
+      <div class="km-display" style="font-size:19px">Word parts · 字的組成</div>
+      ${parts.length > 1 ? `<div class="km-parts-eq" aria-hidden="true">${parts.map(x => `<span class="chip ${x.cls}">${esc(x.bit.replace(/^-|-$/g, ''))}</span>`).join('<span>+</span>')}</div>` : ''}
+      ${parts.map(x => `<div class="km-part ${x.cls}">
+        <span class="tag">${x.tag}</span>
+        <span class="bit">${esc(x.bit)} <span style="font-family:Nunito,sans-serif;font-size:16px;font-weight:700">= ${esc(x.m)}</span></span>
+        ${(x.ex || []).length ? `<span class="ex">Also in: ${x.ex.map(esc).join(', ')}</span>` : ''}
+      </div>`).join('')}
+    </div>`;
+  }
+
   function card(){
     const d = K.queue[K.idx]; const w = K.world;
     const pct = Math.round(K.idx / K.queue.length * 100);
@@ -4110,6 +4137,7 @@ if('serviceWorker' in navigator){
         </div>
         <div class="km-def"><b>${esc(d.m)}</b><div class="zh">${esc(d.mZh)}</div></div>
         <div class="km-sent">${markedSentence(d)}</div>
+        ${wordParts(d)}
       </div>
       <div class="km-grid2">
         <button type="button" class="km-btn" data-act="later">Still learning</button>
