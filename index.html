@@ -3740,7 +3740,7 @@ if('serviceWorker' in navigator){
     check: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10213f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>',
     trophy: '<svg width="200" height="170" viewBox="0 0 220 190" role="img" aria-label="Trophy"><path d="M30 40l6 12 13 2-9 9 2 13-12-6-12 6 2-13-9-9 13-2z" fill="#ffc83d" stroke="#1b2a4a" stroke-width="2.5" stroke-linejoin="round"/><path d="M190 40l6 12 13 2-9 9 2 13-12-6-12 6 2-13-9-9 13-2z" fill="#ffc83d" stroke="#1b2a4a" stroke-width="2.5" stroke-linejoin="round"/><path d="M110 4l7 14 15 2-11 11 3 15-14-7-14 7 3-15-11-11 15-2z" fill="#ffc83d" stroke="#1b2a4a" stroke-width="2.5" stroke-linejoin="round"/><path d="M72 60h76v28c0 24-17 42-38 42s-38-18-38-42z" fill="#ffc83d" stroke="#1b2a4a" stroke-width="3.5" stroke-linejoin="round"/><path d="M72 70H54c0 20 10 30 24 32M148 70h18c0 20-10 30-24 32" fill="none" stroke="#1b2a4a" stroke-width="3.5" stroke-linecap="round"/><path d="M100 130h20v20h-20z" fill="#ffc83d" stroke="#1b2a4a" stroke-width="3.5"/><rect x="78" y="150" width="64" height="20" rx="6" fill="#ff8a3d" stroke="#1b2a4a" stroke-width="3.5"/></svg>'
   };
-  const face = (color, size) => `<svg width="${size}" height="${size}" viewBox="0 0 54 54" aria-hidden="true"><circle cx="27" cy="29" r="20" fill="${color}" stroke="#1b2a4a" stroke-width="3"/><circle cx="12" cy="13" r="7" fill="${color}" stroke="#1b2a4a" stroke-width="3"/><circle cx="42" cy="13" r="7" fill="${color}" stroke="#1b2a4a" stroke-width="3"/><circle cx="20" cy="27" r="2.6" fill="#1b2a4a"/><circle cx="34" cy="27" r="2.6" fill="#1b2a4a"/><path d="M21 35c3.5 3 8.5 3 12 0" fill="none" stroke="#1b2a4a" stroke-width="3" stroke-linecap="round"/></svg>`;
+  const face = (color, size, name) => { const ch = esc((String(name || '').trim()[0] || '').toUpperCase()); return `<svg width="${size}" height="${size}" viewBox="0 0 54 54" aria-hidden="true"><circle cx="27" cy="27" r="23" fill="${color}" stroke="#1b2a4a" stroke-width="3"/><text x="27" y="28" text-anchor="middle" dominant-baseline="central" font-family="'Baloo 2', system-ui, sans-serif" font-weight="800" font-size="26" fill="#1b2a4a">${ch}</text></svg>`; };
   const keypad = () => '<div class="km-keypad">' +
     ['1','2','3','4','5','6','7','8','9'].map(d => `<button type="button" data-k="${d}" aria-label="${d}">${d}</button>`).join('') +
     '<button type="button" class="c" data-k="C" aria-label="Clear">C</button><button type="button" data-k="0" aria-label="0">0</button><button type="button" class="d" data-k="<" aria-label="Delete">&lt;</button></div>';
@@ -3792,7 +3792,7 @@ if('serviceWorker' in navigator){
       h = `<div class="km">
         <div class="km-row"><button type="button" class="km-icon-btn" data-go="welcome" aria-label="Back">${ICON.back}</button><h2>Tap your picture</h2></div>
         <div class="km-avatars">
-          ${kids.map(k => `<button type="button" class="km-avatar${k.id === A.kid ? ' sel' : ''}" data-kid="${esc(k.id)}" aria-label="${esc(k.name)}">${face(esc(k.color), 52)}<span>${esc(k.name)}</span></button>`).join('')}
+          ${kids.map(k => `<button type="button" class="km-avatar${k.id === A.kid ? ' sel' : ''}" data-kid="${esc(k.id)}" aria-label="${esc(k.name)}">${face(esc(k.color), 52, k.name)}<span>${esc(k.name)}</span></button>`).join('')}
           <button type="button" class="km-avatar" data-go="newkid" aria-label="Add me" style="background:#fff">${ICON.plus}<span>Add me</span></button>
         </div>
         ${sel ? `<div class="km-card" style="display:flex;flex-direction:column;gap:14px;align-items:stretch" id="kmPinCard">
@@ -3809,14 +3809,14 @@ if('serviceWorker' in navigator){
       h = `<div class="km">
         <div class="km-row"><button type="button" class="km-icon-btn" data-go="kids" aria-label="Back">${ICON.back}</button><h2>${step2 ? 'Make a secret number' : 'Make your picture'}</h2></div>
         ${step2 ? `<div class="km-card" style="display:flex;flex-direction:column;gap:14px">
-            <div style="display:flex;justify-content:center">${face(A.newColor, 72)}</div>
+            <div style="display:flex;justify-content:center">${face(A.newColor, 72, A.newName)}</div>
             <div class="km-display" style="font-size:20px;text-align:center">Pick 4 numbers you can remember</div>
             ${dots(A.pin.length)}
             ${keypad()}
             <div class="km-msg ${A.msgCls}" role="status">${esc(A.msg)}</div>
           </div>`
         : `<div class="km-card" style="display:flex;flex-direction:column;gap:16px">
-            <div style="display:flex;justify-content:center">${face(A.newColor, 84)}</div>
+            <div style="display:flex;justify-content:center">${face(A.newColor, 84, A.newName)}</div>
             <div><label class="km-label" for="kmNewName">Your first name</label><input id="kmNewName" class="km-input" maxlength="12" autocomplete="off" value="${esc(A.newName)}"></div>
             <div><span class="km-label">Your color</span><div class="km-swatches">${COLORS.map(c => `<button type="button" class="km-swatch${c === A.newColor ? ' sel' : ''}" data-color="${c}" style="background:${c}" aria-label="Color ${c}"></button>`).join('')}</div></div>
             <div class="km-msg ${A.msgCls}" role="status">${esc(A.msg)}</div>
@@ -3844,7 +3844,10 @@ if('serviceWorker' in navigator){
     }
     auth.innerHTML = h;
     const nameIn = document.getElementById('kmNewName');
-    if(nameIn) nameIn.addEventListener('input', e => { A.newName = e.target.value; });
+    if(nameIn) nameIn.addEventListener('input', e => {
+      A.newName = e.target.value;
+      const t = auth.querySelector('.km-card svg text'); if(t) t.textContent = (A.newName.trim()[0] || '').toUpperCase();
+    });
     const form = document.getElementById('kmAdultForm');
     if(form) form.addEventListener('submit', onAdultSubmit);
   }
@@ -3981,7 +3984,7 @@ if('serviceWorker' in navigator){
     return `<div class="km">
       <div class="km-row" style="justify-content:space-between">
         <div class="km-row">
-          <div style="width:54px;height:54px;border-radius:27px;background:#fff;border:3px solid #1b2a4a;display:flex;align-items:center;justify-content:center">${face(esc(TV.current.color || COLORS[0]), 44)}</div>
+          <div style="width:54px;height:54px;border-radius:27px;background:#fff;border:3px solid #1b2a4a;display:flex;align-items:center;justify-content:center">${face(esc(TV.current.color || COLORS[0]), 44, TV.current.name)}</div>
           <div><div class="km-muted" style="font-size:14px">Hi, ${esc(TV.current.name)}!</div><div class="km-display" style="font-size:24px">Ready to learn?</div></div>
         </div>
         <div class="km-pill">${ICON.flame}<span>${P.streak || 0} ${P.streak === 1 ? 'day' : 'days'}</span></div>
