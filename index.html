@@ -4382,7 +4382,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
     const P = readJSON('p:' + p.id + ':kids-progress', {});
     const t = dayStr(new Date()), y = dayStr(daysAgo(1)), h = P.history || {};
     let week = 0; for(let i = 0; i < 7; i++) week += h[dayStr(daysAgo(i))] || 0;
-    return { known: (P.known || []).filter(w => KIDS_SET.has(w)).length, levels: levelCounts(P.known), stars: P.stars || 0,
+    return { level: P.level || p.level || bandOf(p.grade), known: (P.known || []).filter(w => KIDS_SET.has(w)).length, levels: levelCounts(P.known), stars: P.stars || 0,
              streak: (P.lastDay === t || P.lastDay === y) ? (P.streak || 0) : 0,
              today: P.todayDay === t ? (P.todayCount || 0) : 0, week, last: P.lastDay || '', practice: (P.missed || []).length };
   }
@@ -4480,7 +4480,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
         : `<div class="km-card" style="display:flex;flex-direction:column;gap:16px">
             <div style="display:flex;justify-content:center">${face(A.newColor, 84, A.newName)}</div>
             <div><label class="km-label" for="kmNewName">Your first name</label><input id="kmNewName" class="km-input" maxlength="12" autocomplete="off" value="${esc(A.newName)}"></div>
-            <div><span class="km-label">Your grade · 年級</span><div class="km-grades">${[1,2,3,4,5,6,7,8,9,10,11,12].map(g => `<button type="button" class="km-grade${g === A.newGrade ? ' sel' : ''}" data-grade="${g}" aria-label="Grade ${g}">${g}</button>`).join('')}</div></div>
+            <div><span class="km-label">Your level · 程度</span><div class="km-grades">${[1,2,3,4,5,6].map(g => `<button type="button" class="km-grade${g === A.newGrade ? ' sel' : ''}" data-grade="${g}" aria-label="Level ${g}">${g}</button>`).join('')}</div></div>
             <div><span class="km-label">Your color</span><div class="km-swatches">${COLORS.map(c => `<button type="button" class="km-swatch${c === A.newColor ? ' sel' : ''}" data-color="${c}" style="background:${c}" aria-label="Color ${c}"></button>`).join('')}</div></div>
             <div class="km-msg ${A.msgCls}" role="status">${esc(A.msg)}</div>
             <button type="button" class="km-btn sun" data-act="newkid-next">Next</button>
@@ -4530,7 +4530,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
         <div class="km-display" style="font-size:20px;margin-top:4px">Intermediate (${kids.length})</div>
         ${kids.length ? kids.map(p => { const k = kidSummary(p); return `<div class="km-card" style="display:flex;flex-direction:column;gap:12px;padding:16px">
             <div class="km-row" style="justify-content:space-between">
-              <div class="km-row">${face(esc(p.color || COLORS[0]), 44, p.name)}<div><div class="km-display" style="font-size:20px">${esc(p.name)}</div><div class="km-muted" style="font-size:13px">Grade ${p.grade || '?'} · Last learned: ${prettyDay(k.last)}</div></div></div>
+              <div class="km-row">${face(esc(p.color || COLORS[0]), 44, p.name)}<div><div class="km-display" style="font-size:20px">${esc(p.name)}</div><div class="km-muted" style="font-size:13px">Last learned: ${prettyDay(k.last)}</div></div></div>
               <span style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end"><button type="button" class="km-link" data-reset="${esc(p.id)}" style="font-size:14px">Reset PIN</button>${A.delId === p.id
                 ? `<span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span style="font-size:13px;font-weight:800;color:#b4231b">Remove ${esc(p.name)}?</span><button type="button" class="km-link" data-delyes="${esc(p.id)}" style="font-size:14px;color:#b4231b">Yes, remove</button><button type="button" class="km-link" data-delno="1" style="font-size:14px">Cancel</button></span>`
                 : `<button type="button" class="km-link" data-del="${esc(p.id)}" style="font-size:14px;color:#b4231b">Remove</button>`}</span>
@@ -4539,7 +4539,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
               ${stat(k.known, 'words known')}${stat(k.today + '/10', 'today')}${stat(k.week, 'this week')}${stat(k.streak, 'day streak')}${stat(k.practice, 'to practice')}
             </div>
             <div style="display:flex;flex-direction:column;gap:6px">${k.levels.map(L => `<div style="display:grid;grid-template-columns:64px 1fr 64px;gap:8px;align-items:center;font-size:13px;font-weight:800"><span>${L.name}</span><div class="km-bar" style="height:10px"><div style="width:${L.total ? Math.round(L.got / L.total * 100) : 0}%;background:#2bb673"></div></div><span style="text-align:right">${L.got} / ${L.total}</span></div>`).join('')}</div>
-            <button type="button" class="km-link" data-setgrade="${esc(p.id)}" style="font-size:14px;align-self:flex-start">Change grade (now ${p.grade || '?'})</button>
+            <button type="button" class="km-link" data-setgrade="${esc(p.id)}" style="font-size:14px;align-self:flex-start">Change level (now ${k.level})</button>
             </div>`; }).join('') : '<div class="km-card km-muted">No intermediate learners yet.</div>'}
         <div class="km-display" style="font-size:20px;margin-top:8px">Advanced (${adults.length})</div>
         ${adults.length ? adults.map(p => { const a = adultSummary(p); return `<div class="km-card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;flex-wrap:wrap">
@@ -4595,7 +4595,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
         setView('teacher'); A.msg = rp ? 'PIN for ' + rp.name + ' was changed.' : ''; renderAuth(); return;
       }
       if(A.view === 'newkid'){
-        const p = createProfile({ id: newId(), type: 'kid', name: A.newName.trim(), color: A.newColor, grade: A.newGrade, pin: TV.hash(A.pin), created: Date.now() });
+        const p = createProfile({ id: newId(), type: 'kid', name: A.newName.trim(), color: A.newColor, level: A.newGrade, pin: TV.hash(A.pin), created: Date.now() });
         TV.login(p.id); return;
       }
     }
@@ -4647,12 +4647,15 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
       if(t.dataset.color){ A.newColor = t.dataset.color; renderAuth(); return; }
       if(t.dataset.grade){ A.newGrade = +t.dataset.grade; A.msg = ''; renderAuth(); return; }
       if(t.dataset.setgrade){ const all = TV.profiles(), rp = all.find(x => x.id === t.dataset.setgrade);
-        if(rp){ rp.grade = rp.grade >= 12 ? 1 : (rp.grade || 0) + 1; TV.saveProfiles(all); A.msg = rp.name + ' is now in grade ' + rp.grade + '.'; }
+        if(rp){ const key = 'p:' + rp.id + ':kids-progress', P = readJSON(key, {});
+          const cur = P.level || rp.level || bandOf(rp.grade); const nx = cur >= LEVELS.length ? 1 : cur + 1;
+          rp.level = nx; P.level = nx; TV.saveProfiles(all); try{ localStorage.setItem(key, JSON.stringify(P)); }catch(e){}
+          A.msg = rp.name + ' is now on Level ' + nx + '.'; }
         renderAuth(); return; }
       if(t.dataset.act === 'newkid-next'){
         const n = A.newName.trim();
         if(!n){ A.msg = 'Type your first name.'; A.msgCls = 'err'; renderAuth(); return; }
-        if(!A.newGrade){ A.msg = 'Tap your grade.'; A.msgCls = 'err'; renderAuth(); return; }
+        if(!A.newGrade){ A.msg = 'Tap your level.'; A.msgCls = 'err'; renderAuth(); return; }
         if(TV.profiles().some(p => p.type === 'kid' && p.name.toLowerCase() === n.toLowerCase())){ A.msg = 'That name is already here. Add a letter, like ' + n + ' B.'; A.msgCls = 'err'; renderAuth(); return; }
         A.newStep = 2; A.pin = ''; A.msg = ''; A.msgCls = ''; renderAuth(); return;
       }
@@ -4697,7 +4700,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
 
   const KEY = TV.pk('kids-progress');
   const today = () => { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); };
-  let P = { known: [], stars: 0, streak: 0, lastDay: '', todayDay: '', todayCount: 0, history: {}, missed: [], level: bandOf(TV.current.grade || 1) };
+  let P = { known: [], stars: 0, streak: 0, lastDay: '', todayDay: '', todayCount: 0, history: {}, missed: [], level: TV.current.level || bandOf(TV.current.grade || 1) };
   try{ P = Object.assign(P, JSON.parse(localStorage.getItem(KEY)) || {}); }catch(e){}
   P.history = P.history || {}; P.missed = P.missed || [];
   P.known.forEach(w => { if(BYW.has(w)) known.add(w); });
