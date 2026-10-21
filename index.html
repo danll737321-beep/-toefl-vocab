@@ -4531,7 +4531,9 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
         ${kids.length ? kids.map(p => { const k = kidSummary(p); return `<div class="km-card" style="display:flex;flex-direction:column;gap:12px;padding:16px">
             <div class="km-row" style="justify-content:space-between">
               <div class="km-row">${face(esc(p.color || COLORS[0]), 44, p.name)}<div><div class="km-display" style="font-size:20px">${esc(p.name)}</div><div class="km-muted" style="font-size:13px">Grade ${p.grade || '?'} · Last learned: ${prettyDay(k.last)}</div></div></div>
-              <button type="button" class="km-link" data-reset="${esc(p.id)}" style="font-size:14px">Reset PIN</button>
+              <span style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end"><button type="button" class="km-link" data-reset="${esc(p.id)}" style="font-size:14px">Reset PIN</button>${A.delId === p.id
+                ? `<span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span style="font-size:13px;font-weight:800;color:#b4231b">Remove ${esc(p.name)}?</span><button type="button" class="km-link" data-delyes="${esc(p.id)}" style="font-size:14px;color:#b4231b">Yes, remove</button><button type="button" class="km-link" data-delno="1" style="font-size:14px">Cancel</button></span>`
+                : `<button type="button" class="km-link" data-del="${esc(p.id)}" style="font-size:14px;color:#b4231b">Remove</button>`}</span>
             </div>
             <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;text-align:center">
               ${stat(k.known, 'words known')}${stat(k.today + '/10', 'today')}${stat(k.week, 'this week')}${stat(k.streak, 'day streak')}${stat(k.practice, 'to practice')}
@@ -4543,7 +4545,9 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
         ${adults.length ? adults.map(p => { const a = adultSummary(p); return `<div class="km-card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;flex-wrap:wrap">
             <div class="km-display" style="font-size:20px">${esc(p.name)}</div>
             <div style="display:flex;gap:18px;text-align:center">${stat(a.known, 'words known')}${stat(a.review, 'in review')}</div>
-            <button type="button" class="km-link" data-reset="${esc(p.id)}" style="font-size:14px">Reset PIN</button></div>`; }).join('') : '<div class="km-card km-muted">No advanced learners yet.</div>'}
+            <span style="display:flex;gap:4px;flex-wrap:wrap"><button type="button" class="km-link" data-reset="${esc(p.id)}" style="font-size:14px">Reset PIN</button>${A.delId === p.id
+                ? `<span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span style="font-size:13px;font-weight:800;color:#b4231b">Remove ${esc(p.name)}?</span><button type="button" class="km-link" data-delyes="${esc(p.id)}" style="font-size:14px;color:#b4231b">Yes, remove</button><button type="button" class="km-link" data-delno="1" style="font-size:14px">Cancel</button></span>`
+                : `<button type="button" class="km-link" data-del="${esc(p.id)}" style="font-size:14px;color:#b4231b">Remove</button>`}</span></div>`; }).join('') : '<div class="km-card km-muted">No advanced learners yet.</div>'}
         <div class="km-muted" style="font-size:13px">Data stays on this device. Leaving this page locks it again.</div>
       </div>`;
     }
@@ -4557,7 +4561,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
     if(form) form.addEventListener('submit', onAdultSubmit);
   }
 
-  function setView(view){ A.view = view; A.pin = ''; A.msg = ''; A.msgCls = ''; if(view === 'newkid'){ A.newStep = 1; } renderAuth(); }
+  function setView(view){ A.view = view; A.delId = null; A.pin = ''; A.msg = ''; A.msgCls = ''; if(view === 'newkid'){ A.newStep = 1; } renderAuth(); }
 
   function onKey(k){
     if(k === 'C') A.pin = '';
@@ -4629,6 +4633,15 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
         setView(t.dataset.go); return;
       }
       if(t.dataset.reset){ A.resetId = t.dataset.reset; setView('reset'); return; }
+      if(t.dataset.del){ A.delId = t.dataset.del; A.msg = ''; renderAuth(); return; }
+      if(t.dataset.delno){ A.delId = null; renderAuth(); return; }
+      if(t.dataset.delyes){
+        const id = t.dataset.delyes, all = TV.profiles(), rp = all.find(x => x.id === id);
+        TV.saveProfiles(all.filter(x => x.id !== id));
+        try{ Object.keys(localStorage).filter(k => k.indexOf('p:' + id + ':') === 0).forEach(k => localStorage.removeItem(k)); }catch(e){}
+        try{ if(sessionStorage.getItem('toefl-current-profile') === id) sessionStorage.removeItem('toefl-current-profile'); }catch(e){}
+        A.delId = null; A.msg = rp ? rp.name + ' was removed.' : ''; renderAuth(); return;
+      }
       if(t.dataset.kid){ A.kid = t.dataset.kid; A.pin = ''; A.msg = ''; renderAuth(); return; }
       if(t.dataset.k){ onKey(t.dataset.k); return; }
       if(t.dataset.color){ A.newColor = t.dataset.color; renderAuth(); return; }
