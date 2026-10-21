@@ -1,12 +1,13 @@
 // Simple cache-first service worker for offline support.
 // Bump CACHE_NAME whenever index.html changes so the new version is fetched.
-const CACHE_NAME = 'toefl-vocab-v1';
+const CACHE_NAME = 'vocab-up-v2';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './apple-touch-icon.png'
 ];
 
 self.addEventListener('install', event => {
