@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Vocab Up">
+<meta name="format-detection" content="telephone=no">
 <title>Vocab Up</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2f6f5e">
 <link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
   :root{
     --ink:#1b2430;
@@ -510,6 +515,32 @@
     padding:6px 12px;border:1px solid var(--teal);border-radius:6px;background:var(--teal-soft);
     color:var(--teal);font-family:var(--serif);font-size:13px;font-weight:600;cursor:pointer;
   }
+
+  /* ---------- iPhone / small screens ---------- */
+  body{padding-left:max(16px, env(safe-area-inset-left)); padding-right:max(16px, env(safe-area-inset-right));
+       padding-bottom:calc(60px + env(safe-area-inset-bottom));}
+  button, a, select, input, label, summary{touch-action:manipulation;}
+  .settings{margin-bottom:12px; border:1px solid var(--line); border-radius:8px; background:var(--card); padding:0 12px;}
+  .settings summary{cursor:pointer; padding:12px 0; font-weight:600; color:var(--teal); min-height:44px; list-style:none;}
+  .settings summary::-webkit-details-marker{display:none;}
+  .settings summary span{color:var(--muted); font-weight:400; font-size:13px;}
+  .settings[open]{padding-bottom:4px;}
+  @media (max-width: 600px){
+    body{padding-top:calc(12px + env(safe-area-inset-top));}
+    input, select, textarea{font-size:16px !important;}
+    header{margin-bottom:12px;}
+    header p{display:none;}
+    .tab-bar{position:sticky; top:0; z-index:30; background:var(--paper); margin:0 -4px 14px; padding:8px 4px;
+             padding-top:max(8px, env(safe-area-inset-top)); display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px;}
+    .tab-btn{padding:6px 2px; min-height:58px; font-size:14px; line-height:1.2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;}
+    .tab-btn .ti{font-size:17px;} .tab-btn .te{font-size:10.5px; font-weight:500; opacity:.85;}
+    .km-adult-bar button{min-height:40px; padding:6px 14px;}
+    .check-label{min-height:44px;}
+    .check-label input[type="checkbox"]{width:26px; height:26px; min-width:26px; min-height:26px; max-width:26px; max-height:26px;}
+    .speak-btn, .sentence-speak-btn{min-width:44px; min-height:44px;}
+    .voice-test-btn{min-height:44px;}
+    #voiceSelect{min-height:44px;}
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
@@ -523,7 +554,7 @@
 
   .km { --ink:#1b2a4a; --muted:#4a5a78; --sun:#ffc83d; --leaf:#2bb673; --sky:#7dd3fc; --peach:#ffe7b8;
         font-family:'Nunito', system-ui, sans-serif; color:var(--ink); max-width:460px; margin:0 auto;
-        padding:24px 18px 40px; box-sizing:border-box; min-height:100vh; display:flex; flex-direction:column; gap:16px; }
+        padding:calc(24px + env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left)); box-sizing:border-box; min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; gap:16px; }
   .km * { box-sizing:border-box; }
   .km h1, .km h2, .km .km-display { font-family:'Baloo 2', system-ui, sans-serif; font-weight:800; margin:0; line-height:1.1; }
   .km h1 { font-size:34px; } .km h2 { font-size:26px; }
@@ -570,8 +601,8 @@
   .km-grade { min-height:52px; border-radius:16px; border:3px solid var(--ink); background:#fff; font-family:'Baloo 2',sans-serif;
               font-size:24px; font-weight:800; color:var(--ink); cursor:pointer; }
   .km-grade.sel { background:var(--sun); box-shadow:0 0 0 4px #1d4ed8; }
-  .km-levels { display:flex; gap:8px; overflow-x:auto; padding:2px 2px 8px; margin:0 -2px; }
-  .km-level { flex:0 0 auto; border:3px solid var(--ink); border-radius:18px; background:#fff; padding:8px 14px; min-height:48px;
+  .km-levels { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+  .km-level { min-width:0; border:3px solid var(--ink); border-radius:18px; background:#fff; padding:8px 14px; min-height:48px;
               font-family:'Baloo 2',sans-serif; font-weight:800; font-size:16px; color:var(--ink); cursor:pointer; text-align:left; line-height:1.1; }
   .km-level small { display:block; font-family:'Nunito',sans-serif; font-size:12px; color:var(--muted); }
   .km-level.sel { background:var(--sun); box-shadow:0 4px 0 var(--ink); }
@@ -649,13 +680,15 @@ document.documentElement.classList.add(TV.current ? (TV.current.type === 'kid' ?
   </header>
 
   <div class="tab-bar">
-    <button id="tabVocabBtn" class="tab-btn active" type="button">📖 單字 Vocabulary</button>
-    <button id="tabGrammarBtn" class="tab-btn" type="button">✍️ 文法 Grammar</button>
-    <button id="tabQuizBtn" class="tab-btn" type="button">📝 測驗 Quiz</button>
-    <button id="tabReviewBtn" class="tab-btn" type="button">🔁 複習 Review</button>
+    <button id="tabVocabBtn" class="tab-btn active" type="button"><span class="ti">📖</span> <span class="tz">單字</span> <span class="te">Vocabulary</span></button>
+    <button id="tabGrammarBtn" class="tab-btn" type="button"><span class="ti">✍️</span> <span class="tz">文法</span> <span class="te">Grammar</span></button>
+    <button id="tabQuizBtn" class="tab-btn" type="button"><span class="ti">📝</span> <span class="tz">測驗</span> <span class="te">Quiz</span></button>
+    <button id="tabReviewBtn" class="tab-btn" type="button"><span class="ti">🔁</span> <span class="tz">複習</span> <span class="te">Review</span></button>
   </div>
 
   <div id="vocabView">
+    <details class="settings">
+    <summary>⚙️ 設定 Settings <span>· Student ID · Voice</span></summary>
     <div class="sync-bar">
       <span>Student ID:</span>
       <input id="studentId" type="text" placeholder="e.g. your name or student no.">
@@ -667,6 +700,7 @@ document.documentElement.classList.add(TV.current ? (TV.current.type === 'kid' ?
       <select id="voiceSelect"></select>
       <button id="voiceTestBtn" type="button" class="voice-test-btn">▶ Test</button>
     </div>
+    </details>
 
     <div class="controls">
       <input id="search" type="text" placeholder="Search word or meaning...">
