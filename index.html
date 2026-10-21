@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TOEFL Vocabulary Breakdown</title>
+<title>Vocab Up</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2f6f5e">
 <link rel="icon" href="icon-192.png">
@@ -644,7 +644,7 @@ document.documentElement.classList.add(TV.current ? (TV.current.type === 'kid' ?
 <div id="kidsApp"></div>
 <div class="wrap">
   <header>
-    <h1>TOEFL Vocabulary Breakdown</h1>
+    <h1>Vocab Up</h1>
     <p>Each word includes pronunciation (IPA + play button), a full-paragraph example in context, and a prefix / root / suffix breakdown with two additional example words for each morpheme.</p>
   </header>
 
@@ -4432,14 +4432,14 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
     if(v === 'welcome'){
       h = `<div class="km">
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;margin-top:28px">
-          <h1 style="margin-top:8px">TOEFL Vocab</h1>
+          <h1 style="margin-top:8px">Vocab Up</h1>
           <div class="km-muted" style="font-size:17px">Who is learning today? 今天誰要學習？</div>
         </div>
         <button type="button" class="km-btn sun km-choice" data-go="kids" style="margin-top:14px;text-align:center">
           <span><span class="km-display" style="font-size:30px;display:block">Kids</span><span style="font-family:Nunito,sans-serif;font-size:16px">兒童 · Grades 1–6</span></span>
         </button>
         <button type="button" class="km-btn km-choice" data-go="adult" style="text-align:center">
-          <span><span class="km-display" style="font-size:30px;display:block">Adult</span><span style="font-family:Nunito,sans-serif;font-size:16px">成人 · TOEFL prep</span></span>
+          <span><span class="km-display" style="font-size:30px;display:block">Adult</span><span style="font-family:Nunito,sans-serif;font-size:16px">成人 · Vocabulary, news & conversation</span></span>
         </button>
         <div style="margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:4px">
           <button type="button" class="km-link" data-go="tpin">Parents &amp; teachers · 家長／老師</button>
@@ -4488,7 +4488,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
       const create = A.adultMode === 'create';
       h = `<div class="km" style="background:#f6f8fc;max-width:none"><div style="max-width:420px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:20px">
         <button type="button" class="km-icon-btn" data-go="welcome" aria-label="Back" style="border-width:1.5px;border-color:#c7d0e0">${ICON.back}</button>
-        <div style="margin-top:16px"><div class="km-muted" style="font-size:14px;letter-spacing:.04em">ADULT · TOEFL PREP</div>
+        <div style="margin-top:16px"><div class="km-muted" style="font-size:14px;letter-spacing:.04em">ADULT · 成人</div>
           <h1 style="font-size:32px;margin-top:4px">${create ? 'Create your profile' : 'Welcome back'}</h1></div>
         <form id="kmAdultForm" style="display:flex;flex-direction:column;gap:16px" autocomplete="off">
           <div><label class="km-label" for="kmAdultName">Name</label><input id="kmAdultName" class="km-input" style="border-width:1.5px;border-color:#c7d0e0" maxlength="30" required></div>

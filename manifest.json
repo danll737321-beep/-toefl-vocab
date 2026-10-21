@@ -1,7 +1,7 @@
 {
-  "name": "TOEFL Vocabulary App",
-  "short_name": "TOEFL Vocab",
-  "description": "TOEFL vocabulary, grammar, quiz, and spaced-repetition review app",
+  "name": "Vocab Up",
+  "short_name": "Vocab Up",
+  "description": "Vocabulary, grammar, quiz, and spaced-repetition review app",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
