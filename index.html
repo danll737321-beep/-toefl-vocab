@@ -542,36 +542,12 @@
     #voiceSelect{min-height:44px;}
   }
 
-  /* ---------- Article Reader ---------- */
-  #readerInput{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:var(--serif);font-size:15px;line-height:1.5;resize:vertical;background:#fff;}
-  .rd-muted{color:var(--muted);font-size:13px;}
-  .rd-link{background:none;border:none;color:var(--teal);font-family:var(--serif);font-size:13px;padding:10px 0 0;cursor:pointer;text-align:left;min-height:40px;}
-  .rd-act{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-  .rd-score{display:flex;gap:16px;align-items:center;background:var(--card);border:2px solid;border-radius:12px;padding:16px;margin:16px 0;line-height:1.5;}
-  .rd-pct{font-size:40px;font-weight:700;font-family:var(--mono);min-width:110px;text-align:center;}
-  .rd-sec{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:14px;}
-  .rd-h{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-weight:700;margin-bottom:6px;}
-  .rd-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);}
-  .rd-wd{min-width:0;} .rd-n{color:var(--muted);font-size:12px;font-family:var(--mono);}
-  .rd-zh{font-size:14px;color:var(--accent);} .rd-zh span{color:var(--muted);}
-  .rd-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;font-family:var(--serif);font-size:13px;cursor:pointer;color:var(--ink);text-decoration:none;min-height:36px;display:inline-flex;align-items:center;}
-  .rd-ok{border-color:var(--teal);color:var(--teal);background:var(--teal-soft);}
-  .rd-art summary{cursor:pointer;font-weight:700;min-height:40px;display:flex;align-items:center;}
-  .rd-text{line-height:1.8;font-size:16px;}
-  .rd-w{border:none;background:none;padding:0 1px;font:inherit;cursor:pointer;border-radius:3px;color:inherit;}
-  .rd-learn{background:#fff3c4;border-bottom:2px solid #d4a017;} .rd-new{background:#fde2e2;border-bottom:2px solid #c0392b;}
-  .rd-legend{font-size:12px;margin:6px 0;} .rd-legend span{padding:0 4px;}
-  .rd-hist{display:grid;grid-template-columns:54px 1fr 60px;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:14px;}
-  .rd-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .rd-sheet{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#fff;border-top:2px solid var(--line);box-shadow:0 -6px 20px rgba(0,0,0,.12);padding:16px 16px calc(16px + env(safe-area-inset-bottom));}
-  .rd-sheet-in{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:4px;}
-  @media (max-width: 600px){
-    .tab-bar{grid-template-columns:repeat(5,minmax(0,1fr)) !important;}
-    .tab-btn{font-size:13px;} .tab-btn .te{font-size:9.5px;}
-    .rd-row{flex-wrap:wrap;} .rd-wd{flex:1 1 60%;} .rd-btn{min-height:44px;padding:8px 12px;}
-    #readerResult, #readerHistory{scroll-margin-top:96px;}
-    .rd-pct{font-size:32px;min-width:80px;}
-  }
+
+  /* ---------- Sentence translation ---------- */
+  .sentence-zh{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:16px;line-height:1.7;color:#34413b;}
+  .zh-speak-btn{flex-shrink:0;border:1px solid var(--teal);background:var(--card);color:var(--teal);border-radius:16px;padding:4px 10px;font-size:13px;cursor:pointer;font-family:var(--serif);min-height:32px;}
+  .zh-speak-btn:hover{background:var(--teal);color:#fff;}
+  @media (max-width:600px){ .zh-speak-btn{min-height:44px;padding:6px 12px;} }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
@@ -655,6 +631,10 @@
   .km ruby { ruby-position:over; margin:0 3px; }
   .km rt { font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; color:#4a5a78; letter-spacing:0; }
   .km-sent { font-size:17px; font-weight:600; line-height:1.55; }
+  .km-sent-tools { display:flex; gap:8px; flex-wrap:wrap; }
+  .km-chip-btn { display:inline-flex; align-items:center; gap:6px; border:2px solid var(--ink); border-radius:999px; background:#e0f2fe; padding:4px 12px 4px 6px; min-height:44px; font-family:'Nunito',sans-serif; font-weight:800; font-size:15px; color:var(--ink); cursor:pointer; }
+  .km-chip-btn svg { width:24px; height:24px; } .km-chip-btn.zh { background:#fde68a; }
+  .km-sent-zh { background:#fffbea; border-radius:14px; padding:10px 14px; font-size:17px; font-weight:700; line-height:1.6; color:#1b2a4a; }
   .km-sent mark { background:var(--sun); color:var(--ink); padding:0 4px; border-radius:6px; }
   .km-parts-eq { display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-family:'Baloo 2',sans-serif; font-weight:800; font-size:22px; }
   .km-parts-eq .chip { border:2px solid var(--ink); border-radius:12px; padding:2px 10px; }
@@ -715,7 +695,6 @@ document.documentElement.classList.add(TV.current ? (TV.current.type === 'kid' ?
     <button id="tabGrammarBtn" class="tab-btn" type="button"><span class="ti">✍️</span> <span class="tz">文法</span> <span class="te">Grammar</span></button>
     <button id="tabQuizBtn" class="tab-btn" type="button"><span class="ti">📝</span> <span class="tz">測驗</span> <span class="te">Quiz</span></button>
     <button id="tabReviewBtn" class="tab-btn" type="button"><span class="ti">🔁</span> <span class="tz">複習</span> <span class="te">Review</span></button>
-    <button id="tabReaderBtn" class="tab-btn" type="button"><span class="ti">📰</span> <span class="tz">閱讀</span> <span class="te">Reader</span></button>
   </div>
 
   <div id="vocabView">
@@ -805,20 +784,6 @@ document.documentElement.classList.add(TV.current ? (TV.current.type === 'kid' ?
     <div id="quizResult" style="display:none;"></div>
   </div>
 
-  <div id="readerView" style="display:none;">
-    <div class="quiz-panel">
-      <div style="font-weight:700;font-size:17px;margin-bottom:4px">📰 Article Reader · 文章閱讀檢測</div>
-      <div class="rd-muted" style="margin-bottom:10px">Paste an article you are reading (for example from axios.com). Vocab Up shows how many of its words you already know and which ones to learn. The text stays on this device.</div>
-      <label for="readerInput" class="rd-muted" style="display:block;margin-bottom:4px">Article text · 貼上文章</label>
-      <textarea id="readerInput" rows="8" placeholder="Paste the article text here…"></textarea>
-      <div class="rd-act" style="margin-top:10px"><button id="readerAnalyzeBtn" type="button" class="random-btn" style="flex:1">Check my words · 開始分析</button><button id="readerClearBtn" type="button" class="voice-test-btn">Clear</button></div>
-      <button id="readerCommon" type="button" class="rd-link"></button>
-    </div>
-    <div id="readerResult"></div>
-    <div id="readerHistory"></div>
-    <div id="readerSheet" class="rd-sheet" style="display:none"></div>
-  </div>
-
   <div id="reviewView" style="display:none;">
     <div id="reviewIntro" class="quiz-panel">
       <div class="quiz-setup-row">
@@ -851,6 +816,9 @@ document.documentElement.classList.add(TV.current ? (TV.current.type === 'kid' ?
   <footer>Original example sentences (not quoted from real sources) &middot; Pronunciation uses the browser's built-in speech synthesis &middot; List can be expanded further</footer>
 </div>
 
+<script id="sentZh">
+/*SENT_ZH_START*/const SENT_ZH = {"34tc3a":"我舉手回答問題。","1qgrnt4":"你對這個故事有什麼問題嗎？","108axa3":"朋友說話的時候，請注意聽。","1sq9agv":"你可以跟著我再說一次這個字嗎？","1m6ooq":"把開頭是 B 的圖片圈起來。","1bpn85r":"在主角的名字下面畫底線。","7134xa":"把每一種動物和牠的寶寶配對。","13ikrbj":"我們來把積木按照顏色分類。","1f2gleg":"你可以挑一本書帶回家。","rgy8kk":"午餐前把你的畫畫完。","1dqmdmr":"我們每天都用一首歌開始。","l2jpvy":"把數字從小到大排好順序。","14kopq1":"我們這組用杯子疊了一座塔。","1si338b":"請和同桌的同學分享彩色筆。","5z05sh":"我每天晚上練習拼字。","18824va":"交作業前先檢查一遍。","1y5kpoe":"答對的題目可以得到一顆星星。","tmiqo8":"犯錯沒關係，再試一次就好。","abk5oc":"狗是寵物的一個例子。","1kd2qus":"米亞為我們的海報想到一個好主意。","bqtc9m":"我們在春天學習植物。","59wmwo":"記得帶你的圖書館借書。","10t8uji":"你有注意到窗外的那隻鳥嗎？","2dky99":"猜猜看盒子裡有什麼！","1usioms":"讓我看看你是怎麼算出答案的。","yhhivk":"畫一張你最喜歡的食物。","126sqb6":"標出蜜蜂的頭、翅膀和腳。","1umnc5b":"把黑板上的句子抄下來。","cvso5q":"和你的夥伴一起讀這首詩。","5olyh9":"圖書館是一個安靜的地方。","a5vh68":"使用剪刀要小心。","ai0slc":"你準備好拼字考試了嗎？","1wjb315":"這兩片葉子的形狀不一樣。","1i9ssad":"我們的書包一模一樣耶！","jr97ig":"這對雙胞胎長得很像，但喜歡的遊戲不一樣。","wmpvj":"洗手很重要。","17qy7v7":"你可以說明你是怎麼解出來的嗎？","1tamfc":"描述一下今天的天氣。","e47d27":"我們一起合作解決了問題。","peez0w":"你能解開這個謎語嗎？","oy9ia6":"試著自己讀下一頁。","1rdzmor":"按照順序完成每個步驟。","1djhw7r":"和你的小組一起完成拼圖。","11jep0i":"指出和 cat 押韻的字。","19ydmg6":"用手指描出字母 A。","5kfpsz":"我用單字卡學新的單字。","7qi72l":"我在廚房的餐桌上寫功課。","1y9hep8":"我們的教室有一個閱讀角。","bq7cfx":"cat 這個字有三個字母。","na8bcq":"我們每天早上唱字母歌。","1slfct4":"dog 是一個很短的字。","jc0dxn":"句子的開頭要用大寫字母。","10xvtl0":"奶奶唸了一個勇敢小狐狸的故事給我聽。","1rjr59u":"書名在書的封面上。","npdgoc":"作者寫了這本書裡的文字。","14n1s0x":"插畫家畫了這些有趣的圖。","ok95rv":"看圖片可以幫助你閱讀。","15c3rkl":"主角是一隻害羞的小熊。","1cj55al":"這個故事的場景是一座下雪的森林。","1kpjp1m":"故事一開始，小狗走丟了。","1cv4pdx":"故事中間，牠在尋找回家的路。","z8xumb":"我喜歡這個快樂的結局。","33y9wj":"把這個故事重新說給你的夥伴聽。","b91r72":"cat 和 hat 押韻。","1i201xb":"每個字都需要一個母音。","1ustipp":"B 是一個子音。","mhjw2v":"rabbit 這個字有兩個音節。","w59yr":"你會拼自己的名字嗎？","1kalzqo":"我們寫了一首關於雨的詩。","1cz24dm":"太陽是一顆恆星，這是事實。","ht785r":"我的看法是，披薩是最好吃的食物。","12exnqk":"apple 是名詞。","7ga4q9":"jump 是動詞。","43qnap":"fluffy 是形容詞。","1oop5tn":"名字要用大寫字母開頭。","1n6oupt":"在句子結尾加上句號。","1e240i":"在日期和年份之間加一個逗號。","nxjj65":"每一段都要從新的一行開始。","13l3a3z":"加一個細節，描寫那隻狗長什麼樣子。","fdyxvg":"我報告的主題是鯊魚。","1qjeq35":"說出一個你喜歡冬天的理由。","josamr":"這個故事的教訓是要友善待人。","17i8yzc":"在這則寓言裡，慢吞吞的烏龜贏了比賽。","wybkw4":"英雄把小貓從樹上救了下來。","1p1vucr":"我們每天晚上讀一章。","7hpnj4":"我從圖書館借了三本書。","8pflx2":"在字典裡查這個字。","1kwe62j":"這個字是什麼意思？","1b6qh7r":"「上」的相反是「下」。","mp8aez":"我放學後會寫日記。","1pza93g":"媽媽在冰箱上留了一張紙條給我。","1kyn5xf":"我寫了一張感謝卡給老師。","13ws31m":"會說話的豬一定是虛構的故事。","1h400f0":"這本非虛構類的書在講真正的鯨魚。","1co2ipg":"寫出九後面的數字。","113ozj0":"數一數籃子裡有幾顆蘋果。","1n57cpe":"二加三等於五。","1lbtfh4":"十減四。","1xuaj34":"六加一是七。","h1t7w8":"八減二是六。","1ovxwiq":"二加二等於四。","omfj9e":"三加四的和是七。","1hciyye":"九和五的差是四。","12spcx2":"我們總共收集了二十個罐子。","aalkob":"七比三大。","6hrke8":"我的貼紙比我妹妹的少。","1s6isr8":"十減十是零。","6ga5yd":"我們學校有一百台電腦。","89e6b4":"25 這個數有兩個位數。","du1ral":"七是奇數。","1j41czw":"八是偶數。","1q94sc":"我把一半的三明治分給朋友。","14fbple":"兩個一半合成一個整體。","13oo1d2":"紅、藍、紅、藍是一種規律。","1wii4k7":"球是圓形的。","i9uqmj":"正方形有四個角。","6ibre5":"一片披薩看起來像三角形。","12grat6":"門的形狀像長方形。","18446n6":"三角形有三條邊。","1so4rts":"把郵票貼在右上角。","1h1pwdy":"用尺量一量這枝鉛筆。","qt63f6":"你的鞋子有多長？","4xzelj":"這隻蟲有一英寸長。","1etwiq5":"護士幫我量了身高。","1xgv2ip":"時鐘顯示現在是三點。","ehgb5u":"這部電影長一個小時。","h3v8j4":"請等一分鐘。","rd7pik":"我在沙發底下找到一枚亮晶晶的硬幣。","11qrfma":"一個一分硬幣值一分錢。","2x6yq7":"一角硬幣雖然小，但值十分錢。","11d9hm0":"四個二十五分硬幣等於一美元。","3mqaa7":"這枝鉛筆賣一美元。","1ue8mgw":"我們班的圖表顯示大家最喜歡的水果。","g9lxbv":"每看到一輛紅色的車，就劃一筆記號。","1ewimeg":"三的兩倍是六。","1e4cje9":"用尺畫一條直線。","1trfcu1":"我們的植物在窗邊長得更高了。","qluzcq":"把種子放進土裡，再澆水。","1nh9twc":"根從土壤中吸收水分。","nyyyoa":"莖把水分往上運送到葉子。","11sj666":"一片葉子從樹上掉下來。","1081rj3":"蜜蜂飛到那朵黃色的花上。","1dmud48":"蚯蚓幫助土壤保持健康。","11ck09x":"植物需要陽光才能生長。","1a4pw2k":"小狗長得很快。","yd1wsz":"兔子是一種耳朵很長的小動物。","e66cp2":"螞蟻是一種昆蟲。","ptr5tf":"牛是哺乳動物。","1fyibdx":"海洋是鯨魚的棲息地。","1l8tzwn":"冬天時，山洞給熊一個藏身的地方。","1pazqrm":"知更鳥在我們的樹上築了一個巢。","hz82b2":"小雞很快就要孵出來了。","1fjpu6c":"毛毛蟲吃了很多葉子。","1p9edyu":"一隻蝴蝶從繭裡鑽了出來。","bf2lwz":"今天天氣又冷風又大。","fnnh4z":"冬天是我最喜歡的季節。","1y7a9mw":"外面的氣溫非常熱。","1uhrywe":"那朵雲看起來像一隻綿羊。","kqfga7":"風把我的帽子吹走了。","hamca7":"溫度計顯示現在冷到結冰。","1y9yng2":"地球是我們的家園星球。","ichdsv":"今晚的月亮看起來是滿月。","yti3tj":"太陽是一顆恆星。","tiamsi":"我在河邊找到一顆光滑的石頭。","1ogy2h7":"我們用沙子堆了一座城堡。","1259c25":"磁鐵吸起了迴紋針。","v2xqdp":"推一下推車，讓它滾動。","rhqe2":"把小推車拉上山坡。","pjarkw":"冰塊是固體。","15er0uz":"牛奶是液體。","7v5fo7":"冰淇淋在太陽下會融化。","1h598s4":"水放在冷凍庫裡會結冰。","17p0yxy":"火的熱度讓我們保持溫暖。","z0rlca":"我們用感官來認識世界。","1c17yca":"觀察這隻蝸牛，把你看到的畫下來。","1w3kt5s":"放大鏡是一種讓東西看起來更大的工具。","1tq0t08":"樹是有生命的，但石頭不是。","15ncrxb":"水果和蔬菜能幫助你保持健康。","16s4e8m":"洗手可以把細菌都洗掉。","1r6ufhz":"我們家每天晚上一起吃晚餐。","wbhm6x":"我們的鄰居有一隻很友善的貓。","xj7vxe":"我們的社區有一座公園和一間圖書館。","5ujfj4":"班上有一條規則是要先舉手。","62c5k":"依法必須繫安全帶。","t1ejof":"隊長擬定了一個計畫。","1si796c":"好公民會幫忙保持城鎮乾淨。","17zqjil":"我阿姨的工作是修車。","o4faxr":"郵差把信送到我們家。","1ic8u6g":"用地圖找到公園。","16w9139":"在地球儀上找到我們的國家。","gglmij":"日本是亞洲的一個國家。","esr629":"加州是一個很大的州。","6trcr":"洛杉磯是一個繁忙的城市。","1io6eil":"我的祖父母住在一個小鎮上。","10ys1g4":"我們在農場摘了草莓。","83qu2f":"我們在市場買新鮮的魚。","1uhv3nj":"我想買一枝新鉛筆。","dqrsst":"我們夏天會賣檸檬汁。","167ncjb":"食物是需要，但玩具是想要。","1qp6puo":"新的電玩遊戲是想要的東西。","140t79p":"這家店賣鞋子和玩具之類的商品。","hw8bhw":"醫生和老師提供服務。","1py2qpo":"農曆新年是我們家的重要節日。","106ms0r":"旗子在風中飄揚。","j7x602":"總統住在白宮。","12bshgd":"從前，人們騎馬進城。","1oq459f":"現在，很多人開車。","pzvy7a":"將來，我想當科學家。","149knqt":"吃餃子是我們家的傳統。","1tot4i":"我們在派對上分享了自己文化的食物。","1yp7xk":"我們用蛋糕慶祝生日。","61fq8":"我們來投票，幫班上的魚取名字。","1mp35rr":"輪流是公平的。","emngq9":"別人說話時認真聽，就是尊重。","tgcekz":"負責任的寵物主人每天都會餵狗。","bc3y82":"為了安全，騎車時要戴安全帽。","pur7xz":"加拿大在美國的北邊。","1rddqfg":"秋天時鳥兒往南飛。","c26pzx":"太陽從東邊升起。","yn0wfy":"太陽從西邊落下。","140rxek":"比較這兩張地圖，找出哪裡改變了。","xpb1iy":"對比城市生活和農場生活的不同。","aws6h9":"預測這個男孩接下來會做什麼。","1okd0rn":"把這個故事和你自己的生活連結起來。","2ry9jh":"我們和小組一起討論故事的結局吧。","1olumct":"寫作之前先整理好你的筆記。","8j5kb1":"在報告裡附上一張圖片。","inb78t":"找出故事裡的主角。","h2jqug":"用課文中的一個事實來支持你的答案。","605kxl":"你能證明你的答案是對的嗎？","1rcil0g":"每天早上記錄氣溫。","1r75fhz":"我們為了自然科專題收集樹葉。","fsrlt9":"這個網站給了我們關於鯊魚的資訊。","1fwf2t9":"這個標誌的用途是保護我們的安全。","1ot5tm8":"我們的測試結果讓大家都很驚訝。","1kd3j0f":"大雨是這場水災的原因。","1uwh17f":"暴風雨造成的影響之一是停電。","1coqfxu":"我們想出了解決午餐室太吵的辦法。","11kfjuk":"我為了報告做了火山的研究。","1fkyy8y":"小考前複習你的筆記。","1w8wmo6":"為這一段選出最好的標題。","1gnlagi":"一次專心解決一個問題。","29bid1":"我的目標是今年讀二十本書。","kh2wzb":"開始動手做之前先擬好計畫。","1dnscz0":"我們每天練習，為考試做準備。","888rld":"每天晚上閱讀會讓你的拼字進步。","1xgz9x1":"我們走路去吧，不要搭公車。","jlkmk":"明天大概會下雨。","14f9td9":"我很愛吃水果，尤其是芒果。","1v2meil":"我讀了好幾本關於太空的書。","dsrwt9":"你確定門已經鎖好了嗎？","hcdk41":"這個遊戲的規則很簡單。","1mxczj7":"用清楚、工整的字寫。","38wz2o":"這一段的主要意思是什麼？","jjjs2u":"我們的第一個任務是把桌子擦乾淨。","2nee4i":"看地圖是一項很有用的技能。","go8oi3":"她在海報上花了很多心力。","zupcwr":"請注意聽指示。","ylar1":"我們需要決定去哪裡野餐。","185et1":"我認得這首歌，是那部電影裡的。","1vhviu":"這本書的敘述者是一隻狗。","gl4k76":"故事情節是一個女孩找到一把魔法鑰匙。","clpmpd":"最精彩的活動是那場大賽跑。","wn49wv":"把圖片按照正確的順序排好。","1v9qv42":"這個故事的主旨是永不放棄。","vnzjdy":"這則寓言的教訓是要誠實。","s49n8o":"在對話的前後加上引號。","46359p":"這首詩有三個詩節。","1k20hhl":"故事書是用散文寫的。","oqw71f":"在戲劇裡，演員說出角色的台詞。","1tjtqzs":"第一幕裡，國王很生氣。","1sb3qhp":"這個傳說講的是一個造出湖泊的巨人。","u2mko4":"這個神話解釋了太陽為什麼會橫越天空。","oskri6":"爺爺跟我們講了一個他家鄉的民間故事。","j3zfke":"我讀了一本林肯的傳記。","zliyrt":"查一下詞彙表，看看 lava 是什麼意思。","1ii8mnl":"用索引找到講青蛙的那一頁。","13g27y3":"圖片說明寫著這張照片是在阿拉斯加拍的。","68eui0":"標題告訴你這一節在講什麼。","1k4hqxp":"字首 un- 的意思是「不」。","31dygp":"字尾 -ful 的意思是「充滿」。","1k1cko2":"happy 是 glad 的同義詞。","1hhbg8m":"hot 是 cold 的反義詞。","1nuo3gg":"sea 和 see 是一組同音異義字。","1whltjh":"don't 是 do not 的縮寫。","1bb9w63":"she 是代名詞。","6rha1e":"quickly 是副詞。","m0ky36":"mice 是 mouse 的複數形。","6kz0i1":"發表之前檢查一下標點符號。","41c3uj":"引用的話要用大寫字母開頭。","18y9nzz":"我的初稿有很多錯誤。","1jv7i7g":"加上更多細節來修改你的故事。","xxzzg8":"檢查並修正你作文裡的拼字錯誤。","n3vx87":"我們會把詩作收錄在班級詩集裡發表。","25i3uv":"寫作時要想想你的讀者是誰。","1dy360s":"用三句話寫出這一章的摘要。","1iwoyhy":"三乘以四等於十二。","139fgx3":"把十二塊餅乾平分給四個朋友。","1y6ztz9":"五和六的積是三十。","htxlgb":"二十除以五的商是四。","1356h73":"三是十二的因數。","l9qhqg":"二十是五的倍數。","1u0for4":"這個陣列有三排，每排四個點。","17pob8f":"二分之一是一個分數。","1skfoda":"在 3/4 中，分子是三。","bcf12r":"在 3/4 中，分母是四。","tae6uu":"小數 0.5 表示十分之五。","ny5ljs":"估計一下罐子裡有多少顆豆子。","di1ifu":"把 48 四捨五入到十位。","1ucc3jt":"算出花園的周長。","9j5993":"這塊地毯的面積是十二平方英尺。","h13xw5":"方正的角是直角。","rxf1rt":"鐵軌是平行線。","15jbbt6":"這兩條街互相垂直。","x7bvlm":"蝴蝶的翅膀是對稱的。","1l0an9t":"三角形是一種多邊形。","14etkf7":"正方形是一種四邊形。","m673w4":"五邊形有五個角。","11236e1":"蜂巢裡的每一格都是六邊形。","o45q41":"七除以二等於三，餘數是一。","1jsasru":"我們學校的圖書館有一千本書。","s4vkaa":"寫一個等式來表示這道應用題。","zicmi1":"你應該用哪一種運算來解這題？","zrdoqt":"公尺是長度的單位。","1untewb":"這塊橡皮擦長四公分。","1v7ahwk":"這座泳池長二十五公尺。","mc0lej":"一個迴紋針大約重一公克。","7qv2bf":"這個瓶子可以裝一公升的水。","rxha2f":"我們把數據做成長條圖。","1xjg2qh":"這張圖表的刻度是五個一數。","vkujus":"食物給你的身體能量。","138ulv4":"踢球需要用力。","1qpbxlg":"重力讓蘋果往下掉。","1atn7b8":"推一下之後，鞦韆會一直擺動。","j5n3m1":"獵豹跑得非常快。","1gwzx7x":"空氣、水和石頭都是物質。","14v8rju":"水蒸氣是氣體狀態的水。","xmnkeq":"玻璃的一個特性是可以看穿。","1b93ih0":"晴天時，水坑會蒸發。","15kt80d":"水蒸氣會在冰涼的玻璃杯上凝結。","1jiymtc":"水蒸氣冷卻後就形成了雲。","1t4iqki":"海浪造成海灘的侵蝕。","ldyz8v":"我們在石頭裡找到一個貝殼化石。","ue0p2a":"石英是一種閃亮的礦物。","nztyk8":"熔岩從火山湧出。","bppmys":"地震讓窗戶咯咯作響。","t4olhq":"山是一種高聳的地形。","1f6jesh":"一條河流過山谷。","1vstd98":"火星是一顆紅色的行星。","11u50a9":"地球和其他行星都繞著太陽轉。","1nilkcf":"駱駝能適應炎熱沙漠的生活。","ndrgch":"北極熊能在極冷的地方生存。","11xw0go":"老鷹是老鼠的掠食者。","1pd92kw":"兔子是狐狸的獵物。","175rbtz":"在食物鏈中，草是生產者。","11c9o4r":"吃草的兔子是消費者。","1awkgck":"蘑菇是分解者。","ucj8np":"魚需要乾淨的水域環境。","1ei0wbf":"青蛙的生命週期從一顆卵開始。","1m65j21":"捲髮是我從媽媽那裡遺傳到的特徵。","15umswh":"貓的後代叫做小貓。","1hcp9xc":"恐龍已經滅絕了。","1wj4ou3":"暴風雨讓我們停電了。","xso33f":"電路接通時，燈泡就會亮。","1e7pqii":"吉他弦振動會發出聲音。","19w9qww":"鏡子會反射光線。","1erczmv":"政府興建道路和學校。","1qyvqw2":"市長為新公園揭幕。","1uefbw1":"加州州長在沙加緬度辦公。","1s0gwnx":"我們班舉行了班長選舉。","il99tr":"每個人都有發言和學習的權利。","1h1jjjk":"人們來到這裡追求自由。","wfi7bq":"我們學習了我們城鎮的歷史。","1n9zpca":"我的祖先來自中國。","18ho4ke":"我奶奶是從台灣來的移民。","r2ug6s":"沙漠地區很少下雨。","5m3gd3":"亞洲是最大的洲。","1qmj2ks":"我們沿著海岸開車去看海。","t4dfgs":"仙人掌生長在沙漠裡。","1xyqduz":"金門大橋是一個著名的地標。","3utokh":"農業對我們州的經濟很重要。","j88uj4":"我們來交換貼紙吧。","j18yhw":"我們為班級派對做了一份預算。","zmaxl5":"買東西時會加上營業稅。","15gmaci":"水是重要的自然資源。","17s0azo":"公車是一種大眾交通工具。","n3h9p9":"電話讓溝通又快又方便。","p3whxf":"探險家航行橫越海洋。","xspkyc":"每個移居者都蓋了一間小木屋。","1b4ofgq":"拓荒者坐著篷車往西部前進。","1wlk1qa":"我們參觀了聖蓋博的一座古老傳教站。","ne6x21":"通瓦部落以前住在洛杉磯一帶。","126mmei":"用指南針找出哪邊是北方。","eynq6h":"這條公車路線會經過我們學校。","5oo7cf":"墨西哥位在美國南方的邊界上。","1gastuf":"我們鎮上的人口正在增加。","rt08n0":"一位志工在圖書館唸書給孩子聽。","safmjq":"團隊合作可以更快完成工作。","vhqirt":"白頭鷹是美國的象徵。","1dc5k5c":"這座紀念碑是為了紀念服役的軍人。","152epd6":"用三句話總結這篇文章。","ux4wpe":"用線索來判斷這個字的意思。","1rt8nwq":"示範如何使用顯微鏡。","1ai7uvg":"從數據中，我們推斷植物需要光。","gm3458":"為你的文章寫一個有力的結論。","1cv2a6h":"在課文中找出證據來支持你的答案。","8slhf8":"從她的笑容，我推斷她很開心。","o0ud7w":"科學家正在調查蜜蜂為什麼會消失。","1npqqlj":"用你自己的話定義「棲息地」這個字。","1o669er":"閱讀詞彙表裡的定義。","14xavu0":"把這些動物分類為哺乳類或爬蟲類。","1gcfczb":"把每個字放進正確的類別。","5rab9u":"鳥類的一個特徵是有羽毛。","93e208":"青蛙和蟾蜍看起來很相似。","7zemfn":"說明太陽和植物之間的關係。","13cvucq":"造紙是一個很長的過程。","12sqaby":"做實驗時要仔細按照步驟進行。","1fmrlx5":"你用什麼方法解出這個問題？","2bz6d8":"畫圖是解應用題的好策略。","rrsa5y":"確認你的測量結果是準確的。","1mef6vj":"寫信給校長時，要用適當的語言。","1612ojv":"從故事中舉出一個具體的例子。","80ve13":"先寫出大致的想法，再加上細節。","1qrcpkf":"一般的上學日是八點開始。","1f6ej7l":"這家店賣各種水果。","cpivd7":"這座花園有各式各樣的花。","93a9yg":"下雨是這趟旅行的一大問題。","iox9sr":"那只是一個小錯誤。","ek6r30":"水是所有生物不可缺少的。","mqy1l6":"植物需要陽光和水。","1h1nzrx":"這個專題會包含閱讀和畫圖。","1002utz":"天氣熱的時候，樹木提供遮蔭。","112vjbt":"你可以在服務台辦借書證。","escbiy":"她努力達成了她的目標。","17g5mc2":"運動的好處之一是睡得更好。","1365ms0":"塑膠對海洋動物影響很大。","1fye5u8":"好朋友會讓我們往好的方向改變。","1rixuan":"這座公園最棒的特色是那座湖。","6qodiz":"心臟的功能是輸送血液。","10m8284":"這篇文章的結構有五個段落。","1sgwus9":"角色和場景都是故事的要素。","1hiijf":"網路是資訊的來源之一。","11nk9pj":"地圖集是很好用的地圖參考資料。","kngf7j":"針對這首詩寫一篇回應。","x29i91":"做決定前先考慮兩方面的意見。","16enfpv":"我建議我們先做簡單的題目。","njkfkr":"我們小組會提議建一座校園菜園。","11zmkst":"沒有人猜得到比賽的結果。","1vncz1w":"加州經常發生地震。","aeqjw5":"回頭看前一頁。","1tlvuc9":"那顆種子最後長成了一棵大樹。","po0m3y":"當時在下雨，所以我們待在室內。","18fsb4":"我很累，不過我還是寫完了功課。","9rc1m4":"雖然天氣很冷，我們還是去游泳了。","95fl3c":"蝙蝠在夜間飛行；同樣地，貓頭鷹也在黑暗中狩獵。","125smbf":"有些動物整個冬天都在睡覺，例如熊。","ie7pgu":"這些箱子裡裝的是要給圖書館的書。","1m2lrtm":"烏雲表示暴風雨就要來了。","12uhzek":"老師們特別強調要檢查自己的作業。","124bbvz":"單字卡是一種有效的學習方法。","12z53c7":"有效率的計畫能節省時間。","kntjwz":"大家一起努力，就能完成很多事。","7a0yv6":"高年級學生在午餐時幫忙照顧低年級學生。","15of6gk":"志工們負責維護社區菜園。","1453jz8":"每個人都可以參加科學展覽。","imn6z5":"把水倒進比較大的杯子裡。","1wqmxn4":"把空氣吹進氣球，氣球就會膨脹。","16ma49s":"使用可重複使用的水瓶可以減少垃圾。","kii5h7":"沒有花，蜜蜂的數量就會減少。","pfff1y":"練習會提高你的閱讀速度。","rk851t":"It's raining cats and dogs（傾盆大雨）是比喻的說法。","5ai9jy":"break a leg 的字面意思是「摔斷腿」。","612374":"「像獵豹一樣快」是一個明喻。","vd8o1q":"「教室簡直是動物園」是一個暗喻。","16f0f94":"「風在低語」是擬人法的例子。","1n0ndyg":"「我餓到可以吃下一匹馬」是誇飾法。","nd9nbk":"piece of cake 是一個慣用語，意思是「很簡單」。","1yfb95m":"Silly snakes slide slowly 用了頭韻。","1aroaif":"buzz 和 sizzle 都是狀聲詞的例子。","6hznh5":"詩人用意象來描寫夕陽。","1yq0btx":"這封信的語氣很友善。","nukn8s":"黑暗的森林營造出恐怖的氣氛。","11scyo5":"衝突從小狗跑走的時候開始。","109btqa":"在故事高潮，英雄面對惡龍。","9y5x4c":"在結局，朋友們和好了。","u8u9ua":"主角是一個想要飛翔的女孩。","jsyxvn":"反派想要阻止英雄。","19lyl88":"這個角色說謊的動機是什麼？","1ww1w4l":"在倒敘中，我們看到英雄小時候的樣子。","1mez86i":"作者用簡短的章節營造懸疑感。","xur8cy":"我最喜歡的類型是科幻小說。","ab9ys":"奇幻書裡會出現龍和巫師。","1ahibx":"在這部推理故事裡，偵探找到了失竊的珠寶。","18zlbcm":"她在自傳裡描述了自己的童年。","1d0x49p":"說明文會教你一些事實。","1dcv6i0":"寫一封說服信，爭取更多下課時間。","thsyon":"寫一篇記敘文，講你最棒的一天。","127xny4":"用兩句話改述這一段。","10fqnqx":"引用能看出這個角色很勇敢的那句話。","9q6v7v":"用一個轉折詞開始下一段。","13hadv1":"你的開頭應該要抓住讀者的注意力。","1kmv4a2":"寫報告之前先列大綱。","emwj0e":"和夥伴一起腦力激盪，想想故事的點子。","1qovxuo":"用同義詞詞典找一個比 good 更好的字。","dxo0o1":"用上下文的線索猜出新單字的意思。","535j8w":"sunflower 是一個複合字。","1cx1wld":"and 是連接兩個想法的連接詞。","fu19ow":"under 是介系詞。","1wsf473":"wow 是感嘆詞。","1jip3je":"walked 是過去式。","zzo6t9":"在 The dog barked 這句中，主詞是 dog。","1kt8qr3":"在 The dog barked 這句中，述語是 barked。","1uvpsu":"Ran to the park 是一個不完整的句子片段。","rjw0ye":"這篇文章會告訴你關於蝙蝠的知識。","cjgmeq":"有趣的故事能娛樂讀者。","om04ok":"這則廣告想說服你買鞋子。","9pe5y":"讀這段小說節錄。","sf0mnt":"讀這篇文章，然後回答問題。","1ftuo2q":"這首詩有輕快的節奏。","dvb9jf":"我們唱了這首歌的第一段。","14o505j":"按照時間順序講述這些事件。","cyuxzm":"加上一段對那棟老房子的描述。","or3r6":"從貓的觀點來講這個故事。","sg3gud":"我們正在讀一本關於一個男孩和他的狗的小說。","17844f6":"詩人大聲朗讀她的詩。","1if4jz2":"這張插圖畫出花的各個部分。","fn0hkf":"新聞標題說一座新公園即將開放。","tpul5v":"每天閱讀能增加你的詞彙量。","7hdrpz":"在 352 中，5 代表的值是五十。","19xilvx":"在 2³ 中，指數是三。","1o9nhsw":"寫出表示「比 n 多五」的算式。","1tfsk3g":"在 4 + x = 9 中，變數是 x。","q8m4w6":"x > 5 是一個不等式。","1rs8weg":"貓和狗的數量比是二比一。","1yah37a":"這輛車以每小時六十英里的速率行駛。","x3vzs2":"班上百分之五十的人有養寵物。","soeo17":"負三是一個整數。","hdl3ka":"氣溫降到零下五度。","1nnniix":"七是正數。","17pipi":"負四的絕對值是四。","8vzhn7":"第一個座標表示要往右移動多遠。","12n4xf6":"在 x 軸上標出一週的每一天。","k0j8ps":"點 (3, 4) 位於第一象限。","1qcpsd3":"以立方英寸算出這個盒子的體積。","6c1sgi":"骰子的形狀是正方體。","n7v5it":"麥片盒是長方體。","cunpfw":"角錐的側面是三角形。","1ptgvyk":"湯罐頭是圓柱體。","h5bz4j":"冰淇淋甜筒有一個圓和一個尖端。","el9lpz":"籃球是球體。","1lj6jdj":"正方體有六個面。","1u9x55y":"正方體有十二條稜。","58mjoz":"三角形有三個頂點。","7szbd6":"這個三角形的底長六英寸。","197f7h9":"銳角小於 90 度。","1t67opv":"鈍角大於 90 度。","1jj7p2s":"直角是 90 度。","haltxq":"用量角器量這個角。","1djdbrq":"這個披薩的直徑是十二英寸。","18r405o":"半徑是直徑的一半。","1iz7suq":"用繩子量盤子的圓周長。","1pe8oj0":"2、5、9 的中位數是五。","1qlj7q8":"在 3、4、4、7 中，眾數是四。","6kruan":"2、6、10 的全距是八。","1rsqsnh":"4、6、8 的平均數是六。","1huhf8d":"要算平均數，就把數字加起來再除以個數。","1gje2d0":"1/2 和 2/4 是等值分數。","103n9uk":"把分數 4/8 化簡。","1gr4igb":"七是質數。","1phzqpi":"九是合數。","1gxvcm6":"十二可以被三整除。","savtx1":"先算括號裡的部分。","oaek9c":"這場賽跑全長五公里。","cth58a":"這顆西瓜重三公斤。","helq9a":"這支湯匙可以裝五毫升的藥。","siokm8":"把三英尺換算成英寸。","1gzo1j8":"算出點心的總花費。","1pk8995":"十分之一可以寫成 0.1。","1bli50k":"一分錢是一美元的百分之一。","16goj6":"梯形有一組平行的邊。","pi3f5i":"長方形是一種平行四邊形。","1h04lqh":"菱形看起來像一個傾斜的正方形。","165c89q":"這兩個三角形全等。","1l6irlc":"這雙鞋打八折。","1gdet14":"萬物都是由微小的原子組成的。","e1f47v":"一個水分子有兩個氫原子和一個氧原子。","1mnk8f8":"細小的灰塵微粒在陽光中飄浮。","1w6k1ol":"什錦果仁是堅果和葡萄乾的混合物。","2o2lpi":"糖會在熱茶裡溶解。","ovcryf":"鹽是一種白色的物質。","1xedwr4":"生鏽是一種化學變化。","e97hav":"剪紙是一種物理變化。","w1wenk":"保齡球的質量比網球大。","u63ky4":"在月球上，你的體重會比較輕。","153lxm9":"池塘是一個小型的生態系統。","1x405hk":"蘑菇是一種生物。","mathpe":"葉子透過光合作用製造養分。","1faiqvv":"植物從土壤中吸收養分。","z7eaus":"樹木會釋放氧氣。","ms0in9":"植物從空氣中吸收二氧化碳。","1jnbd6d":"有些細菌能幫助我們消化食物。","1olkr43":"蘑菇和黴菌都是真菌。","1eonbw4":"你的身體由數兆個細胞組成。","1qpewl6":"心臟是負責輸送血液的器官。","ocds4v":"骨骼支撐著你的身體。","82vhwx":"運動讓你的肌肉更強壯。","lgnnwh":"吸氣時，你的肺會充滿空氣。","buv7mq":"消化從嘴巴就開始了。","1p4dkz7":"大氣層保護地球不受太陽有害光線的傷害。","1wr09f4":"雨和雪都是降水的形式。","1bjysqn":"南加州的氣候溫暖乾燥。","1w0wg51":"水井把地下水抽上來給人們使用。","1nc6nay":"冰河切割出一道深谷。","1sbygo3":"汽車排放的廢氣加重了空氣汙染。","1j18q71":"隨手關燈是節約能源的一種方式。","1fk5udm":"我們在學校回收罐子和瓶子。","15sufgw":"太陽能是一種可再生能源。","1phh5el":"太陽能板把陽光轉換成電。","tdzd3a":"我們的太陽是銀河系中的一顆恆星。","18vfuae":"宇宙比我們能想像的還要大。","1cqqb1a":"地球每 24 小時自轉一次。","120vzhe":"地球每年繞太陽公轉一圈。","1hrpewq":"北斗七星是一個星座的一部分。","53txj2":"我們用望遠鏡看到了土星環。","1qmlkk9":"月球是地球的天然衛星。","9w6wg3":"月球表面布滿了隕石坑。","bxrktk":"恐龍可能是被一顆小行星消滅的。","osmd4u":"摩擦力讓鞋子能抓住地面。","dukdzp":"冰箱門有磁性。","3bhoti":"氣壓讓輪胎保持飽滿。","60sfns":"我們的實驗測試哪一種紙巾最堅韌。","1cskzij":"我的假設是植物在陽光下長得比較快。","dtjw06":"把每一項觀察記錄在科學筆記本裡。","18m111d":"我們用顯微鏡觀察洋蔥細胞。","ez7gxv":"鹿是草食動物。","ulxxry":"獅子是肉食動物。","e2xd7w":"熊是雜食動物，會吃莓果和魚。","1t9nar5":"帝王斑蝶每年冬天遷徙到墨西哥。","1g7d4dp":"有些熊會在洞穴裡冬眠。","t1np2f":"變色龍用偽裝來融入環境。","rt5a0r":"鳥類天生就會築巢。","1j6j4u6":"科學家發現了一種新的青蛙物種。","1fp9t7d":"河流在出海口留下沉積物。","1hkse59":"岩漿流到地表後就叫做熔岩。","1swcsqm":"每個殖民者都必須自己種植糧食。","1jar4o9":"美國獨立革命始於 1775 年。","u3z1xl":"殖民地宣布脫離英國獨立。","1dnimim":"《獨立宣言》在 1776 年簽署。","2vtta4":"憲法說明了我們的政府如何運作。","cmzutm":"第一修正案保障言論自由。","1lclfvc":"在民主國家，公民投票選出領導人。","1eejn84":"美國是一個共和國。","jf27mk":"國會針對新法律進行表決。","kx4ujx":"國會是政府中負責立法的部門。","r80f37":"法官聽取了雙方的說法。","zav4bc":"自由女神像象徵自由。","1mt5s3t":"保羅．里維爾是一位愛國者。","hgsjma":"我們班針對學校制服舉行了一場辯論。","g2d2ny":"他們達成妥協：每個人輪流選擇。","f5usw1":"美國的奴隸制度在 1865 年結束。","zhipmi":"古埃及是一個偉大的文明。","1asnv55":"我們在課堂上學習古代中國。","57spyl":"羅馬帝國非常遼闊。","rv390w":"中國的第一位皇帝修築了一道長城。","gyyu7b":"法老被埋葬在金字塔裡。","1eraopz":"唐朝統治中國將近 300 年。","1oqkih4":"考古學家挖出了一個古老的陶罐。","q1nwet":"博物館展示一件來自古羅馬的文物。","1top30w":"灌溉讓農民能在乾燥的土地上種植糧食。","ql6gzj":"農業在加州很重要。","1k1qm1o":"遊牧民跟著牲畜遷移。","b3s2dz":"商人用絲綢交換香料。","11w8pyn":"很久以前，人們會用穀物交換工具。","194fl7":"日本的貨幣是日圓。","lwbbdq":"農民把多餘的農作物拿到市場賣。","1cpx8w3":"抄寫員把國王說的話記錄下來。","1rya2h6":"希臘人為每一位神建造一座神殿。","1w3abh6":"信仰各種宗教的人住在我們的城市。","f43ccf":"這個王國有一支強大的軍隊。","imw2n":"軍隊試圖征服這座城市。","tsx3hf":"敵人試圖從北方入侵。","v9kabx":"每一群狼都會守護自己的領域。","1747jdl":"路易斯和克拉克率領探險隊前往太平洋。","1fcgpx7":"橫越海洋的航程花了兩個月。","3cg5cl":"水手們靠星星來導航。","1sbh8ot":"緯線是東西走向的。","1td5fsm":"經線在南北兩極交會。","1osbuk8":"赤道附近的國家一年四季都很溫暖。","gqtl9":"美國位於北半球。","188ich8":"佛羅里達是一個半島。","10mrol7":"大遷徙讓許多家庭搬到北方城市。","g7043o":"我們在過年時慶祝自己的華人傳承。","lrwbpz":"我們家三代同堂。","78m9bj":"把這些事件標在時間軸上。","19sy5t9":"十年就是一個 decade。","z4l5w6":"這棟房子已經有一百多年的歷史了。","1scve3r":"憲法是一份重要的文件。","5zlx40":"兩國簽署了和平條約。","1otoyv3":"拓荒者往西遷移到邊疆地區。","6kuwxm":"詹姆斯鎮是第一個延續下來的英國殖民聚落。","1omadyt":"分析這張圖表，找出其中的規律。","56spi9":"評估哪一個來源比較可靠。","1jp5vnl":"你怎麼解讀這首詩的最後一行？","16kl9nb":"用兩個理由說明你的答案。","e4bp4b":"註明你找到這個事實的頁碼。","gqg77k":"在你的文章中綜合兩篇文章的資訊。","1hbnigc":"用證據支持你的論點。","12w0qm2":"她主張延長下課時間的論證很有說服力。","crhyyp":"試著從她的角度來看這個問題。","telj14":"新法律帶來了顯著的改變。","134gsxh":"換一個方法來處理這個問題。","1z8gz8":"不要以為答案很簡單。","32flfq":"他以為商店有開，這個假設是錯的。","16mf3lp":"重力是一個很難解釋的概念。","1sjyyjs":"評審用三項標準來選出優勝者。","1rcv9dc":"你能區分事實和意見嗎？","gj6be6":"鎮上決定設立一座新圖書館。","1jl1c6r":"氣候變遷是當今的一大議題。","113que0":"公平是我們班的一項重要原則。","1xo1onb":"蜜蜂在糧食生產中扮演重要角色。","14o72n0":"科學家用許多實驗來驗證這個理論。","1tjv22v":"這個論點很有道理。","1289lti":"摘要裡只寫相關的細節。","1ryafcm":"科學家需要精確的測量數據。","1p0vpni":"持續練習會讓你進步。","1phocu6":"許多英文字源自拉丁文。","89eri4":"蝴蝶會從繭裡鑽出來。","c8c1a4":"她皺著眉頭，似乎暗示她不高興。","gusy7q":"新聞報導應該要客觀。","14n5te8":"哪首歌最好聽是一個主觀的問題。","1np0ya4":"老師會用評分標準來評估你的專題。","14bzi7r":"你可以說清楚你的意思嗎？","14xmrd6":"慢慢讀，才能理解這篇文章。","14qzv95":"用吸管建造一座橋的模型。","19xg293":"每個人都應該為小組貢獻想法。","1pdfxyo":"作者用顏色來傳達悲傷。","1n9c3ov":"誠懇又友善地評論夥伴的文章。","18ve32r":"這幅畫似乎描繪了一個熱鬧的市場。","10tzzjc":"請詳細說明你的第二個理由。","oi3dmn":"圖片能讓你的報告更出色。","1pz6fm7":"檢查你的作業，確保答案正確。","1hh29a6":"規定說得很明白：上課不准用手機。","17b6xdm":"這個故事的教訓是隱含的，沒有直接說出來。","85tibs":"設計一個你能用實驗驗證的問題。","od2h6l":"風力發電機能產生電力。","412o2d":"把引用的句子自然地融入你的段落。","6csfax":"如果第一次嘗試失敗，就調整你的計畫。","u1lkcc":"狗能察覺人類聽不到的聲音。","k2py6v":"先寫功課，再玩遊戲。","sm7oyq":"在答案中寫明單位。","5ty5qc":"我們健行時帶了足夠的水。","fu4cay":"考試前一定要有充足的睡眠。","1wwbcep":"走路是取代開車的健康選擇。","up8mrx":"每個選擇都有後果。","1uj1ey9":"他忘了帶傘，結果淋濕了。","14qwzx8":"儘管下雨，比賽仍然繼續進行。","84g5b1":"貓喜歡睡覺，而狗喜歡玩。","bpe3cm":"這個計畫很便宜，而且也很簡單。","11wvcba":"這座公園很乾淨，此外也很安全。","1p2cnz4":"這段健行很辛苦，儘管如此，我們還是登頂了。","1m7y6er":"植物需要光，因此它們會朝窗戶的方向生長。","1f85e47":"最後，這支隊伍贏得了冠軍。","1f91kmk":"一開始我很緊張，後來就放鬆了。","br0k7p":"貓熊主要吃竹子。","wbmaif":"這趟旅程大約需要兩個小時。","16ee097":"這篇文章對其中一隊有偏見。","dklgyx":"科學期刊是可信的資料來源。","tuiuym":"我們的報告需要可靠的資料來源。","4oxayh":"人類的大腦非常複雜。","1vynvvl":"在沙漠中，水對生存極其重要。","139lyni":"每個地區都有獨特的食物。","1vj7rjm":"我們學校的學生來自多元的背景。","1wtq3aa":"閱讀是一項基本的技能。","z8ucxj":"每個學生都有成功的潛力。","2bwxxj":"自由是一個抽象的概念。","1amo63d":"下結論之前，先回應反方論點。","1tq1l9o":"她的反駁用了很有力的證據。","7tak99":"在第一段寫出你的論點。","11rz3e3":"這篇文章的中心思想是什麼？","1mvgcir":"作者透過對話來塑造人物。","1osvinp":"烏雲預示著麻煩即將到來。","foaghz":"消防局竟然被燒毀，真是諷刺。","wuk8pq":"作者用鴿子象徵和平。","1q1wtu9":"叫他羅密歐，是在引用莎士比亞的典故。","11zwoos":"cheap 帶有負面的含意；affordable 則是正面的。","thdgjb":"home 的字面意思是你居住的地方。","9szbyg":"「心臟就像一台幫浦」是一個類比。","1hvxdaf":"這幅漫畫諷刺懶惰的政客。","4kqmup":"「我以前是銀行家，但我失去了興趣（利息）」是一個雙關語。","2l531v":"「震耳欲聾的寂靜」是一個矛盾修飾法。","1jrzyig":"作者的用字讓這個故事感覺很恐怖。","17hmphl":"短句讓這首詩的句法節奏很明快。","15f5juy":"When it rained 是一個從屬子句。","lwnobl":"In the morning 是一個片語。","3wbk54":"她的文字風格幽默又親切。","196zqqa":"The ball was kicked 是被動語態。","u2b0ke":"你引用的每一句話都要註明出處。","1ksucb2":"把參考書目放在最後一頁。","3b1dfu":"抄襲網站內容又不註明出處，就是剽竊。","ecphsd":"邊讀文章邊做註解。","142f9gt":"推論一下那個女孩為什麼在哭。","5wjeki":"講者運用了強而有力的修辭。","3yeatb":"她的回憶錄講述她在台灣長大的經歷。","17kfyt9":"寫一篇關於你心目中英雄的五段式文章。","mfdcor":"這篇社論主張興建一座新的滑板公園。","1scds2o":"我讀了一篇關於海洋塑膠的文章。","1svprq7":"全知的敘述者知道每個人在想什麼。","ip59ua":"莎士比亞寫了一百五十多首十四行詩。","19oui8u":"寫一首關於月亮的俳句。","a0vclr":"演員發表了一段關於他走失的狗的獨白。","1j7ti8v":"劇作家在首演當晚觀看她的戲。","1n0td7b":"每位演員都背熟了劇本。","1ffssu7":"睿智的老巫師是常見的角色原型。","uz5nwe":"英雄面臨兩難：要救朋友還是救城市。","1tr05da":"內在衝突發生在角色的內心。","2mdbgi":"一場暴風雨製造了外在衝突。","15zwx4a":"故事開端介紹了這一家人和他們的農場。","kimk12":"尾聲描述了角色們十年後的樣子。","1hg04uu":"序幕發生在一百年前。","10rrp4e":"用一個有趣的小故事開始你的演講。","1nij13z":"避免使用「那是一個漆黑的暴風雨夜」這種陳腔濫調。","okd0ic":"醫生常常使用醫學術語。","vw7oqr":"寫信給市長時要用正式的語言。","9o3s34":"傳給朋友的簡訊通常都很隨意。","axu55f":"你的摘要要寫得簡潔。","bms2pa":"條理清楚的文章會從一個想法自然地接到下一個。","bs49c2":"我在修改時加入了更有力的細節。","14ug46m":"交文章之前一定要校對。","1kk7x2l":"這部電影的結局模稜兩可。","7o6yx7":"在你的議論文中表明清楚的立場。","5chp1g":"暗喻是一種文學手法。","75tsl5":"好的讀者會注意到角色話語中的細微差別。","bahhq0":"在代數中，我們要求出 x。","1m3jyg4":"在 5y 中，係數是五。","14vxs7c":"在 2x + 7 中，常數是七。","14vfsoc":"算式 3x + 5 有兩個項。","umah3l":"一次方程式會畫出一條直線。","11nu1bu":"陡峭的直線斜率很大。","9vqnva":"y 截距是直線與 y 軸相交的地方。","wqpnsp":"如果輸入值是 4，輸出值就是 8。","120ad":"這個規則會把每個數加倍，所以輸出值是 10。","1oe1yzl":"用比例式求出缺少的數。","1qsp5eq":"費用和票的張數成正比。","1d9g1np":"走路上學的學生佔百分之幾？","18ppntc":"銀行會為你的存款支付利息。","1j9kr2d":"這家店加價了百分之五十。","f1irz0":"縮放讓這個三角形變成兩倍大。","46k1mu":"平移把正方形往右移動三個單位。","bn9tgq":"鏡射像照鏡子一樣把圖形翻過來。","1jdjcog":"旋轉把圖形轉了九十度。","18fnxfo":"滑動、翻轉或轉動都是一種圖形變換。","ro1x39":"擲硬幣出現正面的機率是二分之一。","17ybv6m":"從一副牌中隨機抽一張。","16yxdu4":"我們調查了五十名學生作為樣本。","1hf877q":"我們的問卷調查詢問學生最喜歡的運動。","fl3mr5":"把每個答案出現的次數記錄在表格中。","g9kfre":"這張直方圖以每十分為一組顯示考試成績。","59ld6x":"讀書時間和成績之間有相關性。","n6gk3t":"12 分這個成績是一個離群值。","1h1pkjg":"第一四分位數標示出數據中最低的四分之一。","1c7e89p":"圓周率大約是 3.14。","1xdb5d4":"每個分數都是有理數。","cp61tv":"圓周率是無理數。","16z72gr":"2/5 的倒數是 5/2。","g1he2n":"用分配律來計算 3(4 + 2)。","1jr6f4d":"加法具有交換律。","y2y0yn":"結合律讓你可以重新組合數字。","8dkyd8":"減法是加法的逆運算。","g6mx4r":"兩邊同時減 5，把 x 單獨留在一邊。","1akd6j5":"把 3 代入 x，然後求解。","875y5i":"科學記號讓大數字更容易書寫。","1n405mh":"斜邊在直角的對面。","1i3rehy":"畢氏定理適用於直角三角形。","e5bpbg":"求出這個盒子的表面積。","1ulw5xv":"互補角加起來是 180 度。","49yxr4":"互餘角加起來是 90 度。","gepv44":"在紙上畫一條垂直的線。","wabyr2":"相鄰的角共用一條邊。","1tyrjgb":"用尺和圓規平分這個角。","golnui":"從 A 點到 B 點畫一條弧。","1wlg4au":"把展開圖剪下來，摺成一個正方體。","11ww9w0":"我們在烘焙義賣中賺了二十美元的利潤。","gkp5mn":"從原點開始，往上移動三個單位。","1xf3j6d":"變異性高表示數據很分散。","1l5ecbn":"用公式算出面積。","v9a0i0":"箱子有三個維度。","11144fj":"這個盒子的容量是 24 立方英寸。","1493eel":"每個分數與平均數的偏差都很小。","1lcmu41":"油會浮起來，因為它的密度比水小。","1sxstp":"在週期表上找到氧。","9yn7zn":"氫有一個質子。","coi503":"中子不帶電荷。","1ov4cn0":"電子帶負電荷。","5at81g":"細胞核控制整個細胞。","1wkr2r7":"小蘇打和醋會產生冒泡的反應。","1fx9kd7":"銅是良好的導電體。","xeyoxt":"橡膠是絕緣體。","fbokm7":"滾動的球具有動能。","jbvi0m":"熱能會從熱的物體傳到冷的物體。","ir2b4c":"太陽透過輻射讓地球變暖。","1ppvuoi":"對流讓暖空氣上升。","ylf3hh":"金屬湯匙透過傳導變熱。","2ya2ay":"紅光的波長比藍光長。","rcbd1s":"大聲的聲音振幅很大。","qyz1cv":"這輛車的速度是時速 30 英里向北。","jq75a":"火箭發射時的加速度非常大。","1c17qsh":"車子停下來時，慣性讓你繼續往前傾。","ivxal6":"重型卡車的動量比腳踏車大。","jm29tl":"肌肉組織幫助你的身體活動。","lwhta9":"細胞膜控制哪些東西能進入細胞。","1thhsih":"人類大多數的細胞裡有 46 條染色體。","xxov28":"一個基因可以決定你眼睛的顏色。","a0a11a":"遺傳解釋了你為什麼長得像父母。","1wusram":"一次突變讓這種蛾的翅膀顏色變深。","1ku6zwd":"化石提供了演化的線索。","1w5tznu":"仙人掌厚厚的外皮是適應沙漠的特徵。","i3mlrn":"這些甲蟲的體型大小有差異。","imjdzl":"棲息地消失可能導致物種滅絕。","18vxiuw":"熱帶雨林的生物多樣性很高。","k3y0o9":"呼吸作用提供細胞所需的能量。","f3w4up":"心臟是循環系統的一部分。","152alel":"你的免疫系統會對抗病菌。","1lhhbuq":"疫苗訓練你的身體對抗病毒。","54cn0z":"流感是由病毒引起的。","17n4o10":"構造板塊每年移動幾公分。","17y6t9b":"我們住在地球的地殼上。","cykbot":"地函是由灼熱且緩慢移動的岩石構成的。","3ub37i":"地球的核心非常熾熱。","18s7un9":"聖安德列斯斷層貫穿加州。","13jjd5v":"沉積作用堆積出這片沙灘。","9hlgiy":"風化作用慢慢讓巨石裂開。","p8xd7x":"花崗岩是一種火成岩。","1q8lglh":"砂岩是一種沉積岩。","g7zchb":"大理石是一種變質岩。","1un1zf8":"溫室氣體把熱量困在大氣層中。","1eieh08":"電動車沒有排氣管廢氣排放。","1dn06yp":"煤是一種化石燃料。","13fpdf0":"太陽能是一種永續能源。","d6tqed":"濕度高會讓空氣感覺黏黏的。","1ch0ua2":"月食會讓月亮變成紅色。","js193x":"日食讓中午的天空變暗了。","10x9sqk":"沒有施肥的那株植物是對照組。","1dayzpv":"我們做了一個太陽系的模型。","b245wn":"小丑魚和海葵共生。","rs4619":"壁蝨是一種寄生蟲。","r0b9yf":"凍原是一種寒冷的生物群系。","188x5t6":"在封建制度下，農民耕種領主的土地。","o5030r":"中世紀的城堡有厚厚的石牆。","7meu07":"第一次十字軍東征始於 1096 年。","18ryrxq":"達文西是文藝復興時期的藝術家。","xkr63l":"宗教改革使歐洲的教會分裂。","uaq68j":"瘟疫奪走了歐洲數百萬人的性命。","eb8iv8":"英國至今仍是有國王的君主制國家。","xgy3dv":"這位君主統治了五十年。","1emf6h5":"英國國會在倫敦開會。","1u6pjql":"州議會通過了一項新法律。","11af9x9":"國會是立法部門。","1sc4pxo":"總統領導行政部門。","14ccsle":"最高法院屬於司法部門。","tiuh5s":"總統可以否決法案。","liio86":"聯邦政府負責印製鈔票。","1u8oboc":"這項法案在表決後成為法律。","i70g5x":"做一個好公民，代表要幫助你的社區。","4ks3k":"必須有九個州批准，憲法才能生效。","14caojm":"每一州都派了一名代表參加會議。","1njebz0":"我們的眾議員在國會中對法律進行表決。","1hzq1xt":"大多數學生投票選了披薩。","1j4bdo2":"班上只有少數人想吃墨西哥捲餅。","1ubhx2r":"她競選班長的海報做得很棒。","1eprcvb":"每位候選人都發表了簡短的演說。","15hama4":"在選票上勾選你的選擇。","141tl93":"學校有禁止使用手機的政策。","5xswfl":"戰爭海報常常是政治宣傳。","1vo6dru":"蒙哥馬利公車抵制運動持續了一年多。","187kbn":"學生們舉行了一場和平抗議。","1cp3xt6":"市政府推動改革來改善學校。","ytu2vl":"道格拉斯為廢除奴隸制度而奮鬥。","1mvfu9":"《解放奴隸宣言》在 1863 年簽署。","1hakrrk":"馬丁．路德．金恩是一位民權領袖。","1yablx2":"學校的種族隔離在 1954 年被判定為違法。","1x58iez":"法律保護人們不受歧視。","1qombhy":"許多人為了平等而遊行。","jek36y":"電影產業在洛杉磯規模很大。","1x5rt8c":"都市地區有很多高樓大廈。","11p1h58":"移民塑造了加州的歷史。","1xbdqlp":"供給少的時候，價格通常會上漲。","18kofdu":"下雨時，雨傘的需求就會增加。","3fn2nu":"缺水是沙漠地區的一大問題。","8k7c8q":"通貨膨脹讓麵包變得更貴。","3qo3em":"這位年輕的創業者販售手工手環。","62wcd2":"教育是對你未來的投資。","1fd7mnb":"杏仁是加州主要的出口品之一。","ydrmbl":"許多手機是從亞洲進口的。","15f1ep8":"關稅讓進口車變得更貴。","1vnx47p":"一本 1850 年的日記是第一手資料。","c7ywia":"教科書是第二手資料。","1jo88se":"我們在市立檔案館找到了老照片。","131qssv":"外交手段幫助結束了這場衝突。","1p0x1ux":"兩國結成了同盟。","1q5owyv":"帝國主義讓歐洲的統治擴張到非洲和亞洲。"};/*SENT_ZH_END*/
+</script>
 <script>
 const DATA = [
 {w:"acquire",ipa:"/əˈkwaɪər/",pos:"v",m:"to gain or obtain something",mZh:"獲得",cat:"Academic Verbs",level:"Basic",s:"Early hominins depended entirely on natural fire until they learned to make it themselves. Once early humans <mark>acquired</mark> the ability to control fire, they could cook food, stay warm, and settle in colder regions than before.",pre:"ac-",preM:"toward (variant of ad-)",preEx:["accord","accumulate"],root:"quir",rootM:"to seek, obtain (Latin quaerere)",rootEx:["require","inquire"],suf:"-e",sufM:"silent verb marker",sufEx:[]},
@@ -3779,6 +3747,40 @@ function speak(word){
   }catch(e){ /* speech synthesis unavailable */ }
 }
 
+/* ---- Example-sentence translations (Traditional Chinese) and Mandarin audio ---- */
+function sentHash(t){ let h = 2166136261; for(const ch of t){ h ^= ch.codePointAt(0); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); }
+function sentPlain(s){ return String(s || '').replace(/<\/?mark>/g, '').replace(/\s+/g, ' ').trim(); }
+function sentZh(s){ return (typeof SENT_ZH !== 'undefined' && SENT_ZH[sentHash(sentPlain(s))]) || ''; }
+let zhVoiceG = null;
+function pickZhVoiceG(){
+  if(!('speechSynthesis' in window)) return null;
+  const vs = window.speechSynthesis.getVoices(); const L = v => (v.lang || '').toLowerCase().replace('_', '-');
+  return vs.find(v => L(v) === 'zh-tw') || vs.find(v => L(v).startsWith('zh-hant')) || vs.find(v => L(v) === 'zh-cn') || vs.find(v => L(v).startsWith('zh')) || null;
+}
+if('speechSynthesis' in window){ zhVoiceG = pickZhVoiceG(); window.speechSynthesis.addEventListener('voiceschanged', () => { zhVoiceG = pickZhVoiceG(); }); }
+function speakZh(text){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(String(text));
+    u.lang = zhVoiceG ? zhVoiceG.lang : 'zh-TW'; if(zhVoiceG) u.voice = zhVoiceG; u.rate = 0.9;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function speakText(text){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(sentPlain(text)); u.lang = 'en-US'; u.rate = 0.95;
+    const v = getSelectedVoice(); if(v) u.voice = v;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('.zh-speak-btn');
+  if(b && !b.closest('#kidsApp')) speakZh(b.getAttribute('data-zh'));
+});
+
 function speakSentence(word){
   try{
     if(!('speechSynthesis' in window)) return;
@@ -3826,6 +3828,7 @@ function renderCard(item, idx){
     <div class="sentence-wrap">
       <div class="sentence">${item.s}</div>
       <button class="sentence-speak-btn" data-word="${item.w}" title="Play sentence" aria-label="Play example sentence for ${item.w}">▶</button>
+      ${(() => { const z = sentZh(item.s); return z ? `<div class="sentence-zh"><span>${z}</span><button type="button" class="zh-speak-btn" data-zh="${z.replace(/"/g, '&quot;')}" aria-label="播放中文例句">🔊 中文</button></div>` : ''; })()}
     </div>
     ${[item.pre, item.root, item.suf].every(v => !v || v === '—') ? '' : `<div class="morph-label">Word breakdown — Prefix / Root / Suffix</div>
     <div class="morph-row">
@@ -4314,11 +4317,9 @@ CATEGORIES.filter(c => c !== 'Checked ✓').forEach(c => {
   opt.textContent = c;
   reviewCategory.appendChild(opt);
 });
-(function(){ const o = document.createElement('option'); o.value = '__reader'; o.textContent = '📰 From my reading'; reviewCategory.insertBefore(o, reviewCategory.children[1] || null); })();
 
 function getReviewPool(){
   const cat = reviewCategory.value;
-  if(cat === '__reader'){ const rw = (window.vocabReaderWords && window.vocabReaderWords()) || new Set(); return DATA.filter(d => rw.has(d.w)); }
   const lvl = reviewLevel.value;
   return DATA.filter(d => (cat === 'All' || d.cat === cat) && (lvl === 'All' || d.level === lvl));
 }
@@ -4425,182 +4426,6 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
-</script>
-<script id="readerScript">
-/* ================= Article Reader (Advanced) ================= */
-(function(){
-  const view = document.getElementById('readerView');
-  const btn = document.getElementById('tabReaderBtn');
-  if(!view || !btn || typeof DATA === 'undefined') return;
-
-  const COMMON_LIST = (["the","to","and","of","a","in","i","is","for","that","you","it","on","with","this","was","be","as","are","have","at","he","not","by","but","from","my","or","we","an","your","all","so","his","they","me","if","one","can","will","just","like","about","up","out","what","has","when","more","do","no","were","who","had","their","there","her","which","time","get","been","would","she","new","people","how","some","also","them","now","other","its","our","than","good","only","after","first","him","into","know","see","two","make","over","think","any","then","could","back","these","us","want","because","go","well","said","way","most","much","very","where","even","should","may","here","need","really","did","right","work","year","years","being","day","too","going","before","off","why","made","still","take","got","many","never","those","life","say","world","down","great","through","last","s","while","best","such","love","man","home","long","look","something","use","same","used","both","every","am","come","part","state","three","around","between","always","better","find","help","high","little","old","since","another","does","own","things","under","during","game","thing","give","house","place","school","again","next","each","mr","without","against","end","found","must","show","big","feel","sure","team","ever","family","keep","might","please","put","money","free","second","someone","away","left","number","city","days","lot","name","night","play","until","company","doing","few","let","real","called","different","having","set","thought","done","however","getting","god","government","group","looking","public","top","women","business","care","start","system","times","week","already","anything","case","nothing","person","today","change","enough","everything","full","live","making","point","read","told","yet","bad","four","hard","mean","once","support","tell","including","music","power","seen","states","stop","water","based","believe","call","head","men","national","small","took","white","came","far","job","side","though","try","went","yes","actually","american","later","less","line","order","party","run","says","service","country","open","season","shit","thank","children","everyone","general","trying","united","using","area","black","d","following","law","makes","together","war","whole","car","face","five","kind","maybe","per","president","story","working","course","games","health","hope","important","least","means","news","within","able","book","early","friends","information","local","oh","post","t","thanks","video","young","ago","others","social","talk","court","fact","given","guys","half","hand","level","mind","often","single","become","body","coming","control","death","food","guy","hours","office","pay","problem","south","true","almost","fuck","history","known","large","lost","m","research","room","several","started","taking","university","win","wrong","along","anyone","else","girl","john","matter","pretty","remember","air","bit","friend","hit","needs","nice","playing","probably","saying","understand","yeah","york","class","close","comes","idea","international","looks","past","possible","wanted","b","cause","due","happy","human","members","months","move","question","r","series","wait","woman","ask","community","data","late","leave","north","saw","special","watch","c","either","fucking","future","light","low","million","morning","police","short","stay","taken","age","buy","deal","rather","reason","red","report","soon","third","turn","whether","among","check","development","form","further","heart","minutes","myself","services","yourself","act","although","asked","child","fire","fun","living","major","media","phone","players","art","behind","building","easy","gonna","market","near","non","plan","political","quite","six","talking","west","works","according","available","e","education","final","former","front","kids","list","ready","sometimes","son","street","bring","college","current","example","experience","heard","london","meet","program","type","baby","chance","father","march","process","song","study","word","across","action","clear","gave","gets","himself","month","outside","self","students","words","board","cost","cut","dr","field","held","instead","main","moment","mother","road","seems","thinking","town","wants","de","department","energy","fight","fine","force","hear","issue","played","points","price","re","rest","results","running","shows","space","summer","term","wife","america","beautiful","date","goes","killed","land","miss","project","sex","shot","site","strong","account","co","especially","eyes","include","june","parents","period","position","record","similar","total","w","above","club","common","died","film","happened","knew","lead","likely","military","perfect","personal","security","share","st","tv","won","x","april","center","county","couple","dead","english","happen","hold","industry","inside","issues","online","player","private","problems","return","rights","sense","star","test","view","weeks","break","british","companies","event","higher","hour","l","member","middle","needed","present","result","sorry","takes","training","wish","answer","boy","design","finally","girls","gold","gone","guess","interest","july","king","learn","policy","society","added","al","alone","average","bank","brought","certain","church","east","hands","hot","longer","medical","movie","original","park","performance","press","received","role","sent","themselves","tried","worked","worth","areas","became","bill","books","cool","director","exactly","giving","ground","meeting","n","provide","questions","relationship","september","sound","source","usually","value","evidence","follow","lives","official","ok","production","rate","reading","round","save","stand","stuff","tax","whatever","amount","blue","countries","david","drive","eat","fall","fast","federal","feeling","felt","green","league","management","match","model","p","picture","size","step","trust","central","changes","england","forward","groups","hey","key","mom","o","page","paid","range","review","science","trade","uk","upon","various","attention","brother","cannot","character","chief","cup","football","hate","james","led","looked","lower","natural","october","property","quality","send","style","u","vote","amazing","august","blood","china","complete","dog","economic","hell","involved","itself","language","lord","november","oil","related","serious","stage","terms","title","add","article","attack","born","damn","decided","decision","enjoy","entire","french","january","kill","met","perhaps","poor","release","situation","technology","turned","website","written","choice","code","considered","continue","council","cover","currently","door","election","european","events","f","financial","foreign","hair","increase","legal","lose","michael","pick","race","seem","seven","sign","simple","simply","staff","super","union","walk","washington","bed","began","built","career","changed","crazy","daily","daughter","december","die","difficult","figure","hospital","knows","loss","modern","ones","paper","parts","popular","published","safe","starting","systems","version","voice","whose","writing","army","australia","earth","forget","goal","h","huge","internet","listen","okay","practice","rules","sea","sir","success","towards","v","waiting","ways","access","base","below","created","deep","followed","la","lol","mark","missing","offer","pass","professional","released","risk","schools","sleep","table","ten","truth","ball","box","build","card","cases","dark","district","europe","george","india","mine","minister","note","percent","piece","products","recent","seeing","straight","visit","wall","wanna","wrote","allowed","boys","culture","etc","fans","february","gives","growth","included","married","officer","pain","paul","places","respect","response","river","rock","shall","speak","specific","standard","tonight","write","y","album","century","charge","cold","create","effect","eight","except","eye","funny","ii","limited","moving","network","peace","provided","recently","required","sales","spent","store","student","tomorrow","track","via","watching","weight","addition","ahead","allow","anti","association","beat","brown","capital","chinese","committee","conference","difference","double","expect","gas","island","moved","normal","plans","population","potential","pressure","radio","russian","station","text","treatment","western","ass","beginning","california","campaign","certainly","completely","content","credit","cross","described","despite","female","focus","g","hi","husband","ice","individual","interesting","j","join","kept","leading","loved","message","miles","nearly","particular","previous","quickly","region","reported","section","sort","speed","travel","consider","contact","drop","fair","feet","jesus","kid","link","positive","sale","throughout","tour","welcome","absolutely","additional","beyond","conditions","earlier","extra","forces","immediately","jobs","leaving","minute","nature","numbers","quick","sell","significant","studies","unless","winning","agree","canada","clean","computer","construction","episode","favorite","income","justice","levels","manager","movement","photo","posted","safety","san","scene","sold","sounds","spend","statement","sun","teams","ability","announced","asking","calling","coach","collection","continued","costs","definitely","designed","expected","friday","gun","happens","heavy","includes","knowledge","particularly","search","subject","train","wide","wow","author","centre","claim","dad","developed","fear","fit","generally","german","global","goals","gotta","hotel","interested","judge","lady","leader","letter","lines","material","named","nobody","opportunity","plus","pre","product","regular","secretary","sister","stories","unit","workers","annual","anymore","bar","battle","brain","contract","degree","families","features","finished","floor","france","growing","hurt","image","insurance","majority","meant","opening","opinion","physical","pro","reach","rule","seriously","sports","stupid","successful","active","administration","approach","australian","biggest","cancer","civil","dance","defense","direction","independent","master","none","reasons","russia","ship","stock","trump","weekend","wonder","worst","africa","awesome","band","beach","cash","clearly","commercial","compared","effort","ended","fan","fighting","imagine","impact","lack","latest","learning","multiple","older","operation","organization","passed","pictures","protect","secret","senior","spring","sunday","telling","wear","activities","address","analysis","anyway","bought","calls","choose","christmas","color","commission","competition","details","direct","dream","easily","finish","grand","increased","indian","k","literally","luck","marriage","names","necessary","patients","resources","rich","skin","speaking","supposed","sweet","thus","touch","yesterday","caught","closed","congress","damage","directly","disease","doctor","doubt","drink","driving","established","facebook","feels","fish","gay","germany","glad","greater","grow","largest","machine","notice","overall","planning","professor","programs","records","reports","shown","sit","trip","associated","basic","captain","carry","cars","crime","effective","effects","explain","fully","highly","holding","japan","laws","male","mrs","parties","plant","reality","smith","spot","texas","winter","worse","advice","agreement","award","block","broken","caused","challenge","characters","christian","comment","equipment","eventually","helped","holy","killing","lived","lots","nation","otherwise","peter","prices","primary","purpose","rates","responsible","shop","showing","sick","teacher","theory","uses","william","agency","avoid","camera","catch","cell","coast","comments","drug","economy","environment","executive","foot","hall","mass","meaning","mission","nine","officers","operations","politics","pop","produced","ran","saturday","status","therefore","trial","truly","weather","activity","app","application","claims","coffee","complex","condition","division","evening","flight","freedom","google","heat","highest","interview","library","located","location","murder","obama","offered","putting","queen","seconds","showed","sitting","standing","stars","walking","accept","actual","appear","attempt","broke","channel","distance","eating","exchange","fat","fell","finding","glass","learned","losing","mobile","northern","opened","placed","powerful","prior","protection","reached","receive","religious","ride","robert","royal","screen","serve","signed","slow","species","speech","traffic","tree","types","vs","wearing","whom","wonderful","agreed","airport","animals","appears","begin","benefits","bottom","cities","demand","engine","everybody","famous","ideas","investment","keeping","lie","notes","partner","plays","raised","runs","sad","solution","songs","sources","southern","square","stopped","structure","thomas","traditional","twice","wind","worry","americans","appeared","becomes","brand","bus","cent","chicago","count","covered","critical","digital","forced","fourth","fresh","lake","mental","mentioned","missed","mostly","mouth","owner","photos","previously","realize","remain","scale","score","separate","smart","starts","surface","throw","tom","totally","twitter","views","wedding","acting","actions","african","arms","benefit","budget","click","estate","failed","faith","fashion","feature","fund","generation","hearing","hill","jack","larger","louis","metal","mid","paris","profile","pull","push","returned","rose","seat","seemed","sexual","target","understanding","village","agent","animal","apply","authority","basis","becoming","chris","draw","dude","employees","enter","ex","follows","foundation","gain","http","individuals","japanese","leaders","memory","prime","projects","ring","rise","selling","served","silver","soul","spread","supply","waste","weird","adult","apparently","artist","chairman","edition","engineering","grade","happening","healthy","institute","method","mike","monday","nations","obviously","option","prison","provides","remains","senate","smaller","somebody","stone","strength","users","wild","window","winner","arrived","bag","bet","camp","cast","christ","continues","correct","dangerous","ed","extremely","firm","greatest","handle","improve","indeed","leaves","movies","negative","prevent","removed","richard","spirit","television","till","trouble","usa","videos","advantage","apart","aware","cat","customers","decide","dinner","dollars","eastern","fifth","function","gift","helping","herself","impossible","influence","items","joe","los","marketing","mary","materials","nor","produce","progress","proud","require","shooting","shut","standards","tells","thinks","van","wood","background","birth","bridge","carried","charles","classes","completed","concept","copy","dear","dogs","drugs","efforts","garden","host","housing","inc","israel","journal","labor","leadership","length","lucky","neither","onto","patient","possibly","prove","rare","setting","skills","software","thousands","tough","units","ad","alive","apple","balance","birthday","bitch","boss","cards","changing","connection","dress","easier","fellow","florida","horse","knowing","liked","magic","managed","map","net","owned","request","stick","turns","vehicle","volume","wake","aid","beauty","believed","billion","busy","buying","cells","concerned","conversation","corner","criminal","cultural","develop","driver","ends","existing","farm","file","fix","fly","frank","guide","images","investigation","mexico","operating","paying","presented","raise","responsibility","roll","slightly","suggest","surprise","technical","thoughts","treat","unique","variety","violence","weapons","yours","youth","appreciate","bigger","breaking","discovered","dont","dry","edge","evil","excited","forever","funds","helps","henry","injury","iron","lovely","mad","magazine","martin","models","offers","ordered","parliament","prepared","reference","religion","sites","somewhere","stated","strategy","teachers","web","wine","accounts","angeles","arm","audience","bay","blog","closer","core","democratic","description","dropped","excellent","exist","figures","forms","guard","honest","issued","joined","jones","lee","lies","likes","medicine","mention","mountain","nuclear","orders","port","presence","reaction","reduce","shoot","sides","solid","spanish","sport","steps","stress","taste","tea","victory","afternoon","assistant","britain","citizens","classic","clothes","decisions","electric","emergency","entered","entirely","facts","failure","festival","flat","fuel","harry","hello","houses","ill","initial","introduced","johnson","kick","links","mail","massive","matters","pair","picked","pieces","plane","plenty","prince","proper","providing","quarter","regional","scott","session","shape","sky","teaching","toward","transfer","upper","useful","valley","watched","willing","windows","zone","accident","advanced","alternative","anywhere","articles","awards","bear","boat","bringing","capacity","cheap","climate","communities","discussion","drinking","duty","fantastic","feelings","flying","governor","hundred","industrial","joint","mix","museum","options","path","plants","policies","promise","proposed","purchase","rain","remove","signs","spending","steel","steve","supporting","terrible","tired","treated","turning","vice","warm","afraid","arts","beer","border","canadian","command","crew","crowd","dating","dick","elements","enemy","ensure","environmental","filled","fixed","forest","intelligence","intended","labour","limit","moon","ocean","powers","profit"]);
-  const COMMON_ALL = new Set(COMMON_LIST), COMMON_CORE = new Set(COMMON_LIST.slice(0, 500));
-  const APP = new Map(); DATA.forEach(d => { const k = d.w.toLowerCase(); if(!APP.has(k)) APP.set(k, d); });
-  const KNOWN_KEY = TV.pk('reader-known'), WORDS_KEY = TV.pk('reader-words'), HIST_KEY = TV.pk('reader-history'), OPT_KEY = TV.pk('reader-common');
-  const rd = (k, d) => { try{ const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; }catch(e){ return d; } };
-  const wr = (k, v) => { try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  let readerKnown = new Set(rd(KNOWN_KEY, []));
-  let readerWords = new Set(rd(WORDS_KEY, []));
-  let useCommon = rd(OPT_KEY, true);
-  const IRREG = {went:'go',gone:'go',was:'be',were:'be',been:'be',saw:'see',seen:'see',took:'take',taken:'take',made:'make',said:'say',told:'tell',got:'get',gotten:'get',gave:'give',given:'give',came:'come',knew:'know',known:'know',thought:'think',brought:'bring',bought:'buy',left:'leave',felt:'feel',kept:'keep',held:'hold',ran:'run',began:'begin',begun:'begin',found:'find',paid:'pay',sold:'sell',sent:'send',built:'build',spent:'spend',rose:'rise',risen:'rise',fell:'fall',fallen:'fall',drew:'draw',drawn:'draw',hit:'hit',cut:'cut',led:'lead',met:'meet',men:'man',women:'woman',children:'child',people:'person'};
-
-  const COMMON = { has: w => (useCommon ? COMMON_ALL : COMMON_CORE).has(w) };
-  function lemmas(w){
-    w = w.replace(/n't$/, '').replace(/'(re|ve|ll|d|m)$/, '');
-    const out = [w];
-    if(IRREG[w]) out.push(IRREG[w]);
-    const rules = [['ies','y'],['ied','y'],['ier','y'],['iest','y'],['ily','y'],['sses','ss'],['es',''],['s',''],['ed',''],['ed','e'],['ing',''],['ing','e'],['ly',''],['er',''],['er','e'],['est',''],['ment',''],['ness',''],['ally','al'],['ally','']];
-    for(const [suf, rep] of rules){
-      if(w.endsWith(suf) && w.length - suf.length >= 3){
-        const b = w.slice(0, -suf.length) + rep; out.push(b);
-        if(/([b-df-hj-np-tv-z])\1$/.test(b)) out.push(b.slice(0, -1)); // stopped -> stop
-      }
-    }
-    return out;
-  }
-  function knownSets(){
-    const srs = (typeof loadSrs === 'function') ? loadSrs() : {};
-    const k = new Set();
-    (typeof checkedWords !== 'undefined' ? checkedWords : new Set()).forEach(w => k.add(w.toLowerCase()));
-    Object.keys(srs).forEach(w => { if((srs[w].reps || 0) >= 2) k.add(w.toLowerCase()); });
-    readerKnown.forEach(w => k.add(w));
-    return k;
-  }
-  function classify(lw, known){
-    const ls = lemmas(lw);
-    if(ls.some(x => known.has(x))) return { st: 'known' };
-    if(ls.some(x => COMMON.has(x)) || /n't$/.test(lw) && ls.some(x => COMMON_CORE.has(x))) return { st: 'known' };
-    const hit = ls.find(x => APP.has(x));
-    if(hit) return { st: 'learn', key: hit, d: APP.get(hit) };
-    return { st: 'new', key: ls[ls.length > 1 && ls[1].length >= 3 ? 0 : 0] };
-  }
-
-  let last = null;
-  function analyze(text){
-    const known = knownSets();
-    const re = /[A-Za-z]+(?:['’\-][A-Za-z]+)*/g;
-    const toks = []; let m;
-    while((m = re.exec(text))){
-      const raw = m[0]; let lw = raw.toLowerCase().replace(/['’]s$/, '').replace(/['’]/g, "'");
-      const prev = text.slice(Math.max(0, m.index - 3), m.index);
-      const sentenceStart = m.index === 0 || /[.!?:\n"“]\s*$/.test(prev) || /^\s*$/.test(prev) && /\n/.test(text.slice(Math.max(0, m.index - 2), m.index));
-      let kind;
-      if(/^[A-Z]{2,}s?$/.test(raw)) kind = 'skip';                     // acronym: GOP, CDC
-      else if(/^[A-Z]/.test(raw) && !sentenceStart && !APP.has(lw) && !COMMON.has(lw) && !lemmas(lw).some(x => APP.has(x))) kind = 'skip'; // a name
-      else if(lw.length < 2) kind = 'skip';
-      else kind = lw.includes('-') ? 'hy' : 'w';
-      let c = { st: 'skip' };
-      if(kind === 'hy'){ const parts = lw.split('-'); const cs = parts.map(p => classify(p, known)); c = cs.every(x => x.st === 'known') ? { st: 'known' } : (cs.find(x => x.st !== 'known')); }
-      else if(kind === 'w') c = classify(lw, known);
-      toks.push({ i: m.index, raw, lw, ...c });
-    }
-    const counted = toks.filter(t => t.st !== 'skip');
-    const knownN = counted.filter(t => t.st === 'known').length;
-    const unk = new Map();
-    counted.filter(t => t.st !== 'known').forEach(t => {
-      const key = t.key || t.lw; const u = unk.get(key) || { key, st: t.st, d: t.d, n: 0, form: t.raw }; u.n++; unk.set(key, u);
-    });
-    const list = [...unk.values()].sort((a, b) => b.n - a.n || (a.st === 'learn' ? -1 : 1));
-    // how many unique words to reach 95%
-    let need = 0, have = knownN; const target = Math.ceil(counted.length * 0.95);
-    for(const u of list){ if(have >= target) break; have += u.n; need++; }
-    return { text, toks, total: counted.length, knownN, pct: counted.length ? Math.round(knownN / counted.length * 1000) / 10 : 0, list, need };
-  }
-
-  function colorFor(p){ return p >= 95 ? '#2d7a4f' : p >= 90 ? '#b7791f' : '#b4231b'; }
-  function articleHtml(r){
-    let out = '', pos = 0;
-    r.toks.forEach(t => {
-      out += esc(r.text.slice(pos, t.i));
-      const w = esc(r.text.substr(t.i, t.raw.length));
-      if(t.st === 'learn') out += `<button type="button" class="rd-w rd-learn" data-key="${esc(t.key)}">${w}</button>`;
-      else if(t.st === 'new') out += `<button type="button" class="rd-w rd-new" data-key="${esc(t.key || t.lw)}">${w}</button>`;
-      else out += w;
-      pos = t.i + t.raw.length;
-    });
-    out += esc(r.text.slice(pos));
-    return out.replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>');
-  }
-  function lookupUrl(w){ return 'https://dictionary.cambridge.org/dictionary/english-chinese-traditional/' + encodeURIComponent(w); }
-
-  function render(){
-    const r = last; const box = document.getElementById('readerResult');
-    if(!r){ box.innerHTML = ''; renderHistory(); return; }
-    const col = colorFor(r.pct);
-    const learn = r.list.filter(u => u.st === 'learn'), neu = r.list.filter(u => u.st === 'new');
-    const row = u => `<div class="rd-row">
-        <div class="rd-wd"><b>${esc(u.key)}</b> <span class="rd-n">×${u.n}</span>${u.d ? `<div class="rd-zh">${esc(u.d.mZh)} · <span>${esc(u.d.m)}</span></div>` : '<div class="rd-zh rd-muted">Not in Vocab Up yet</div>'}</div>
-        <div class="rd-act">${u.d ? `<button type="button" class="rd-btn" data-say="${esc(u.d.w)}" aria-label="Hear ${esc(u.key)}">▶</button>` : `<a class="rd-btn" href="${lookupUrl(u.key)}" target="_blank" rel="noopener">Look up</a>`}<button type="button" class="rd-btn rd-ok" data-know="${esc(u.key)}">I know it</button></div>
-      </div>`;
-    box.innerHTML = `
-      <div class="rd-score" style="border-color:${col}">
-        <div class="rd-pct" style="color:${col}">${r.pct}%</div>
-        <div><b>You know ${r.knownN} of ${r.total} words</b> in this article.<br>
-          ${r.pct >= 95 ? 'Great — you can read this comfortably. 可以輕鬆讀懂。' : `Goal is 95%. Learn <b>${r.need}</b> more ${r.need === 1 ? 'word' : 'words'} below to get there. 目標 95%。`}</div>
-      </div>
-      ${learn.length ? `<div class="rd-sec"><div class="rd-h"><span>In Vocab Up · 已收錄 (${learn.length})</span><button type="button" class="random-btn rd-addall">＋ Add all to Review</button></div>${learn.map(row).join('')}</div>` : ''}
-      ${neu.length ? `<div class="rd-sec"><div class="rd-h"><span>Not in Vocab Up · 未收錄 (${neu.length})</span></div>${neu.slice(0, 80).map(row).join('')}${neu.length > 80 ? `<div class="rd-muted">…and ${neu.length - 80} more</div>` : ''}</div>` : ''}
-      <details class="rd-sec rd-art"><summary>Show article with highlights · 標示生字的原文</summary><div class="rd-legend"><span class="rd-learn">in Vocab Up</span> <span class="rd-new">not yet in Vocab Up</span> · tap a word</div><div class="rd-text"><p>${articleHtml(r)}</p></div></details>`;
-    renderHistory();
-  }
-  function renderHistory(){
-    const h = rd(HIST_KEY, []); const box = document.getElementById('readerHistory');
-    if(!h.length){ box.innerHTML = ''; return; }
-    const avg = arr => arr.length ? Math.round(arr.reduce((s, x) => s + x.pct, 0) / arr.length * 10) / 10 : 0;
-    const recent = h.slice(-5), older = h.slice(-10, -5);
-    box.innerHTML = `<div class="rd-sec"><div class="rd-h"><span>My reading history · 閱讀紀錄</span><span class="rd-muted">avg of last 5: <b>${avg(recent)}%</b>${older.length ? ` (before: ${avg(older)}%)` : ''}</span></div>
-      ${h.slice(-10).reverse().map(x => `<div class="rd-hist"><span>${esc(x.date)}</span><span class="rd-title">${esc(x.title)}</span><b style="color:${colorFor(x.pct)}">${x.pct}%</b></div>`).join('')}
-      <div style="text-align:right"><button type="button" class="voice-test-btn" id="readerHistClear">Clear history</button></div></div>`;
-  }
-  function sheet(key){
-    const d = APP.get(key); const el = document.getElementById('readerSheet');
-    el.innerHTML = `<div class="rd-sheet-in"><div><b style="font-size:20px">${esc(d ? d.w : key)}</b> ${d ? `<span class="rd-muted">${esc(d.ipa)}</span>` : ''}</div>
-      ${d ? `<div class="rd-zh" style="font-size:16px">${esc(d.mZh)}</div><div>${esc(d.m)}</div>` : '<div class="rd-muted">Not in Vocab Up yet.</div>'}
-      <div class="rd-act" style="margin-top:10px">${d ? `<button type="button" class="rd-btn" data-say="${esc(d.w)}">▶ Listen</button><button type="button" class="rd-btn" data-review="${esc(d.w)}">＋ Review</button>` : `<a class="rd-btn" href="${lookupUrl(key)}" target="_blank" rel="noopener">Look up</a>`}<button type="button" class="rd-btn rd-ok" data-know="${esc(key)}">I know it</button><button type="button" class="rd-btn" data-close="1">Close</button></div></div>`;
-    el.style.display = 'block';
-  }
-  function markKnown(key){
-    const d = APP.get(key);
-    if(d && typeof checkedWords !== 'undefined'){ checkedWords.add(d.w); if(typeof saveChecked === 'function') saveChecked(); }
-    else { readerKnown.add(key); wr(KNOWN_KEY, [...readerKnown]); }
-    if(last){ last = analyze(last.text); render(); }
-  }
-  function addReview(words){
-    words.forEach(w => readerWords.add(w)); wr(WORDS_KEY, [...readerWords]);
-  }
-
-  view.addEventListener('click', e => {
-    const t = e.target.closest('button'); if(!t) return;
-    if(t.id === 'readerAnalyzeBtn'){
-      const text = document.getElementById('readerInput').value.trim();
-      if(!text){ return; }
-      last = analyze(text);
-      const h = rd(HIST_KEY, []); const now = new Date();
-      const title = text.split('\n').map(s => s.trim()).find(s => s.length > 3) || 'Article';
-      h.push({ date: (now.getMonth() + 1) + '/' + now.getDate(), title: title.slice(0, 60), pct: last.pct, total: last.total, unknown: last.list.length });
-      wr(HIST_KEY, h.slice(-60)); render();
-      document.getElementById('readerResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-    if(t.id === 'readerClearBtn'){ document.getElementById('readerInput').value = ''; last = null; render(); return; }
-    if(t.id === 'readerHistClear'){ wr(HIST_KEY, []); renderHistory(); return; }
-    if(t.id === 'readerCommon'){ useCommon = !useCommon; wr(OPT_KEY, useCommon); t.textContent = commonLabel(); if(last){ last = analyze(last.text); render(); } return; }
-    if(t.classList.contains('rd-addall')){ addReview(last.list.filter(u => u.d).map(u => u.d.w)); t.textContent = '✓ Added — open Review → 📰 From my reading'; t.disabled = true; return; }
-    if(t.dataset.know){ document.getElementById('readerSheet').style.display = 'none'; markKnown(t.dataset.know); return; }
-    if(t.dataset.say){ try{ speak(t.dataset.say); }catch(err){} return; }
-    if(t.dataset.review){ addReview([t.dataset.review]); t.textContent = '✓ In Review'; t.disabled = true; return; }
-    if(t.dataset.close){ document.getElementById('readerSheet').style.display = 'none'; return; }
-    if(t.classList.contains('rd-w')){ sheet(t.dataset.key); return; }
-  });
-  function commonLabel(){ return useCommon ? '⚙ Assuming you know the 2,000 most common English words — tap for strict mode (500)' : '⚙ Strict mode: assuming only the 500 most basic words — tap to use 2,000'; }
-  document.getElementById('readerCommon').textContent = commonLabel();
-
-  ALL_TABS.push({ btn, view });
-  btn.addEventListener('click', () => { switchTab(btn); renderHistory(); });
-  window.vocabReaderWords = () => readerWords;
-  render();
-})();
 </script>
 
 <script id="kidsData">
@@ -5103,6 +4928,8 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
             <button type="button" class="km-icon-btn" data-act="say-zh" aria-label="聽中文 Hear the Chinese meaning" style="width:52px;height:52px;border-radius:26px;background:#fde68a;box-shadow:0 3px 0 #1b2a4a">${ICON.sound}</button></div>
         </div>
         <div class="km-sent">${markedSentence(d)}</div>
+        <div class="km-sent-tools"><button type="button" class="km-chip-btn" data-act="say-sent" aria-label="Hear the English sentence">${ICON.sound}<span>English</span></button>${sentZh(d.s) ? `<button type="button" class="km-chip-btn zh" data-act="say-sent-zh" aria-label="聽中文例句">${ICON.sound}<span>中文</span></button>` : ''}</div>
+        ${sentZh(d.s) ? `<div class="km-sent-zh">${esc(sentZh(d.s))}</div>` : ''}
         ${wordParts(d)}
       </div>
       <div class="km-grid2">
@@ -5154,7 +4981,6 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
       <div class="km-card" style="display:flex;flex-direction:column;gap:10px">
         <div class="km-muted" style="font-size:14px">FILL IN THE BLANK</div>
         <div class="km-q">${sentence}</div>
-        <div class="km-muted" style="line-height:2">Hint: <span style="color:#1d4ed8">${rubyZh(d)}</span></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
         ${q.opts.map((o, i) => {
@@ -5264,6 +5090,8 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
     else if(act === 'logout'){ TV.logout(); }
     else if(act === 'say'){ sayWord(K.queue[K.idx].w); }
     else if(act === 'say-zh'){ sayZh(K.queue[K.idx].mZh); }
+    else if(act === 'say-sent'){ speakText(K.queue[K.idx].s); }
+    else if(act === 'say-sent-zh'){ sayZh(sentZh(K.queue[K.idx].s)); }
     else if(act === 'know' || act === 'later'){
       const d = K.queue[K.idx];
       if(act === 'know'){
