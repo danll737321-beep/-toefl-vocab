@@ -623,7 +623,8 @@
   .km-world { text-align:left; display:flex; flex-direction:column; gap:6px; align-items:flex-start; padding:16px;
               border-radius:22px; min-height:120px; font-size:18px; line-height:1.1; }
   .km-world small { font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; }
-  .km-word { font-family:'Baloo 2',sans-serif; font-size:44px; font-weight:800; line-height:1; word-break:break-word; }
+  .km-word { font-family:'Nunito','Baloo 2',sans-serif; font-size:40px; font-weight:800; line-height:1.1; letter-spacing:-0.5px; white-space:nowrap; }
+  .km-word.km-wrap { white-space:normal; word-break:normal; overflow-wrap:normal; }
   .km-def { background:#e8f4ff; border-radius:18px; padding:14px 16px; }
   .km-def b { display:block; font-size:18px; line-height:1.35; }
   .km-def .zh { font-size:24px; font-weight:800; color:#1d4ed8; margin-top:8px; line-height:1.9; }
@@ -4920,7 +4921,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
       </div>
       <div class="km-card" style="display:flex;flex-direction:column;gap:14px">
         <div class="km-row" style="justify-content:space-between;align-items:flex-start">
-          <div style="min-width:0"><div class="km-word">${esc(d.w)}</div><div class="km-muted" style="margin-top:4px">${esc(d.pos)} · ${esc(d.ipa)}</div></div>
+          <div style="min-width:0;flex:1"><div class="km-word">${esc(d.w)}</div><div class="km-muted" style="margin-top:4px">${esc(d.pos)} · ${esc(d.ipa)}</div></div>
           <button type="button" class="km-icon-btn" data-act="say" aria-label="Hear the word" style="width:60px;height:60px;border-radius:30px;background:#7dd3fc;box-shadow:0 4px 0 #1b2a4a">${ICON.sound}</button>
         </div>
         <div class="km-def"><b>${esc(d.m)}</b>
@@ -5063,6 +5064,12 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
   function renderKids(){
     const v = K.view;
     kidsRoot.innerHTML = v === 'card' ? card() : v === 'done' ? worldDone() : v === 'quiz' ? quiz() : v === 'reward' ? reward() : v === 'progress' ? progressView() : home();
+    const fitWords = () => kidsRoot.querySelectorAll('.km-word').forEach(el => {
+      el.classList.remove('km-wrap'); let fs = 40; el.style.fontSize = fs + 'px';
+      while (el.scrollWidth > el.clientWidth && fs > 22) { fs -= 2; el.style.fontSize = fs + 'px'; }
+      if (el.scrollWidth > el.clientWidth) el.classList.add('km-wrap');
+    });
+    fitWords(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitWords);
     window.scrollTo(0, 0);
   }
 
