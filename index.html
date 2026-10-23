@@ -3756,7 +3756,19 @@ let zhVoiceG = null;
 function pickZhVoiceG(){
   if(!('speechSynthesis' in window)) return null;
   const vs = window.speechSynthesis.getVoices(); const L = v => (v.lang || '').toLowerCase().replace('_', '-');
-  return vs.find(v => L(v) === 'zh-tw') || vs.find(v => L(v).startsWith('zh-hant')) || vs.find(v => L(v) === 'zh-cn') || vs.find(v => L(v).startsWith('zh')) || null;
+  // Prefer a clear Taiwanese female voice (news-anchor style): iPhone/Mac Meijia, Edge HsiaoChen/HsiaoYu, Windows Hanhan/Yating, Google 國語(臺灣)
+  const FEMALE = ['meijia','美佳','hsiaochen','曉臻','hsiaoyu','曉雨','hanhan','yating','google 國語'];
+  const MALE = ['zhiwei','yunjhe','志偉','雲哲'];
+  const score = v => {
+    const n = (v.name || '').toLowerCase(), l = L(v); let sc = 0;
+    if(l === 'zh-tw' || l.startsWith('zh-hant')) sc += 100; else if(l.startsWith('zh')) sc += 10; else return -1;
+    const fi = FEMALE.findIndex(f => n.includes(f)); if(fi >= 0) sc += 50 - fi;
+    if(MALE.some(m => n.includes(m))) sc -= 60;
+    if(/premium|enhanced|natural|neural|online/.test(n)) sc += 20;
+    return sc;
+  };
+  let best = null, bs = -1; for(const v of vs){ const sc = score(v); if(sc > bs){ bs = sc; best = v; } }
+  return best;
 }
 if('speechSynthesis' in window){ zhVoiceG = pickZhVoiceG(); window.speechSynthesis.addEventListener('voiceschanged', () => { zhVoiceG = pickZhVoiceG(); }); }
 function speakZh(text){
@@ -4826,9 +4838,7 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
   let zhVoice = null;
   function pickZhVoice(){
     if(!('speechSynthesis' in window)) return null;
-    const vs = window.speechSynthesis.getVoices();
-    const L = v => (v.lang || '').toLowerCase().replace('_', '-');
-    return vs.find(v => L(v) === 'zh-tw') || vs.find(v => L(v).startsWith('zh-hant')) || vs.find(v => L(v) === 'zh-cn') || vs.find(v => L(v).startsWith('zh')) || null;
+    return pickZhVoiceG();
   }
   if('speechSynthesis' in window){ zhVoice = pickZhVoice(); window.speechSynthesis.addEventListener('voiceschanged', () => { zhVoice = pickZhVoice(); }); }
   function sayZh(text){
