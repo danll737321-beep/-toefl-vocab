@@ -507,7 +507,7 @@
   .rb-good{background:var(--teal);}
   .rb-easy{background:#3d7a4a;}
 
-  #voiceSelect{
+  #voiceSelect, .zh-voice-select{
     flex:1 1 200px;min-width:0;padding:6px 8px;border:1px solid var(--line);
     border-radius:6px;font-family:var(--serif);font-size:13.5px;background:#fff;
   }
@@ -539,7 +539,7 @@
     .check-label input[type="checkbox"]{width:26px; height:26px; min-width:26px; min-height:26px; max-width:26px; max-height:26px;}
     .speak-btn, .sentence-speak-btn{min-width:44px; min-height:44px;}
     .voice-test-btn{min-height:44px;}
-    #voiceSelect{min-height:44px;}
+    #voiceSelect, .zh-voice-select{min-height:44px;}
   }
 
 
@@ -711,6 +711,11 @@ document.documentElement.classList.add(TV.current ? (TV.current.type === 'kid' ?
       <span>🔊 Voice:</span>
       <select id="voiceSelect"></select>
       <button id="voiceTestBtn" type="button" class="voice-test-btn">▶ Test</button>
+    </div>
+    <div class="sync-bar">
+      <span>🔊 中文語音:</span>
+      <select id="zhVoiceSelect" class="zh-voice-select"></select>
+      <button id="zhVoiceTestBtn" type="button" class="voice-test-btn">▶ 試聽</button>
     </div>
     </details>
 
@@ -3767,16 +3772,42 @@ function pickZhVoiceG(){
     if(/premium|enhanced|natural|neural|online/.test(n)) sc += 20;
     return sc;
   };
+  const saved = (() => { try{ return localStorage.getItem(ZH_VOICE_KEY); }catch(e){ return null; } })();
+  const savedV = saved && vs.find(v => v.voiceURI === saved);
+  if(savedV) return savedV;
   let best = null, bs = -1; for(const v of vs){ const sc = score(v); if(sc > bs){ bs = sc; best = v; } }
   return best;
 }
-if('speechSynthesis' in window){ zhVoiceG = pickZhVoiceG(); window.speechSynthesis.addEventListener('voiceschanged', () => { zhVoiceG = pickZhVoiceG(); }); }
+const ZH_VOICE_KEY = 'toefl-zh-voice-uri';
+const ZH_SAMPLE = '新法律帶來了顯著的改變。';
+function zhVoiceList(){
+  if(!('speechSynthesis' in window)) return [];
+  const L = v => (v.lang || '').toLowerCase().replace('_', '-');
+  const vs = window.speechSynthesis.getVoices().filter(v => L(v).startsWith('zh') || L(v).startsWith('cmn'));
+  const tw = v => L(v) === 'zh-tw' || L(v).startsWith('zh-hant') ? 0 : 1;
+  return vs.sort((a, b) => tw(a) - tw(b) || a.name.localeCompare(b.name));
+}
+function zhVoiceOptions(cur){
+  const vs = zhVoiceList();
+  if(!vs.length) return '<option value="">（找不到中文語音）</option>';
+  return vs.map(v => `<option value="${v.voiceURI.replace(/"/g, '&quot;')}"${cur && cur.voiceURI === v.voiceURI ? ' selected' : ''}>${v.name.replace(/</g, '&lt;')} (${v.lang})</option>`).join('');
+}
+function setZhVoice(uri){
+  try{ localStorage.setItem(ZH_VOICE_KEY, uri); }catch(e){}
+  zhVoiceG = pickZhVoiceG();
+  if(typeof window.__kidsZhRefresh === 'function') window.__kidsZhRefresh();
+  document.querySelectorAll('.zh-voice-select').forEach(sel => { sel.innerHTML = zhVoiceOptions(zhVoiceG); });
+}
+document.addEventListener('change', e => { if(e.target.classList && e.target.classList.contains('zh-voice-select')){ setZhVoice(e.target.value); speakZh(ZH_SAMPLE); } });
+document.addEventListener('click', e => { const t = e.target.closest && e.target.closest('#zhVoiceTestBtn, [data-act=zh-test]'); if(t) speakZh(ZH_SAMPLE); });
+function refreshZhSelects(){ document.querySelectorAll('.zh-voice-select').forEach(sel => { sel.innerHTML = zhVoiceOptions(zhVoiceG); }); }
+if('speechSynthesis' in window){ zhVoiceG = pickZhVoiceG(); refreshZhSelects(); window.speechSynthesis.addEventListener('voiceschanged', () => { zhVoiceG = pickZhVoiceG(); refreshZhSelects(); }); }
 function speakZh(text){
   try{
     if(!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(String(text));
-    u.lang = zhVoiceG ? zhVoiceG.lang : 'zh-TW'; if(zhVoiceG) u.voice = zhVoiceG; u.rate = 0.9;
+    u.lang = zhVoiceG ? zhVoiceG.lang : 'zh-TW'; if(zhVoiceG) u.voice = zhVoiceG; u.rate = 0.95;
     window.speechSynthesis.speak(u);
   }catch(e){}
 }
@@ -4840,13 +4871,14 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
     if(!('speechSynthesis' in window)) return null;
     return pickZhVoiceG();
   }
-  if('speechSynthesis' in window){ zhVoice = pickZhVoice(); window.speechSynthesis.addEventListener('voiceschanged', () => { zhVoice = pickZhVoice(); }); }
+  if('speechSynthesis' in window){ zhVoice = pickZhVoice(); window.speechSynthesis.addEventListener('voiceschanged', () => { zhVoice = pickZhVoice(); refreshZhSelects(); }); }
+  window.__kidsZhRefresh = () => { zhVoice = pickZhVoice(); };
   function sayZh(text){
     try{
       if(!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(String(text).replace(/[,;；、]/g, '，').replace(/[（(].*?[）)]/g, ''));
-      u.lang = zhVoice ? zhVoice.lang : 'zh-TW'; if(zhVoice) u.voice = zhVoice; u.rate = 0.85;
+      u.lang = zhVoice ? zhVoice.lang : 'zh-TW'; if(zhVoice) u.voice = zhVoice; u.rate = 0.9;
       window.speechSynthesis.speak(u);
     }catch(e){}
   }
@@ -4896,6 +4928,11 @@ const KIDS_PY = {"answer":"dá àn huí dá","question":"wèn tí","listen":"lí
       </div>
       <button type="button" class="km-btn sun" data-act="quiz" style="min-height:64px;font-size:22px;margin-top:6px">${ICON.play} Play a quiz</button>
       <button type="button" class="km-btn" data-act="progress">My progress · 我的進度</button>
+      <div class="km-row" style="gap:8px;flex-wrap:wrap;justify-content:center">
+        <span class="km-muted">🔊 中文語音</span>
+        <select class="zh-voice-select" aria-label="中文語音" style="flex:1 1 180px;min-width:0;font-size:16px;padding:8px;border-radius:12px;border:2px solid #1b2a4a">${zhVoiceOptions(zhVoiceG)}</select>
+        <button type="button" class="km-chip-btn" data-act="zh-test">▶ 試聽</button>
+      </div>
       <button type="button" class="km-link" data-act="logout" style="align-self:center">Switch player</button>
     </div>`;
   }
