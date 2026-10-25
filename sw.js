@@ -1,6 +1,6 @@
 // Simple cache-first service worker for offline support.
 // Bump CACHE_NAME whenever index.html changes so the new version is fetched.
-const CACHE_NAME = 'vocab-up-v15';
+const CACHE_NAME = 'vocab-up-v16';
 const ASSETS = [
   './',
   './index.html',
