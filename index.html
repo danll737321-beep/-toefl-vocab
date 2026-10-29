@@ -374,6 +374,40 @@
     #randomSection{padding:14px;}
   }
 
+
+  /* --- Roots section --- */
+  .rt-head{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:10px;padding:18px 16px;margin-bottom:14px;}
+  .rt-morph{font-family:var(--mono);font-size:30px;font-weight:700;color:var(--teal);}
+  .rt-type{display:inline-block;font-size:12px;background:var(--teal-soft);color:var(--teal);border-radius:10px;padding:2px 8px;margin-left:8px;vertical-align:middle;}
+  .rt-mean{font-size:18px;margin-top:4px;} .rt-mean b{color:var(--accent);}
+  .rt-origin{font-size:13px;color:var(--muted);margin-top:2px;font-style:italic;}
+  .rt-tip{margin-top:10px;font-size:15px;background:var(--teal-soft);border-radius:8px;padding:8px 10px;}
+  .rt-tools{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;}
+  .rt-tools button{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:6px 14px;font-family:var(--serif);font-size:14px;cursor:pointer;min-height:36px;}
+  .rt-tools button.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .rt-word{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px;}
+  .rt-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .rt-num{font-family:var(--mono);font-size:13px;color:var(--muted);}
+  .rt-w{font-size:22px;font-weight:700;}
+  .rt-ipa{font-family:var(--mono);font-size:14px;color:var(--muted);}
+  .rt-pos{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:0 6px;}
+  .rt-say{border:1px solid var(--accent);background:var(--card);color:var(--accent);border-radius:16px;padding:2px 10px;font-size:13px;cursor:pointer;min-height:30px;}
+  .rt-eq{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:10px 0 4px;}
+  .rt-part{background:var(--accent-soft);border-radius:8px;padding:4px 8px;text-align:center;}
+  .rt-part.core{background:var(--teal-soft);outline:2px solid var(--teal);}
+  .rt-part b{font-family:var(--mono);font-size:16px;display:block;}
+  .rt-part span{font-size:12px;color:var(--muted);}
+  .rt-op{font-family:var(--mono);color:var(--muted);font-size:18px;}
+  .rt-logic{font-size:15px;color:var(--teal);margin-bottom:8px;}
+  .rt-def{font-size:15px;} .rt-defzh{font-size:16px;font-weight:600;color:var(--accent);margin-top:2px;}
+  .rt-sent{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px;display:flex;gap:8px;align-items:flex-start;}
+  .rt-sent mark{background:#fff1a8;padding:0 2px;}
+  .rt-sentzh{font-size:14px;color:var(--muted);margin-top:4px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .rt-hide .rt-meaning{filter:blur(6px);cursor:pointer;user-select:none;}
+  .rt-hide .rt-meaning.show{filter:none;}
+  .rt-note{font-size:14px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;}
+  @media (max-width:600px){ .rt-w{font-size:20px;} .rt-say{min-height:40px;} .rt-tools button{min-height:44px;} }
+
   /* --- Grammar section --- */
   .tab-bar{display:flex;gap:8px;margin-bottom:18px;}
   .tab-btn{
@@ -531,7 +565,7 @@
     header{margin-bottom:12px;}
     header p{display:none;}
     .tab-bar{position:sticky; top:0; z-index:30; background:var(--paper); margin:0 -4px 14px; padding:8px 4px;
-             padding-top:max(8px, env(safe-area-inset-top)); display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px;}
+             padding-top:max(8px, env(safe-area-inset-top)); display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:4px;}
     .tab-btn{padding:6px 2px; min-height:58px; font-size:14px; line-height:1.2; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;}
     .tab-btn .ti{font-size:17px;} .tab-btn .te{font-size:10.5px; font-weight:500; opacity:.85;}
     .km-adult-bar button{min-height:40px; padding:6px 14px;}
@@ -696,6 +730,7 @@ document.documentElement.classList.add(TV.current ? (TV.current.type === 'kid' ?
     <button id="tabGrammarBtn" class="tab-btn" type="button"><span class="ti">✍️</span> <span class="tz">文法</span> <span class="te">Grammar</span></button>
     <button id="tabQuizBtn" class="tab-btn" type="button"><span class="ti">📝</span> <span class="tz">測驗</span> <span class="te">Quiz</span></button>
     <button id="tabReviewBtn" class="tab-btn" type="button"><span class="ti">🔁</span> <span class="tz">複習</span> <span class="te">Review</span></button>
+    <button id="tabRootsBtn" class="tab-btn" type="button"><span class="ti">🌱</span> <span class="tz">字根</span> <span class="te">Roots</span></button>
   </div>
 
   <div id="vocabView">
@@ -788,6 +823,11 @@ document.documentElement.classList.add(TV.current ? (TV.current.type === 'kid' ?
     </div>
     <div id="quizPlay" style="display:none;"></div>
     <div id="quizResult" style="display:none;"></div>
+  </div>
+
+  <div id="rootsView" style="display:none;">
+    <div class="counter" id="rootsCounter"></div>
+    <div id="rootsList"></div>
   </div>
 
   <div id="reviewView" style="display:none;">
@@ -6284,6 +6324,94 @@ function renderGrammar(){
   grammarList.innerHTML = GRAMMAR.map(renderGrammarCard).join('');
 }
 
+const ROOT_FAMILIES = [
+{
+  id:"port", morph:"port", type:"root", typeZh:"字根",
+  meaning:"carry", meaningZh:"搬運；攜帶",
+  origin:"Latin portāre — to carry",
+  tip:"看到 port，就想像「把東西搬來搬去」。前面加上不同字首，就決定了往哪裡搬。",
+  words:[
+    {w:"transport", ipa:"/trænsˈpɔːrt/", pos:"v / n",
+     parts:[["trans-","across 橫越"],["port","carry 搬運"]], logic:"搬過去 → 運送",
+     m:"to carry people or goods from one place to another", mZh:"運輸；運送",
+     s:"Trucks <mark>transport</mark> most of the country's food.", z:"全國大部分的食物都是靠卡車運送。"},
+    {w:"import", ipa:"/ɪmˈpɔːrt/", pos:"v / n",
+     parts:[["im-","in 進入"],["port","carry 搬運"]], logic:"搬進來 → 進口",
+     m:"to bring goods into a country to sell", mZh:"進口",
+     s:"The U.S. <mark>imports</mark> most of its bananas from Latin America.", z:"美國大部分的香蕉從拉丁美洲進口。"},
+    {w:"export", ipa:"/ɪkˈspɔːrt/", pos:"v / n",
+     parts:[["ex-","out 向外"],["port","carry 搬運"]], logic:"搬出去 → 出口",
+     m:"to send goods to another country to sell", mZh:"出口",
+     s:"Taiwan <mark>exports</mark> chips to companies around the world.", z:"台灣把晶片出口到世界各地的公司。"},
+    {w:"report", ipa:"/rɪˈpɔːrt/", pos:"v / n",
+     parts:[["re-","back 回來"],["port","carry 搬運"]], logic:"把消息帶回來 → 報告；報導",
+     m:"to give information about something that happened", mZh:"報告；報導",
+     s:"Reporters <mark>reported</mark> live from the scene of the fire.", z:"記者在火災現場進行現場報導。"},
+    {w:"support", ipa:"/səˈpɔːrt/", pos:"v / n",
+     parts:[["sup-","under 在下面（sub-）"],["port","carry 搬運"]], logic:"從下面撐著 → 支持",
+     m:"to hold up; to help or agree with", mZh:"支持；支撐",
+     s:"Most voters <mark>support</mark> the new school budget.", z:"大多數選民支持新的學校預算。"},
+    {w:"portable", ipa:"/ˈpɔːrtəbəl/", pos:"adj",
+     parts:[["port","carry 搬運"],["-able","can be 可以被"]], logic:"可以被搬 → 可攜帶的",
+     m:"light and small enough to carry", mZh:"可攜式的；便攜的",
+     s:"A <mark>portable</mark> charger can save you on a long trip.", z:"長途旅行時，行動電源可以救你一命。"},
+    {w:"important", ipa:"/ɪmˈpɔːrtənt/", pos:"adj",
+     parts:[["im-","in 進入"],["port","carry 搬運"],["-ant","having the quality 具有……性質"]], logic:"帶進（意義）→ 有分量的 → 重要的",
+     m:"having great value or effect", mZh:"重要的",
+     s:"Sleep is as <mark>important</mark> as diet and exercise.", z:"睡眠和飲食、運動一樣重要。"},
+    {w:"portfolio", ipa:"/pɔːrtˈfoʊlioʊ/", pos:"n",
+     parts:[["port","carry 搬運"],["folio","sheet of paper 紙頁"]], logic:"帶著走的文件夾 → 作品集；投資組合",
+     m:"a set of work samples; a group of investments", mZh:"作品集；投資組合",
+     s:"Experts say a balanced <mark>portfolio</mark> lowers your risk.", z:"專家說，均衡的投資組合能降低風險。"},
+    {w:"deport", ipa:"/dɪˈpɔːrt/", pos:"v",
+     parts:[["de-","away 離開"],["port","carry 搬運"]], logic:"搬離 → 驅逐出境",
+     m:"to force someone to leave a country", mZh:"驅逐出境",
+     s:"The government plans to <mark>deport</mark> people who entered illegally.", z:"政府計畫將非法入境者驅逐出境。"},
+    {w:"porter", ipa:"/ˈpɔːrtər/", pos:"n",
+     parts:[["port","carry 搬運"],["-er","person who 做……的人"]], logic:"搬東西的人 → 行李員；搬運工",
+     m:"a person who carries bags at a hotel or station", mZh:"行李員；搬運工",
+     s:"The hotel <mark>porter</mark> carried our bags to the room.", z:"飯店行李員把我們的行李送到房間。"}
+  ],
+  confusable:"注意：airport、passport、opportunity 的 port 來自另一個拉丁字 portus（港口），不是「搬運」。"
+}
+];
+
+function rtEsc(s){return String(s).replace(/"/g,'&quot;');}
+function renderRootFamily(f){
+  const words = f.words.map((d,i)=>{
+    const eq = d.parts.map(([p,g])=>`<div class="rt-part${p.replace(/-/g,'')===f.morph?' core':''}"><b>${p}</b><span>${g}</span></div>`).join('<span class="rt-op">+</span>');
+    return `<div class="rt-word">
+      <div class="rt-top"><span class="rt-num">${String(i+1).padStart(2,'0')}</span><span class="rt-w">${d.w}</span><span class="rt-ipa">${d.ipa}</span><span class="rt-pos">${d.pos}</span>
+        <button type="button" class="rt-say" data-en="${rtEsc(d.w)}" aria-label="Play ${d.w}">▶ 發音</button></div>
+      <div class="rt-eq">${eq}</div>
+      <div class="rt-meaning"><div class="rt-logic">💡 ${d.logic}</div>
+      <div class="rt-def">${d.m}</div><div class="rt-defzh">${d.mZh}</div></div>
+      <div class="rt-sent"><span>${d.s}</span><button type="button" class="rt-say" data-en="${rtEsc(d.s.replace(/<\/?mark>/g,''))}" aria-label="Play sentence">▶</button></div>
+      <div class="rt-sentzh rt-meaning"><span>${d.z}</span><button type="button" class="zh-speak-btn" data-zh="${rtEsc(d.z)}" aria-label="播放中文例句">🔊 中文</button></div>
+    </div>`;}).join('');
+  return `<div class="rt-head"><span class="rt-morph">${f.morph}</span><span class="rt-type">${f.typeZh}</span>
+      <div class="rt-mean"><b>${f.meaning}</b> · ${f.meaningZh}</div><div class="rt-origin">${f.origin}</div>
+      <div class="rt-tip">🧭 ${f.tip}</div></div>
+    <div class="rt-tools"><button type="button" class="rt-hide-btn">🙈 遮住意思（自我測驗）</button></div>
+    <div class="rt-words">${words}</div>
+    ${f.confusable?`<div class="rt-note">⚠️ ${f.confusable}</div>`:''}`;
+}
+function renderRoots(){
+  rootsCounter.textContent = `${ROOT_FAMILIES.length} root family · ${ROOT_FAMILIES.reduce((n,f)=>n+f.words.length,0)} words`;
+  rootsList.innerHTML = ROOT_FAMILIES.map(renderRootFamily).join('');
+}
+document.addEventListener('click', e => {
+  const say = e.target.closest && e.target.closest('.rt-say');
+  if(say){ speakText(say.getAttribute('data-en')); return; }
+  const hb = e.target.closest && e.target.closest('.rt-hide-btn');
+  if(hb){ const box = hb.closest('#rootsList'); const on = !box.classList.contains('rt-hide');
+    box.classList.toggle('rt-hide', on); hb.classList.toggle('on', on);
+    hb.textContent = on ? '👀 顯示全部意思' : '🙈 遮住意思（自我測驗）';
+    box.querySelectorAll('.rt-meaning.show').forEach(x=>x.classList.remove('show')); return; }
+  const mm = e.target.closest && e.target.closest('#rootsList.rt-hide .rt-meaning');
+  if(mm && !e.target.closest('button')) mm.classList.add('show');
+});
+
 const tabVocabBtn = document.getElementById('tabVocabBtn');
 const tabGrammarBtn = document.getElementById('tabGrammarBtn');
 const tabQuizBtn = document.getElementById('tabQuizBtn');
@@ -6292,6 +6420,11 @@ const vocabView = document.getElementById('vocabView');
 const grammarView = document.getElementById('grammarView');
 const quizView = document.getElementById('quizView');
 const reviewView = document.getElementById('reviewView');
+const tabRootsBtn = document.getElementById('tabRootsBtn');
+const rootsView = document.getElementById('rootsView');
+const rootsCounter = document.getElementById('rootsCounter');
+const rootsList = document.getElementById('rootsList');
+let rootsRendered = false;
 const grammarCounter = document.getElementById('grammarCounter');
 const grammarList = document.getElementById('grammarList');
 
@@ -6302,6 +6435,7 @@ const ALL_TABS = [
   { btn: tabGrammarBtn, view: grammarView },
   { btn: tabQuizBtn, view: quizView },
   { btn: tabReviewBtn, view: reviewView },
+  { btn: tabRootsBtn, view: rootsView },
 ];
 
 function switchTab(activeBtn){
@@ -6325,6 +6459,11 @@ tabGrammarBtn.addEventListener('click', () => {
 tabQuizBtn.addEventListener('click', () => {
   switchTab(tabQuizBtn);
   updateQuizPoolNote();
+});
+
+tabRootsBtn.addEventListener('click', () => {
+  switchTab(tabRootsBtn);
+  if(!rootsRendered){ renderRoots(); rootsRendered = true; }
 });
 
 tabReviewBtn.addEventListener('click', () => {
