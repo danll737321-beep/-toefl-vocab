@@ -408,6 +408,20 @@
   .rt-note{font-size:14px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;}
   @media (max-width:600px){ .rt-w{font-size:20px;} .rt-say{min-height:40px;} .rt-tools button{min-height:44px;} }
 
+  .rt-groups{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+  .rt-gbtn{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:6px 12px;font-family:var(--serif);font-size:14px;cursor:pointer;min-height:36px;}
+  .rt-gbtn.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .rt-fams{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;margin-bottom:16px;}
+  .rt-fbtn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:6px 4px;cursor:pointer;font-family:var(--serif);text-align:center;border-top:4px solid var(--teal);}
+  .rt-fbtn b{display:block;font-family:var(--mono);font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rt-fbtn span{font-size:12px;color:var(--muted);}
+  .rt-fbtn.rt-prefix{border-top-color:#b5762a;} .rt-fbtn.rt-suffix{border-top-color:#5a4b9b;}
+  .rt-fbtn.on{background:var(--teal-soft);outline:2px solid var(--teal);}
+  .rt-head.rt-prefix{border-left-color:#b5762a;} .rt-head.rt-prefix .rt-morph{color:#b5762a;}
+  .rt-head.rt-suffix{border-left-color:#5a4b9b;} .rt-head.rt-suffix .rt-morph{color:#5a4b9b;}
+  .rt-from{font-family:var(--mono);font-size:14px;color:#5a4b9b;background:#ece9f6;display:inline-block;border-radius:6px;padding:3px 8px;margin-bottom:8px;}
+  #rtFamily{scroll-margin-top:90px;}
+  @media (max-width:600px){ .rt-gbtn{min-height:44px;} .rt-fbtn{min-height:52px;} }
   /* --- Grammar section --- */
   .tab-bar{display:flex;gap:8px;margin-bottom:18px;}
   .tab-btn{
@@ -6324,72 +6338,457 @@ function renderGrammar(){
   grammarList.innerHTML = GRAMMAR.map(renderGrammarCard).join('');
 }
 
-const ROOT_FAMILIES = [
-{
-  id:"port", morph:"port", type:"root", typeZh:"字根",
-  meaning:"carry", meaningZh:"搬運；攜帶",
-  origin:"Latin portāre — to carry",
-  tip:"看到 port，就想像「把東西搬來搬去」。前面加上不同字首，就決定了往哪裡搬。",
-  words:[
-    {w:"transport", ipa:"/trænsˈpɔːrt/", pos:"v / n",
-     parts:[["trans-","across 橫越"],["port","carry 搬運"]], logic:"搬過去 → 運送",
-     m:"to carry people or goods from one place to another", mZh:"運輸；運送",
-     s:"Trucks <mark>transport</mark> most of the country's food.", z:"全國大部分的食物都是靠卡車運送。"},
-    {w:"import", ipa:"/ɪmˈpɔːrt/", pos:"v / n",
-     parts:[["im-","in 進入"],["port","carry 搬運"]], logic:"搬進來 → 進口",
-     m:"to bring goods into a country to sell", mZh:"進口",
-     s:"The U.S. <mark>imports</mark> most of its bananas from Latin America.", z:"美國大部分的香蕉從拉丁美洲進口。"},
-    {w:"export", ipa:"/ɪkˈspɔːrt/", pos:"v / n",
-     parts:[["ex-","out 向外"],["port","carry 搬運"]], logic:"搬出去 → 出口",
-     m:"to send goods to another country to sell", mZh:"出口",
-     s:"Taiwan <mark>exports</mark> chips to companies around the world.", z:"台灣把晶片出口到世界各地的公司。"},
-    {w:"report", ipa:"/rɪˈpɔːrt/", pos:"v / n",
-     parts:[["re-","back 回來"],["port","carry 搬運"]], logic:"把消息帶回來 → 報告；報導",
-     m:"to give information about something that happened", mZh:"報告；報導",
-     s:"Reporters <mark>reported</mark> live from the scene of the fire.", z:"記者在火災現場進行現場報導。"},
-    {w:"support", ipa:"/səˈpɔːrt/", pos:"v / n",
-     parts:[["sup-","under 在下面（sub-）"],["port","carry 搬運"]], logic:"從下面撐著 → 支持",
-     m:"to hold up; to help or agree with", mZh:"支持；支撐",
-     s:"Most voters <mark>support</mark> the new school budget.", z:"大多數選民支持新的學校預算。"},
-    {w:"portable", ipa:"/ˈpɔːrtəbəl/", pos:"adj",
-     parts:[["port","carry 搬運"],["-able","can be 可以被"]], logic:"可以被搬 → 可攜帶的",
-     m:"light and small enough to carry", mZh:"可攜式的；便攜的",
-     s:"A <mark>portable</mark> charger can save you on a long trip.", z:"長途旅行時，行動電源可以救你一命。"},
-    {w:"important", ipa:"/ɪmˈpɔːrtənt/", pos:"adj",
-     parts:[["im-","in 進入"],["port","carry 搬運"],["-ant","having the quality 具有……性質"]], logic:"帶進（意義）→ 有分量的 → 重要的",
-     m:"having great value or effect", mZh:"重要的",
-     s:"Sleep is as <mark>important</mark> as diet and exercise.", z:"睡眠和飲食、運動一樣重要。"},
-    {w:"portfolio", ipa:"/pɔːrtˈfoʊlioʊ/", pos:"n",
-     parts:[["port","carry 搬運"],["folio","sheet of paper 紙頁"]], logic:"帶著走的文件夾 → 作品集；投資組合",
-     m:"a set of work samples; a group of investments", mZh:"作品集；投資組合",
-     s:"Experts say a balanced <mark>portfolio</mark> lowers your risk.", z:"專家說，均衡的投資組合能降低風險。"},
-    {w:"deport", ipa:"/dɪˈpɔːrt/", pos:"v",
-     parts:[["de-","away 離開"],["port","carry 搬運"]], logic:"搬離 → 驅逐出境",
-     m:"to force someone to leave a country", mZh:"驅逐出境",
-     s:"The government plans to <mark>deport</mark> people who entered illegally.", z:"政府計畫將非法入境者驅逐出境。"},
-    {w:"porter", ipa:"/ˈpɔːrtər/", pos:"n",
-     parts:[["port","carry 搬運"],["-er","person who 做……的人"]], logic:"搬東西的人 → 行李員；搬運工",
-     m:"a person who carries bags at a hotel or station", mZh:"行李員；搬運工",
-     s:"The hotel <mark>porter</mark> carried our bags to the room.", z:"飯店行李員把我們的行李送到房間。"}
-  ],
-  confusable:"注意：airport、passport、opportunity 的 port 來自另一個拉丁字 portus（港口），不是「搬運」。"
-}
-];
+const ROOT_FAMILIES = [];
+(function(){
+const F = o => ROOT_FAMILIES.push(o);
+const W = (w,ipa,pos,parts,logic,m,mZh,s,z,from) => ({w,ipa,pos,parts:parts.split('|').map(x=>{const i=x.indexOf(':');return [x.slice(0,i),x.slice(i+1)];}),logic,m,mZh,s,z,from});
+// ROOTS (字根)
+F({id:"port",group:"root",morph:"port",meaning:"carry",meaningZh:"搬運；攜帶",origin:"Latin portāre — to carry",
+ tip:"看到 port，就想像「把東西搬來搬去」。前面加上不同字首，就決定了往哪裡搬。",
+ confusable:"注意：airport、passport、opportunity 的 port 來自另一個拉丁字 portus（港口），不是「搬運」。",
+ words:[
+ W("transport","/trænsˈpɔːrt/","v / n","trans-:across 橫越|port:carry 搬運","搬過去 → 運送","to carry people or goods from one place to another","運輸；運送","Trucks <mark>transport</mark> most of the country's food.","全國大部分的食物都是靠卡車運送。"),
+ W("import","/ɪmˈpɔːrt/","v / n","im-:in 進入|port:carry 搬運","搬進來 → 進口","to bring goods into a country to sell","進口","The U.S. <mark>imports</mark> most of its bananas from Latin America.","美國大部分的香蕉從拉丁美洲進口。"),
+ W("export","/ɪkˈspɔːrt/","v / n","ex-:out 向外|port:carry 搬運","搬出去 → 出口","to send goods to another country to sell","出口","Taiwan <mark>exports</mark> chips to companies around the world.","台灣把晶片出口到世界各地的公司。"),
+ W("report","/rɪˈpɔːrt/","v / n","re-:back 回來|port:carry 搬運","把消息帶回來 → 報告；報導","to give information about something that happened","報告；報導","Reporters <mark>reported</mark> live from the scene of the fire.","記者在火災現場進行現場報導。"),
+ W("support","/səˈpɔːrt/","v / n","sup-:under 在下面（sub-）|port:carry 搬運","從下面撐著 → 支持","to hold up; to help or agree with","支持；支撐","Most voters <mark>support</mark> the new school budget.","大多數選民支持新的學校預算。"),
+ W("portable","/ˈpɔːrtəbəl/","adj","port:carry 搬運|-able:can be 可以被","可以被搬 → 可攜帶的","light and small enough to carry","可攜式的；便攜的","A <mark>portable</mark> charger can save you on a long trip.","長途旅行時，行動電源可以救你一命。"),
+ W("important","/ɪmˈpɔːrtənt/","adj","im-:in 進入|port:carry 搬運|-ant:having the quality 具有……性質","帶進（意義）→ 有分量的 → 重要的","having great value or effect","重要的","Sleep is as <mark>important</mark> as diet and exercise.","睡眠和飲食、運動一樣重要。"),
+ W("portfolio","/pɔːrtˈfoʊlioʊ/","n","port:carry 搬運|folio:sheet of paper 紙頁","帶著走的文件夾 → 作品集；投資組合","a set of work samples; a group of investments","作品集；投資組合","Experts say a balanced <mark>portfolio</mark> lowers your risk.","專家說，均衡的投資組合能降低風險。"),
+ W("deport","/dɪˈpɔːrt/","v","de-:away 離開|port:carry 搬運","搬離 → 驅逐出境","to force someone to leave a country","驅逐出境","The government plans to <mark>deport</mark> people who entered illegally.","政府計畫將非法入境者驅逐出境。"),
+ W("porter","/ˈpɔːrtər/","n","port:carry 搬運|-er:person who 做……的人","搬東西的人 → 行李員；搬運工","a person who carries bags at a hotel or station","行李員；搬運工","The hotel <mark>porter</mark> carried our bags to the room.","飯店行李員把我們的行李送到房間。"),
+]});
+F({id:"spect",group:"root",morph:"spect",meaning:"look",meaningZh:"看",origin:"Latin specere / spectāre — to look at",
+ tip:"spect = 看。字首告訴你「往哪裡看、怎麼看」：往裡看是檢查，往前看是期待。",
+ words:[
+ W("inspect","/ɪnˈspekt/","v","in-:into 往內|spect:look 看","往裡面看 → 檢查","to look at something carefully to check it","檢查；視察","Officials <mark>inspected</mark> the bridge after the earthquake.","地震後官員檢查了這座橋。"),
+ W("respect","/rɪˈspekt/","n / v","re-:back 再一次|spect:look 看","回頭再看一眼 → 重視；尊敬","a feeling of admiration for someone","尊重；尊敬","Good leaders earn the <mark>respect</mark> of their teams.","好的領導者贏得團隊的尊重。"),
+ W("expect","/ɪkˈspekt/","v","ex-:out 向外|spect:look 看","向外張望（等著）→ 期待；預期","to think something will happen","預期；期待","Economists <mark>expect</mark> prices to rise next year.","經濟學家預期明年物價會上漲。"),
+ W("suspect","/səˈspekt/","v / n","sus-:under 由下往上（sub-）|spect:look 看","從下面偷偷看 → 懷疑；嫌疑犯","to think something bad may be true; a person thought to be guilty","懷疑；嫌疑人","Police arrested a <mark>suspect</mark> in the robbery.","警方逮捕了搶案的一名嫌犯。"),
+ W("spectator","/ˈspekteɪtər/","n","spect:look 看|-ator:person who 做……的人","看的人 → 觀眾","a person who watches an event","觀眾","Thousands of <mark>spectators</mark> filled the stadium.","數千名觀眾擠滿了體育場。"),
+ W("prospect","/ˈprɑːspekt/","n","pro-:forward 向前|spect:look 看","往前看 → 前景","the chance that something will happen in the future","前景；可能性","The <mark>prospect</mark> of lower rates lifted stocks.","降息的前景推升了股市。"),
+ W("perspective","/pərˈspektɪv/","n","per-:through 穿過|spect:look 看|-ive:adj./n. 字尾","看穿事情的角度 → 觀點","a way of thinking about something","觀點；角度","Travel gives you a new <mark>perspective</mark> on life.","旅行讓你對人生有新的觀點。"),
+ W("spectacular","/spekˈtækjələr/","adj","spect:look 看|-acle:thing 東西|-ar:adj. 字尾","值得一看的 → 壯觀的","very impressive to see","壯觀的","The fireworks were <mark>spectacular</mark> this year.","今年的煙火非常壯觀。"),
+ W("aspect","/ˈæspekt/","n","a-:toward 朝向（ad-）|spect:look 看","朝某一面看 → 方面","one part or feature of something","方面；層面","Cost is only one <mark>aspect</mark> of the problem.","成本只是這個問題的其中一個層面。"),
+ W("retrospect","/ˈretrəspekt/","n","retro-:backward 往回|spect:look 看","往回看 → 回顧","thinking about the past","回顧；事後看來","In <mark>retrospect</mark>, the warning signs were clear.","事後看來，警訊其實很明顯。"),
+]});
+F({id:"dict",group:"root",morph:"dict",cores:["dict","dic"],meaning:"say; speak",meaningZh:"說",origin:"Latin dīcere / dictum — to say",
+ tip:"dict = 說。預先說出來是預測，反著說是反駁，法官最後說的是判決。",
+ words:[
+ W("predict","/prɪˈdɪkt/","v","pre-:before 事先|dict:say 說","事先說 → 預測","to say what will happen in the future","預測","Forecasters <mark>predict</mark> heavy rain this weekend.","氣象預報員預測週末會下大雨。"),
+ W("dictionary","/ˈdɪkʃəneri/","n","dict:say 說|-ion:n. 名詞|-ary:place/collection 集合","說法的集合 → 字典","a book that lists words and their meanings","字典","Look up the word in a <mark>dictionary</mark>.","在字典裡查這個字。"),
+ W("contradict","/ˌkɑːntrəˈdɪkt/","v","contra-:against 相反|dict:say 說","說相反的話 → 反駁；矛盾","to say the opposite; to disagree with facts","反駁；與……矛盾","The video <mark>contradicts</mark> the official's story.","這段影片和這名官員的說法矛盾。"),
+ W("dictate","/ˈdɪkteɪt/","v","dict:say 說|-ate:v. 動詞","一直說給人聽 → 口述；支配","to say words for someone to write; to control","口述；支配","Demand will <mark>dictate</mark> how many cars the plant builds.","需求將決定這座工廠生產多少輛車。"),
+ W("verdict","/ˈvɜːrdɪkt/","n","ver:true 真實|dict:say 說","說出真相 → 判決","a decision made by a jury","裁決；判決","The jury reached a <mark>verdict</mark> after two days.","陪審團在兩天後做出了判決。"),
+ W("addict","/ˈædɪkt/","n","ad-:to 給|dict:say 說","（古羅馬）被判給別人 → 被綁住的人 → 成癮者","a person who cannot stop using something","成癮者；…迷","He was a coffee <mark>addict</mark> in college.","他大學時是個咖啡成癮者。"),
+ W("indicate","/ˈɪndɪkeɪt/","v","in-:toward 向|dic:say; point 說；指出|-ate:v. 動詞","指出來 → 顯示；表明","to show or point to","顯示；表明","Polls <mark>indicate</mark> a close race.","民調顯示選情很接近。"),
+ W("dictator","/ˈdɪkteɪtər/","n","dict:say 說|-ator:person who 做……的人","說了就算的人 → 獨裁者","a ruler with total power","獨裁者","The <mark>dictator</mark> ruled the country for 30 years.","這位獨裁者統治國家三十年。"),
+ W("jurisdiction","/ˌdʒʊrɪsˈdɪkʃən/","n","juris:law 法律|dict:say 說|-ion:n. 名詞","依法說了算的範圍 → 管轄權","the official power to make legal decisions","管轄權","The case is outside the court's <mark>jurisdiction</mark>.","這個案子不在該法院的管轄範圍內。"),
+ W("diction","/ˈdɪkʃən/","n","dict:say 說|-ion:n. 名詞","說話的方式 → 咬字；措辭","the way you pronounce or choose words","咬字；措辭","Actors work hard on clear <mark>diction</mark>.","演員努力練習清楚的咬字。"),
+]});
+F({id:"struct",group:"root",morph:"struct",meaning:"build; pile up",meaningZh:"建造；堆疊",origin:"Latin struere / structum — to build",
+ tip:"struct = 蓋、堆起來。一起蓋是建造，往下拆是毀壞，往裡面放東西是教導。",
+ words:[
+ W("structure","/ˈstrʌktʃər/","n","struct:build 建造|-ure:n. 名詞","蓋起來的東西 → 結構","the way parts are arranged; a building","結構；建築物","The bridge's <mark>structure</mark> survived the storm.","這座橋的結構撐過了暴風雨。"),
+ W("construct","/kənˈstrʌkt/","v","con-:together 一起|struct:build 建造","堆在一起 → 建造","to build","建造","The city will <mark>construct</mark> a new library.","市政府將興建一座新圖書館。"),
+ W("construction","/kənˈstrʌkʃən/","n","con-:together 一起|struct:build 建造|-ion:n. 名詞","建造這件事 → 施工","the work of building","建設；施工","<mark>Construction</mark> on the highway starts in May.","公路工程將於五月開工。"),
+ W("destruction","/dɪˈstrʌkʃən/","n","de-:down; undo 拆下|struct:build 建造|-ion:n. 名詞","把蓋好的拆掉 → 毀滅","great damage","破壞；毀滅","The wildfire caused widespread <mark>destruction</mark>.","野火造成了大範圍的破壞。"),
+ W("instruct","/ɪnˈstrʌkt/","v","in-:into 往內|struct:build 建造","在腦中搭起（知識）→ 教導；指示","to teach; to tell someone what to do","指示；教導","Officials <mark>instructed</mark> residents to leave.","官員指示居民撤離。"),
+ W("instruction","/ɪnˈstrʌkʃən/","n","in-:into 往內|struct:build 建造|-ion:n. 名詞","教導的內容 → 說明","a direction about what to do","指示；說明","Read the <mark>instructions</mark> before you start.","開始之前先讀說明。"),
+ W("obstruct","/əbˈstrʌkt/","v","ob-:against 擋在前面|struct:build 建造","堆在前面擋路 → 阻礙","to block","阻礙；妨礙","A fallen tree <mark>obstructed</mark> the road.","一棵倒下的樹擋住了道路。"),
+ W("infrastructure","/ˈɪnfrəstrʌktʃər/","n","infra-:below 下面|struct:build 建造|-ure:n. 名詞","底下的建設 → 基礎建設","basic systems such as roads, power, and water","基礎建設","The bill funds roads, bridges, and other <mark>infrastructure</mark>.","這項法案資助道路、橋梁和其他基礎建設。"),
+ W("restructure","/riːˈstrʌktʃər/","v","re-:again 重新|struct:build 建造|-ure:n./v.","重新搭建 → 重組","to organize in a new way","重組；改組","The company will <mark>restructure</mark> its debt.","這家公司將重整債務。"),
+ W("constructive","/kənˈstrʌktɪv/","adj","con-:together 一起|struct:build 建造|-ive:adj. 形容詞","能幫忙蓋起來的 → 建設性的","helpful and useful","有建設性的","Thanks for the <mark>constructive</mark> feedback.","謝謝你有建設性的回饋。"),
+]});
+F({id:"tract",group:"root",morph:"tract",meaning:"pull; draw",meaningZh:"拉；拖",origin:"Latin trahere / tractum — to pull",
+ tip:"tract = 拉。往自己拉是吸引，往別處拉是分心，往下拉是減掉，往外拉是抽出。",
+ words:[
+ W("attract","/əˈtrækt/","v","at-:toward 朝向（ad-）|tract:pull 拉","拉過來 → 吸引","to pull toward; to make people interested","吸引","The festival <mark>attracts</mark> thousands of visitors.","這個節慶吸引了數千名遊客。"),
+ W("attractive","/əˈtræktɪv/","adj","at-:toward 朝向|tract:pull 拉|-ive:adj. 形容詞","會把人拉過來的 → 有吸引力的","pleasing; appealing","有吸引力的","Lower prices make the offer more <mark>attractive</mark>.","較低的價格讓這個方案更有吸引力。"),
+ W("distract","/dɪˈstrækt/","v","dis-:apart 分開|tract:pull 拉","把注意力拉開 → 使分心","to take someone's attention away","使分心","Phones <mark>distract</mark> students in class.","手機讓學生上課分心。"),
+ W("contract","/ˈkɑːntrækt/","n","con-:together 一起|tract:pull 拉","把雙方拉在一起 → 合約","a legal agreement","合約","The player signed a three-year <mark>contract</mark>.","這名球員簽了三年合約。"),
+ W("subtract","/səbˈtrækt/","v","sub-:under; away 從下面|tract:pull 拉","從下面拉走 → 減去","to take one number away from another","減去","<mark>Subtract</mark> 5 from 12.","十二減五。"),
+ W("extract","/ɪkˈstrækt/","v","ex-:out 向外|tract:pull 拉","往外拉 → 抽出；提取","to pull or take something out","提取；拔出","The dentist <mark>extracted</mark> two teeth.","牙醫拔了兩顆牙。"),
+ W("tractor","/ˈtræktər/","n","tract:pull 拉|-or:thing/person that 做……的東西","拉東西的機器 → 拖拉機","a farm vehicle that pulls equipment","拖拉機","The farmer drove a <mark>tractor</mark> across the field.","農夫開著拖拉機穿過田地。"),
+ W("traction","/ˈtrækʃən/","n","tract:pull 拉|-ion:n. 名詞","抓地拉力 → 牽引力；進展","grip on a surface; progress or support","牽引力；（獲得）支持","The idea is gaining <mark>traction</mark> in Congress.","這個想法在國會越來越受支持。"),
+ W("retract","/rɪˈtrækt/","v","re-:back 往回|tract:pull 拉","拉回來 → 撤回","to take back a statement","撤回；收回","The journal <mark>retracted</mark> the study.","期刊撤回了這篇研究。"),
+ W("abstract","/ˈæbstrækt/","adj","abs-:away 離開（ab-）|tract:pull 拉","從具體事物拉出來的 → 抽象的","based on ideas, not real things","抽象的","Love and justice are <mark>abstract</mark> ideas.","愛和正義是抽象的概念。"),
+]});
+F({id:"form",group:"root",morph:"form",meaning:"shape",meaningZh:"形狀；形式",origin:"Latin fōrma — shape, form",
+ tip:"form = 形狀。改變形狀是轉化，重新塑形是改革，同一個形狀是制服。",
+ confusable:"注意：perform 的 form 不是來自 forma，它源自古法語 parfournir（完成）。",
+ words:[
+ W("inform","/ɪnˈfɔːrm/","v","in-:into 往內|form:shape 形狀","在腦中塑出形狀 → 告知","to tell someone facts","通知；告知","Please <mark>inform</mark> us if your address changes.","如果地址變更，請通知我們。"),
+ W("information","/ˌɪnfərˈmeɪʃən/","n","in-:into|form:shape 形狀|-ation:n. 名詞","被告知的內容 → 資訊","facts or knowledge","資訊","For more <mark>information</mark>, visit our website.","想了解更多資訊，請上我們的網站。"),
+ W("reform","/rɪˈfɔːrm/","n / v","re-:again 重新|form:shape 形狀","重新塑形 → 改革","to change a system to make it better","改革","Voters want tax <mark>reform</mark>.","選民希望稅制改革。"),
+ W("transform","/trænsˈfɔːrm/","v","trans-:across; change 轉變|form:shape 形狀","形狀整個轉換 → 徹底改變","to change completely","徹底改變；轉型","AI could <mark>transform</mark> the way we work.","AI 可能徹底改變我們的工作方式。"),
+ W("uniform","/ˈjuːnɪfɔːrm/","n / adj","uni-:one 一個|form:shape 形狀","同一個樣子 → 制服；一致的","special clothes worn by a group","制服；一致的","Students wear a <mark>uniform</mark> at this school.","這所學校的學生穿制服。"),
+ W("platform","/ˈplætfɔːrm/","n","plat:flat 平的|form:shape 形狀","平的形狀 → 平台；月台","a raised flat surface; a service where people share content","平台；月台；政見","Wait on <mark>platform</mark> 3 for the train.","在第三月台等火車。"),
+ W("formula","/ˈfɔːrmjələ/","n","form:shape 形狀|-ula:small 小","小小的固定形式 → 公式；配方","a rule written in math symbols; a recipe","公式；配方","Use this <mark>formula</mark> to find the area.","用這個公式算出面積。"),
+ W("conform","/kənˈfɔːrm/","v","con-:together 一起|form:shape 形狀","跟大家同一個形狀 → 遵守；從眾","to follow rules or what others do","遵守；符合","The building does not <mark>conform</mark> to safety rules.","這棟建築不符合安全規定。"),
+ W("format","/ˈfɔːrmæt/","n","form:shape 形狀|-at:made 被做成","被做成的樣式 → 格式","the way something is arranged","格式；形式","Save the file in PDF <mark>format</mark>.","把檔案存成 PDF 格式。"),
+ W("formation","/fɔːrˈmeɪʃən/","n","form:shape 形狀|-ation:n. 名詞","成形的過程 → 形成；隊形","the process of forming; a shape or pattern","形成；隊形","Geese fly in a V <mark>formation</mark>.","雁群排成 V 字形飛行。"),
+]});
+F({id:"mit",group:"root",morph:"mit / miss",cores:["mit","miss"],meaning:"send; let go",meaningZh:"送；放出",origin:"Latin mittere / missum — to send",
+ tip:"mit 和 miss 是同一個字根的兩種樣子，都是「送出去」。往下送是提交，放進來是承認，送穿過去是傳送。",
+ words:[
+ W("submit","/səbˈmɪt/","v","sub-:under 在下面|mit:send 送","送到（對方）下面 → 提交；服從","to give something to be judged or approved","提交；呈交","<mark>Submit</mark> your application by Friday.","在星期五前提交申請。"),
+ W("permit","/pərˈmɪt/","v / n","per-:through 通過|mit:send; let go 放行","放行通過 → 允許；許可證","to allow; an official document that allows something","允許；許可證","You need a <mark>permit</mark> to park here.","在這裡停車需要許可證。"),
+ W("admit","/ədˈmɪt/","v","ad-:to 進來|mit:let go 放行","放進來 → 承認；准許進入","to say something is true; to allow to enter","承認；准許入場","He <mark>admitted</mark> he made a mistake.","他承認自己犯了錯。"),
+ W("emit","/iˈmɪt/","v","e-:out 向外（ex-）|mit:send 送","送出去 → 排放","to send out gas, light, or heat","排放；散發","Cars <mark>emit</mark> carbon dioxide.","汽車會排放二氧化碳。"),
+ W("transmit","/trænzˈmɪt/","v","trans-:across 橫越|mit:send 送","送過去 → 傳送；傳染","to send or pass from one place or person to another","傳送；傳染","Mosquitoes can <mark>transmit</mark> diseases.","蚊子會傳播疾病。"),
+ W("commit","/kəˈmɪt/","v","com-:together 完全|mit:send 送","把自己完全交出去 → 承諾；犯（罪）","to promise; to do something wrong","承諾；犯（錯）","The company <mark>committed</mark> to cutting emissions.","這家公司承諾減少排放。"),
+ W("mission","/ˈmɪʃən/","n","miss:send 送|-ion:n. 名詞","被派出去做的事 → 任務","an important job someone is sent to do","任務；使命","The <mark>mission</mark> will send astronauts to the moon.","這項任務將把太空人送上月球。"),
+ W("dismiss","/dɪsˈmɪs/","v","dis-:away 離開|miss:send 送","送走 → 解散；不予理會","to send away; to decide something is not important","解散；駁回；不理會","The judge <mark>dismissed</mark> the case.","法官駁回了這個案子。"),
+ W("missile","/ˈmɪsəl/","n","miss:send 送|-ile:able to be 可以被","可以被發射出去的東西 → 飛彈","a weapon that flies to a target","飛彈","The country tested a new <mark>missile</mark>.","這個國家試射了一枚新飛彈。"),
+ W("commission","/kəˈmɪʃən/","n","com-:together 一起|miss:send 送|-ion:n. 名詞","被一起派去辦事的人 → 委員會；佣金","an official group with a job; money paid for each sale","委員會；佣金","The <mark>commission</mark> will study the causes of the fire.","委員會將調查火災的原因。"),
+]});
+F({id:"vis",group:"root",morph:"vis / vid",cores:["vis","vid"],meaning:"see",meaningZh:"看見",origin:"Latin vidēre / vīsum — to see",
+ tip:"vis 和 vid 都是「看見」。在上面看是監督，再看一次是修訂，遠遠看是電視。",
+ words:[
+ W("vision","/ˈvɪʒən/","n","vis:see 看|-ion:n. 名詞","看的能力 → 視力；願景","the ability to see; an idea of the future","視力；願景","The CEO shared her <mark>vision</mark> for the company.","執行長分享了她對公司的願景。"),
+ W("visible","/ˈvɪzəbəl/","adj","vis:see 看|-ible:can be 可以被","可以被看見的 → 看得見的","able to be seen","看得見的","The comet will be <mark>visible</mark> tonight.","今晚可以看見這顆彗星。"),
+ W("visit","/ˈvɪzɪt/","v / n","vis:see 看|-it:again and again 反覆","一再去看 → 拜訪","to go to see a person or place","拜訪；參觀","Millions <mark>visit</mark> the Grand Canyon each year.","每年有數百萬人造訪大峽谷。"),
+ W("revise","/rɪˈvaɪz/","v","re-:again 再|vis:see 看","再看一次 → 修改；修訂","to change after looking again","修訂；修改","The government <mark>revised</mark> its growth forecast.","政府修正了它的成長預測。"),
+ W("supervise","/ˈsuːpərvaɪz/","v","super-:above 在上面|vis:see 看","從上面看著 → 監督","to watch and direct work or people","監督；管理","Teachers <mark>supervise</mark> students at recess.","老師在下課時間看顧學生。"),
+ W("television","/ˈteləvɪʒən/","n","tele-:far 遠|vis:see 看|-ion:n. 名詞","看到遠方的東西 → 電視","a device that shows programs from far away","電視","Fewer people watch cable <mark>television</mark> now.","現在看有線電視的人變少了。"),
+ W("visual","/ˈvɪʒuəl/","adj","vis:see 看|-ual:adj. 形容詞","跟看有關的 → 視覺的","related to seeing","視覺的","Charts are a <mark>visual</mark> way to show data.","圖表是用視覺方式呈現數據。"),
+ W("evidence","/ˈevɪdəns/","n","e-:out 出來|vid:see 看|-ence:n. 名詞","明顯看得出來的東西 → 證據","facts that show something is true","證據","There is no <mark>evidence</mark> of fraud.","沒有詐欺的證據。"),
+ W("video","/ˈvɪdioʊ/","n","vid:see 看|-eo:I （拉丁文「我看」）","我看見 → 影片","recorded moving pictures","影片","The <mark>video</mark> got a million views in a day.","這部影片一天內就有一百萬次觀看。"),
+ W("provide","/prəˈvaɪd/","v","pro-:ahead 事先|vid:see 看","事先看到需要 → 提供","to give something that is needed","提供","The school <mark>provides</mark> free lunch.","學校提供免費午餐。"),
+]});
+F({id:"ject",group:"root",morph:"ject",meaning:"throw",meaningZh:"投；擲",origin:"Latin iacere / iectum — to throw",
+ tip:"ject = 丟。往前丟是計畫或投射，丟回去是拒絕，丟進去是注射。",
+ words:[
+ W("project","/ˈprɑːdʒekt/","n / v","pro-:forward 向前|ject:throw 丟","往前丟 → 計畫；投射；預估","a planned piece of work; to estimate the future","計畫；專案；預估","The science <mark>project</mark> is due next week.","科學專題下週要交。"),
+ W("reject","/rɪˈdʒekt/","v","re-:back 往回|ject:throw 丟","丟回去 → 拒絕","to say no to","拒絕","Voters <mark>rejected</mark> the tax increase.","選民否決了加稅案。"),
+ W("inject","/ɪnˈdʒekt/","v","in-:into 往內|ject:throw 丟","丟進去 → 注射；注入","to put a drug into the body with a needle; to add","注射；注入","The bank <mark>injected</mark> cash into the market.","銀行向市場注入資金。"),
+ W("object","/ˈɑːbdʒekt/ (n), /əbˈdʒekt/ (v)","n / v","ob-:against; in front 在前面|ject:throw 丟","丟在面前的東西 → 物體；反對","a thing; to say you disagree","物體；反對","Many parents <mark>object</mark> to the new rule.","許多家長反對新規定。"),
+ W("subject","/ˈsʌbdʒekt/","n","sub-:under 在下面|ject:throw 丟","丟在下面（被討論）→ 主題；科目","a topic; a school course","主題；科目","Math is my favorite <mark>subject</mark>.","數學是我最喜歡的科目。"),
+ W("eject","/iˈdʒekt/","v","e-:out 向外|ject:throw 丟","丟出去 → 彈出；逐出","to push or force out","彈出；趕出","The pilot <mark>ejected</mark> before the crash.","飛行員在墜機前彈射逃生。"),
+ W("projector","/prəˈdʒektər/","n","pro-:forward 向前|ject:throw 丟|-or:thing that 做……的東西","把影像往前丟的機器 → 投影機","a machine that shows images on a screen","投影機","Turn on the <mark>projector</mark> for the slides.","打開投影機放投影片。"),
+ W("objection","/əbˈdʒekʃən/","n","ob-:against 反對|ject:throw 丟|-ion:n. 名詞","丟出反對 → 異議","a statement that you disagree","異議；反對","The lawyer raised an <mark>objection</mark>.","律師提出了異議。"),
+ W("trajectory","/trəˈdʒektəri/","n","tra-:across 穿過（trans-）|ject:throw 丟|-ory:n. 名詞","被丟出去後的路線 → 軌跡；走勢","the path of a moving object; the direction of change","軌跡；走勢","Inflation is on a downward <mark>trajectory</mark>.","通膨呈下降走勢。"),
+ W("interject","/ˌɪntərˈdʒekt/","v","inter-:between 中間|ject:throw 丟","丟進中間 → 插話","to say something while someone else is talking","插話","She <mark>interjected</mark> with a quick question.","她插話問了一個簡短的問題。"),
+]});
+F({id:"scrib",group:"root",morph:"scrib / script",cores:["scrib","script"],meaning:"write",meaningZh:"寫",origin:"Latin scrībere / scrīptum — to write",
+ tip:"scrib 和 script 都是「寫」。寫下來是描述，事先寫好是開處方，在下面簽名是訂閱。",
+ words:[
+ W("describe","/dɪˈskraɪb/","v","de-:down 下來|scrib:write 寫","寫下來 → 描述","to say what something is like","描述","<mark>Describe</mark> your best friend in three words.","用三個字描述你最好的朋友。"),
+ W("description","/dɪˈskrɪpʃən/","n","de-:down 下來|script:write 寫|-ion:n. 名詞","寫下來的內容 → 描述","words that tell what something is like","描述；說明","Police released a <mark>description</mark> of the suspect.","警方公布了嫌犯的外貌描述。"),
+ W("prescribe","/prɪˈskraɪb/","v","pre-:before 事先|scrib:write 寫","事先寫好（要吃的藥）→ 開處方","to tell a patient to take a medicine","開（藥方）","The doctor <mark>prescribed</mark> antibiotics.","醫生開了抗生素。"),
+ W("prescription","/prɪˈskrɪpʃən/","n","pre-:before 事先|script:write 寫|-ion:n. 名詞","醫生寫的單子 → 處方","a doctor's written order for medicine","處方；處方藥","<mark>Prescription</mark> drug prices are falling.","處方藥價格正在下跌。"),
+ W("subscribe","/səbˈskraɪb/","v","sub-:under 在下面|scrib:write 寫","在下面簽名 → 訂閱","to pay to receive something regularly","訂閱","<mark>Subscribe</mark> to our newsletter.","訂閱我們的電子報。"),
+ W("script","/skrɪpt/","n","script:write 寫","寫好的東西 → 劇本；腳本","the written words of a play or movie","劇本；腳本","The actors read the <mark>script</mark> together.","演員們一起讀劇本。"),
+ W("manuscript","/ˈmænjəskrɪpt/","n","manu:hand 手|script:write 寫","用手寫的 → 手稿；原稿","a book or paper written by hand or before printing","手稿；原稿","The author sent her <mark>manuscript</mark> to publishers.","作者把手稿寄給出版社。"),
+ W("transcript","/ˈtrænskrɪpt/","n","trans-:across 轉過去|script:write 寫","轉寫下來的東西 → 逐字稿；成績單","a written copy of spoken words; a record of grades","逐字稿；成績單","Colleges ask for your high school <mark>transcript</mark>.","大學會要求你的高中成績單。"),
+ W("inscribe","/ɪnˈskraɪb/","v","in-:on; into 在上面|scrib:write 寫","刻寫在上面 → 銘刻","to write or carve words on something","刻；題寫","Names of the soldiers are <mark>inscribed</mark> on the wall.","士兵的名字被刻在牆上。"),
+ W("scribble","/ˈskrɪbəl/","v","scrib:write 寫|-ble:repeated 一直","一直亂寫 → 塗鴉；潦草地寫","to write or draw quickly and messily","潦草地寫；塗鴉","He <mark>scribbled</mark> a note on a napkin.","他在餐巾紙上潦草寫了張紙條。"),
+]});
+// PREFIXES (字首)
+F({id:"un",group:"prefix",morph:"un-",meaning:"not; reverse",meaningZh:"不；相反動作",origin:"Old English un-",
+ tip:"un- 接形容詞是「不」（unhappy），接動詞是「反過來做」（unlock）。看到 un-，就把後面的意思翻過來。",
+ words:[
+ W("unhappy","/ʌnˈhæpi/","adj","un-:not 不|happy:glad 快樂","不快樂","not happy","不快樂的","Many workers are <mark>unhappy</mark> with the new schedule.","許多員工不滿意新的班表。"),
+ W("unfair","/ʌnˈfer/","adj","un-:not 不|fair:just 公平","不公平","not right or equal","不公平的","Critics say the rule is <mark>unfair</mark> to small businesses.","批評者說這項規定對小企業不公平。"),
+ W("unknown","/ʌnˈnoʊn/","adj","un-:not 不|known:known 已知的","不被知道的 → 未知的","not known","未知的","The cause of the fire is still <mark>unknown</mark>.","火災原因仍然不明。"),
+ W("unusual","/ʌnˈjuːʒuəl/","adj","un-:not 不|usual:normal 平常的","不平常 → 不尋常的","not common; strange","不尋常的","Snow in April is <mark>unusual</mark> here.","這裡四月下雪很不尋常。"),
+ W("unlock","/ʌnˈlɑːk/","v","un-:reverse 反向|lock:lock 鎖","把鎖反過來 → 開鎖","to open with a key or code","解鎖","Use your face to <mark>unlock</mark> the phone.","用臉部辨識解鎖手機。"),
+ W("undo","/ʌnˈduː/","v","un-:reverse 反向|do:do 做","把做過的反過來 → 復原","to cancel the effect of something","復原；取消","You can <mark>undo</mark> the last change.","你可以復原上一個變更。"),
+ W("unlikely","/ʌnˈlaɪkli/","adj","un-:not 不|likely:probable 可能的","不太可能","not expected to happen","不太可能的","Rain is <mark>unlikely</mark> this week.","這週不太可能下雨。"),
+ W("unemployed","/ˌʌnɪmˈplɔɪd/","adj","un-:not 不|employed:having a job 有工作的","沒有工作 → 失業的","without a job","失業的","Millions of people are <mark>unemployed</mark>.","有數百萬人失業。"),
+ W("unable","/ʌnˈeɪbəl/","adj","un-:not 不|able:can 能夠","不能夠","not able to do something","不能的","She was <mark>unable</mark> to attend the meeting.","她無法出席會議。"),
+ W("unexpected","/ˌʌnɪkˈspektɪd/","adj","un-:not 不|expected:predicted 預期的","沒預料到的 → 意外的","surprising","出乎意料的","The <mark>unexpected</mark> storm closed schools.","這場突如其來的暴風雨讓學校停課。"),
+]});
+F({id:"re",group:"prefix",morph:"re-",meaning:"again; back",meaningZh:"再；回",origin:"Latin re-",
+ tip:"re- 有兩個意思：「再一次」（rebuild）和「往回」（return）。先試「再」，說不通就試「回」。",
+ words:[
+ W("rebuild","/riːˈbɪld/","v","re-:again 再|build:build 建造","再蓋一次 → 重建","to build again","重建","The town will <mark>rebuild</mark> after the flood.","小鎮將在洪水過後重建。"),
+ W("return","/rɪˈtɜːrn/","v / n","re-:back 回|turn:turn 轉","轉回來 → 返回；歸還","to go or give back","返回；歸還","Please <mark>return</mark> the books by Friday.","請在星期五前還書。"),
+ W("review","/rɪˈvjuː/","v / n","re-:again 再|view:look 看","再看一次 → 複習；審查","to look at again","複習；審查；評論","<mark>Review</mark> your notes before the test.","考試前複習筆記。"),
+ W("recycle","/riːˈsaɪkəl/","v","re-:again 再|cycle:circle 循環","再循環一次 → 回收","to use again by turning into something new","回收再利用","We <mark>recycle</mark> paper and cans.","我們回收紙類和鋁罐。"),
+ W("replace","/rɪˈpleɪs/","v","re-:again; back 再|place:put 放","再放一個上去 → 取代；更換","to put something new in place of","取代；更換","The city will <mark>replace</mark> old water pipes.","市政府將更換老舊水管。"),
+ W("reopen","/riːˈoʊpən/","v","re-:again 再|open:open 開","再開 → 重新開放","to open again","重新開放","The park will <mark>reopen</mark> in spring.","公園將在春天重新開放。"),
+ W("rewrite","/riːˈraɪt/","v","re-:again 再|write:write 寫","再寫一次 → 改寫","to write again in a new way","改寫；重寫","<mark>Rewrite</mark> the paragraph in your own words.","用自己的話改寫這一段。"),
+ W("recall","/rɪˈkɔːl/","v / n","re-:back 回|call:call 叫","叫回來 → 回想；召回","to remember; to ask buyers to return a product","回想；召回","The company <mark>recalled</mark> 1 million cars.","這家公司召回了一百萬輛車。"),
+ W("renew","/rɪˈnuː/","v","re-:again 再|new:new 新","再變新 → 續約；更新","to make valid again","更新；續約","Lawmakers voted to <mark>renew</mark> the program.","議員投票延續這個計畫。"),
+ W("restore","/rɪˈstɔːr/","v","re-:back 回|store:set up 立起","恢復回原本的樣子 → 恢復","to bring back to an earlier condition","恢復；修復","Crews <mark>restored</mark> power to most homes.","工作人員恢復了大多數家戶的電力。"),
+]});
+F({id:"pre",group:"prefix",morph:"pre-",meaning:"before",meaningZh:"之前；預先",origin:"Latin prae-",
+ tip:"pre- = 在……之前。看到 pre-，就問自己「在什麼之前？」",
+ words:[
+ W("preview","/ˈpriːvjuː/","n / v","pre-:before 之前|view:look 看","事先看 → 預覽","a look at something before it is available","預覽；試映","Watch a <mark>preview</mark> of the new movie.","看新電影的預告。"),
+ W("prepare","/prɪˈper/","v","pre-:before 事先|pare:make ready 準備好","事先準備好 → 準備","to get ready","準備","States are <mark>preparing</mark> for the hurricane.","各州正在為颶風做準備。"),
+ W("predict","/prɪˈdɪkt/","v","pre-:before 事先|dict:say 說","事先說 → 預測","to say what will happen","預測","Experts <mark>predict</mark> a cold winter.","專家預測今年冬天會很冷。"),
+ W("prevent","/prɪˈvent/","v","pre-:before 事先|vent:come 來","搶在前面來擋住 → 預防","to stop something before it happens","預防；防止","Vaccines help <mark>prevent</mark> disease.","疫苗有助於預防疾病。"),
+ W("preschool","/ˈpriːskuːl/","n","pre-:before 之前|school:school 學校","上學之前 → 幼兒園","a school for children before kindergarten","幼兒園","The state offers free <mark>preschool</mark>.","州政府提供免費學前教育。"),
+ W("precaution","/prɪˈkɔːʃən/","n","pre-:before 事先|caution:care 小心","事先小心 → 預防措施","an action taken to avoid danger","預防措施","Schools closed as a <mark>precaution</mark>.","學校為了預防起見停課。"),
+ W("premature","/ˌpriːməˈtʃʊr/","adj","pre-:before 之前|mature:ripe 成熟","成熟之前 → 過早的","happening too early","過早的","It's <mark>premature</mark> to celebrate.","現在慶祝還太早。"),
+ W("prefix","/ˈpriːfɪks/","n","pre-:before 之前|fix:attach 固定","固定在前面的 → 字首","letters added to the start of a word","字首","Un- is a common <mark>prefix</mark>.","un- 是一個常見的字首。"),
+ W("preheat","/priːˈhiːt/","v","pre-:before 事先|heat:heat 加熱","事先加熱 → 預熱","to heat an oven before cooking","預熱","<mark>Preheat</mark> the oven to 350 degrees.","把烤箱預熱到 350 度。"),
+ W("prehistoric","/ˌpriːhɪˈstɔːrɪk/","adj","pre-:before 之前|historic:of history 歷史的","有歷史記載之前 → 史前的","from the time before written history","史前的","Scientists found <mark>prehistoric</mark> tools in the cave.","科學家在洞穴中發現了史前工具。"),
+]});
+F({id:"dis",group:"prefix",morph:"dis-",meaning:"not; opposite; apart",meaningZh:"不；相反；分開",origin:"Latin dis-",
+ tip:"dis- 常表示「相反」或「分開」：agree → disagree，connect → disconnect。",
+ words:[
+ W("disagree","/ˌdɪsəˈɡriː/","v","dis-:opposite 相反|agree:agree 同意","同意的相反 → 不同意","to have a different opinion","不同意","Economists <mark>disagree</mark> about the cause.","經濟學家對原因看法分歧。"),
+ W("dislike","/dɪsˈlaɪk/","v","dis-:opposite 相反|like:like 喜歡","喜歡的相反 → 不喜歡","to not like","不喜歡","Many voters <mark>dislike</mark> both candidates.","許多選民兩位候選人都不喜歡。"),
+ W("disappear","/ˌdɪsəˈpɪr/","v","dis-:opposite 相反|appear:come into view 出現","出現的相反 → 消失","to go out of sight","消失","Bees are <mark>disappearing</mark> in some areas.","有些地區的蜜蜂正在消失。"),
+ W("disconnect","/ˌdɪskəˈnekt/","v","dis-:apart 分開|connect:join 連接","把連接分開 → 斷開","to separate or cut a connection","切斷；斷線","The storm <mark>disconnected</mark> thousands of homes.","暴風雨讓數千戶斷線。"),
+ W("dishonest","/dɪsˈɑːnɪst/","adj","dis-:not 不|honest:truthful 誠實","不誠實","not truthful","不誠實的","The ad was <mark>dishonest</mark> about the price.","這則廣告在價格上不誠實。"),
+ W("disable","/dɪsˈeɪbəl/","v","dis-:not 不|able:able 能夠","讓它不能 → 停用；使失去能力","to turn off; to make unable to work","停用；使失效","Hackers <mark>disabled</mark> the security cameras.","駭客讓監視器失效。"),
+ W("discover","/dɪˈskʌvər/","v","dis-:opposite 相反|cover:cover 蓋住","把蓋子掀開 → 發現","to find something new","發現","Scientists <mark>discovered</mark> a new planet.","科學家發現了一顆新行星。"),
+ W("disorder","/dɪsˈɔːrdər/","n","dis-:opposite 相反|order:order 秩序","秩序的相反 → 混亂；失調","a lack of order; an illness","混亂；疾病；失調","Sleep <mark>disorders</mark> affect millions of adults.","睡眠障礙影響數百萬名成人。"),
+ W("distrust","/dɪsˈtrʌst/","n / v","dis-:not 不|trust:trust 信任","不信任","a lack of trust","不信任","Public <mark>distrust</mark> of the media is growing.","大眾對媒體的不信任在增加。"),
+ W("disadvantage","/ˌdɪsədˈvæntɪdʒ/","n","dis-:opposite 相反|advantage:benefit 優勢","優勢的相反 → 劣勢","something that makes success harder","缺點；不利條件","Small towns are at a <mark>disadvantage</mark> in getting funds.","小鎮在爭取經費上處於劣勢。"),
+]});
+F({id:"inter",group:"prefix",morph:"inter-",meaning:"between; among",meaningZh:"在……之間；互相",origin:"Latin inter",
+ tip:"inter- = 在中間、互相。國與國之間是 international，網路之間是 internet。",
+ words:[
+ W("international","/ˌɪntərˈnæʃənəl/","adj","inter-:between 之間|national:of a nation 國家的","國家之間的 → 國際的","between countries","國際的","The airport handles <mark>international</mark> flights.","這座機場有國際航班。"),
+ W("internet","/ˈɪntərnet/","n","inter-:between 之間|net:network 網","網與網之間 → 網際網路","the global computer network","網際網路","Rural areas still lack fast <mark>internet</mark>.","鄉村地區仍缺乏高速網路。"),
+ W("interview","/ˈɪntərvjuː/","n / v","inter-:between 之間|view:see 看","互相看一看 → 面試；訪談","a formal talk to ask questions","面試；訪問","She has a job <mark>interview</mark> on Monday.","她星期一有工作面試。"),
+ W("interact","/ˌɪntərˈækt/","v","inter-:between 互相|act:act 行動","互相行動 → 互動","to talk or work with others","互動；相互作用","Kids learn by <mark>interacting</mark> with others.","孩子透過與他人互動來學習。"),
+ W("interrupt","/ˌɪntəˈrʌpt/","v","inter-:between 中間|rupt:break 破","從中間打斷 → 打斷","to stop someone while they are talking","打斷；中斷","Please don't <mark>interrupt</mark> the speaker.","請不要打斷講者。"),
+ W("interval","/ˈɪntərvəl/","n","inter-:between 之間|val:wall 牆","兩道牆之間的空間 → 間隔","the time or space between two things","間隔；區間","Buses run at 10-minute <mark>intervals</mark>.","公車每十分鐘一班。"),
+ W("intervene","/ˌɪntərˈviːn/","v","inter-:between 中間|vene:come 來","來到中間 → 介入；干預","to get involved to change a situation","介入；干預","The central bank may <mark>intervene</mark> to support the currency.","央行可能介入支撐匯率。"),
+ W("interstate","/ˈɪntərsteɪt/","adj / n","inter-:between 之間|state:state 州","州與州之間的 → 州際的","between U.S. states","州際的；州際公路","Take the <mark>interstate</mark> to Las Vegas.","走州際公路去拉斯維加斯。"),
+ W("interfere","/ˌɪntərˈfɪr/","v","inter-:between 中間|fere:strike 打","從中間打進來 → 干擾","to get involved in a way that causes problems","干涉；干擾","Phones can <mark>interfere</mark> with sleep.","手機可能會干擾睡眠。"),
+ W("interchange","/ˈɪntərtʃeɪndʒ/","n","inter-:between 互相|change:change 交換","互相交換 → 交流道；交換","a place where highways meet; an exchange","交流道；交換","Traffic is heavy near the freeway <mark>interchange</mark>.","高速公路交流道附近車流量很大。"),
+]});
+F({id:"sub",group:"prefix",morph:"sub-",meaning:"under; below",meaningZh:"在下面；次級",origin:"Latin sub",
+ tip:"sub- = 在下面。地下的路是 subway，水下的船是 submarine，畫面下方的字是 subtitle。",
+ words:[
+ W("subway","/ˈsʌbweɪ/","n","sub-:under 下面|way:road 路","地下的路 → 地鐵","an underground train","地鐵","I take the <mark>subway</mark> to work.","我搭地鐵上班。"),
+ W("submarine","/ˈsʌbməriːn/","n","sub-:under 下面|marine:of the sea 海的","海面下的 → 潛水艇","a ship that travels underwater","潛水艇","The navy built a new <mark>submarine</mark>.","海軍建造了一艘新潛艦。"),
+ W("subtitle","/ˈsʌbtaɪtəl/","n","sub-:under 下面|title:title 標題","在畫面下方的字 → 字幕","words at the bottom of a screen","字幕；副標題","I watch movies with <mark>subtitles</mark>.","我看電影會開字幕。"),
+ W("subtract","/səbˈtrækt/","v","sub-:under; away 往下|tract:pull 拉","往下拉走 → 減去","to take one number from another","減去","<mark>Subtract</mark> the cost from the total.","從總數中減去成本。"),
+ W("subtotal","/ˈsʌbtoʊtəl/","n","sub-:below 次級|total:total 總計","次一級的總計 → 小計","the total before tax or other additions","小計","The <mark>subtotal</mark> was $45 before tax.","稅前小計是四十五美元。"),
+ W("suburb","/ˈsʌbɜːrb/","n","sub-:near; under 附近|urb:city 城市","城市旁邊 → 郊區","an area of homes outside a city","郊區","Many families moved to the <mark>suburbs</mark>.","許多家庭搬到了郊區。"),
+ W("subconscious","/sʌbˈkɑːnʃəs/","adj","sub-:below 之下|conscious:aware 有意識的","意識之下的 → 潛意識的","existing in the mind without your awareness","潛意識的","Ads can affect our <mark>subconscious</mark> choices.","廣告會影響我們潛意識的選擇。"),
+ W("subdivide","/ˌsʌbdɪˈvaɪd/","v","sub-:below 再下一層|divide:divide 分","再往下分 → 細分","to divide into smaller parts","細分","The land was <mark>subdivided</mark> into 50 lots.","這塊地被細分成五十塊建地。"),
+ W("substandard","/sʌbˈstændərd/","adj","sub-:below 之下|standard:standard 標準","低於標準的","below the expected level","不合標準的","Tenants complained about <mark>substandard</mark> housing.","房客抱怨住房品質不合格。"),
+ W("subsidy","/ˈsʌbsədi/","n","sub-:under 下面|sid:sit 坐","坐在下面支援的 → 補貼","money a government gives to help pay for something","補貼；補助","Farmers get a <mark>subsidy</mark> for some crops.","農民種植某些作物可獲得補助。"),
+]});
+F({id:"trans",group:"prefix",morph:"trans-",meaning:"across; change",meaningZh:"橫越；轉變",origin:"Latin trans",
+ tip:"trans- = 穿越、轉換。把語言轉過去是翻譯，把東西搬過去是運輸，把形狀轉過去是轉型。",
+ words:[
+ W("transport","/trænsˈpɔːrt/","v","trans-:across 橫越|port:carry 搬運","搬過去 → 運輸","to carry from one place to another","運輸","Ships <mark>transport</mark> oil across the ocean.","船隻橫渡海洋運送石油。"),
+ W("transfer","/trænsˈfɜːr/","v / n","trans-:across 橫越|fer:carry 帶","帶過去 → 轉移；轉乘","to move from one place or person to another","轉移；轉帳；轉學","You can <mark>transfer</mark> money with your phone.","你可以用手機轉帳。"),
+ W("translate","/trænzˈleɪt/","v","trans-:across 橫越|late:carried 被帶","被帶到另一種語言 → 翻譯","to change words into another language","翻譯","Can you <mark>translate</mark> this into Spanish?","你可以把這個翻成西班牙文嗎？"),
+ W("transform","/trænsˈfɔːrm/","v","trans-:change 轉變|form:shape 形狀","形狀轉變 → 徹底改變","to change completely","轉變；轉型","The old factory was <mark>transformed</mark> into apartments.","舊工廠被改建成公寓。"),
+ W("transmit","/trænzˈmɪt/","v","trans-:across 橫越|mit:send 送","送過去 → 傳輸；傳染","to send from one place or person to another","傳送；傳染","The virus is <mark>transmitted</mark> through the air.","這種病毒經由空氣傳播。"),
+ W("transplant","/ˈtrænsplænt/","n","trans-:across 橫越|plant:plant 種","移到另一處種 → 移植","moving an organ from one body to another","移植","She is waiting for a kidney <mark>transplant</mark>.","她正在等待腎臟移植。"),
+ W("transit","/ˈtrænzɪt/","n","trans-:across 橫越|it:go 走","走過去 → 運輸；大眾運輸","the system of buses and trains","大眾運輸；運送","The city is expanding public <mark>transit</mark>.","市政府正在擴大大眾運輸。"),
+ W("transparent","/trænsˈperənt/","adj","trans-:through 穿過|par:appear 顯現|-ent:adj.","可以看穿的 → 透明的","easy to see through; open and honest","透明的；公開的","Voters want a more <mark>transparent</mark> government.","選民希望政府更透明。"),
+ W("transition","/trænˈzɪʃən/","n","trans-:across 橫越|it:go 走|-ion:n. 名詞","走到另一邊 → 轉換期；過渡","a change from one state to another","過渡；轉換","The <mark>transition</mark> to electric cars is speeding up.","轉向電動車的過渡正在加速。"),
+ W("transaction","/trænˈzækʃən/","n","trans-:across 橫越|act:do 做|-ion:n. 名詞","把事情做過去 → 交易","a business deal or payment","交易","Each <mark>transaction</mark> has a small fee.","每筆交易都有小額手續費。"),
+]});
+F({id:"mis",group:"prefix",morph:"mis-",meaning:"wrongly; badly",meaningZh:"錯誤地；不好地",origin:"Old English mis-",
+ tip:"mis- = 弄錯。看到 mis-，就在後面的動作前加上「錯」：錯拼、錯用、誤解。",
+ words:[
+ W("mistake","/mɪˈsteɪk/","n","mis-:wrongly 錯|take:take 拿","拿錯 → 錯誤","something done wrong","錯誤","Everyone makes <mark>mistakes</mark>.","每個人都會犯錯。"),
+ W("misunderstand","/ˌmɪsʌndərˈstænd/","v","mis-:wrongly 錯|understand:understand 理解","理解錯 → 誤解","to understand wrongly","誤解","I think you <mark>misunderstood</mark> my question.","我想你誤解了我的問題。"),
+ W("misspell","/mɪsˈspel/","v","mis-:wrongly 錯|spell:spell 拼字","拼錯","to spell wrongly","拼錯","The sign <mark>misspelled</mark> the city's name.","這塊招牌把城市名稱拼錯了。"),
+ W("misuse","/ˌmɪsˈjuːz/","v / n","mis-:wrongly 錯|use:use 使用","用錯 → 濫用","to use wrongly or for a bad purpose","誤用；濫用","He was accused of <mark>misusing</mark> public funds.","他被控挪用公款。"),
+ W("mislead","/mɪsˈliːd/","v","mis-:wrongly 錯|lead:guide 帶領","帶錯路 → 誤導","to make someone believe something false","誤導","The ad <mark>misled</mark> customers about the price.","這則廣告在價格上誤導了顧客。"),
+ W("misplace","/mɪsˈpleɪs/","v","mis-:wrongly 錯|place:put 放","放錯地方 → 放錯；遺失","to put something where you can't find it","放錯地方","I <mark>misplaced</mark> my keys again.","我又把鑰匙放到不知道哪裡去了。"),
+ W("misbehave","/ˌmɪsbɪˈheɪv/","v","mis-:badly 不好地|behave:act 表現","表現不好 → 不守規矩","to behave badly","行為不端；調皮","Students who <mark>misbehave</mark> lose recess.","不守規矩的學生會失去下課時間。"),
+ W("misinformation","/ˌmɪsɪnfərˈmeɪʃən/","n","mis-:wrongly 錯|information:facts 資訊","錯誤的資訊 → 不實資訊","false information","錯誤資訊；不實訊息","<mark>Misinformation</mark> spreads quickly online.","不實資訊在網路上傳得很快。"),
+ W("misprint","/ˈmɪsprɪnt/","n","mis-:wrongly 錯|print:print 印","印錯 → 印刷錯誤","a mistake in printing","印刷錯誤","There's a <mark>misprint</mark> on page 12.","第十二頁有一個印刷錯誤。"),
+ W("miscount","/mɪsˈkaʊnt/","v","mis-:wrongly 錯|count:count 計算","算錯","to count wrongly","算錯","Officials <mark>miscounted</mark> some ballots.","官員算錯了一些選票。"),
+]});
+F({id:"over",group:"prefix",morph:"over-",meaning:"too much; above; beyond",meaningZh:"過度；在上方；越過",origin:"Old English ofer",
+ tip:"over- 最常見的意思是「太多」（overeat），也可以是「在上面」或「越過」（overlook、overseas）。",
+ words:[
+ W("overeat","/ˌoʊvərˈiːt/","v","over-:too much 過度|eat:eat 吃","吃太多","to eat too much","吃太多","People often <mark>overeat</mark> during the holidays.","人們在假期常常吃太多。"),
+ W("oversleep","/ˌoʊvərˈsliːp/","v","over-:too much 過度|sleep:sleep 睡","睡太多 → 睡過頭","to sleep longer than planned","睡過頭","I <mark>overslept</mark> and missed the bus.","我睡過頭錯過了公車。"),
+ W("overload","/ˌoʊvərˈloʊd/","v / n","over-:too much 過度|load:load 裝載","裝太多 → 超載","to put too much on or in","超載；負擔過重","Heat waves can <mark>overload</mark> the power grid.","熱浪可能讓電網超載。"),
+ W("overpriced","/ˌoʊvərˈpraɪst/","adj","over-:too much 過度|priced:having a price 定價的","定價太高的 → 太貴的","costing more than it is worth","定價過高的","Critics say the tickets are <mark>overpriced</mark>.","批評者說門票太貴了。"),
+ W("overflow","/ˌoʊvərˈfloʊ/","v","over-:above; beyond 越過|flow:flow 流","流到外面 → 溢出","to spill over the edges","溢出；滿溢","Heavy rain made the river <mark>overflow</mark>.","大雨讓河水氾濫。"),
+ W("overtime","/ˈoʊvərtaɪm/","n","over-:beyond 超過|time:time 時間","超過的時間 → 加班；延長賽","extra time worked beyond normal hours","加班；延長賽","Nurses worked <mark>overtime</mark> during the crisis.","危機期間護理師加班工作。"),
+ W("overlook","/ˌoʊvərˈlʊk/","v","over-:above; past 越過|look:look 看","視線越過去 → 忽略；俯瞰","to fail to notice; to have a view from above","忽略；俯瞰","Don't <mark>overlook</mark> the small details.","不要忽略小細節。"),
+ W("overseas","/ˌoʊvərˈsiːz/","adv / adj","over-:across 越過|seas:seas 海","越過海 → 在海外","in or to another country across the sea","在海外；海外的","Many students study <mark>overseas</mark>.","許多學生出國留學。"),
+ W("overcrowded","/ˌoʊvərˈkraʊdɪd/","adj","over-:too much 過度|crowded:full of people 擁擠的","太擠的 → 過度擁擠的","having too many people","過度擁擠的","The prison is badly <mark>overcrowded</mark>.","這座監獄嚴重人滿為患。"),
+ W("overreact","/ˌoʊvəriˈækt/","v","over-:too much 過度|react:respond 反應","反應過度","to react too strongly","反應過度","Markets often <mark>overreact</mark> to bad news.","市場常常對壞消息反應過度。"),
+]});
+F({id:"co",group:"prefix",morph:"co- / com- / con-",cores:["co","com","con","col"],meaning:"together; with",meaningZh:"一起；共同",origin:"Latin com- / cum (with)",
+ tip:"co-、com-、con-、col- 都是同一個字首的變形，意思是「一起」。後面字母不同時，為了好發音而變形。",
+ words:[
+ W("cooperate","/koʊˈɑːpəreɪt/","v","co-:together 一起|operate:work 運作","一起運作 → 合作","to work together","合作","The two countries agreed to <mark>cooperate</mark> on climate.","兩國同意在氣候議題上合作。"),
+ W("coworker","/ˈkoʊwɜːrkər/","n","co-:together 一起|worker:worker 工作者","一起工作的人 → 同事","a person you work with","同事","My <mark>coworkers</mark> threw me a party.","同事們幫我辦了一場派對。"),
+ W("coexist","/ˌkoʊɪɡˈzɪst/","v","co-:together 一起|exist:exist 存在","一起存在 → 共存","to live together peacefully","共存","Humans and wildlife must learn to <mark>coexist</mark>.","人類和野生動物必須學會共存。"),
+ W("combine","/kəmˈbaɪn/","v","com-:together 一起|bine:two 兩個","兩個合在一起 → 結合","to join together","結合；合併","<mark>Combine</mark> the flour and sugar.","把麵粉和糖混合在一起。"),
+ W("connect","/kəˈnekt/","v","con-:together 一起|nect:tie 綁","綁在一起 → 連接","to join two things","連接","The new bridge <mark>connects</mark> the two towns.","新橋連接了兩個小鎮。"),
+ W("collect","/kəˈlekt/","v","col-:together 一起|lect:gather 收集","聚在一起 → 收集","to gather things together","收集","Volunteers <mark>collected</mark> food for families.","志工們為家庭募集食物。"),
+ W("compare","/kəmˈper/","v","com-:with 一起|par:equal 相等","放在一起看是否相等 → 比較","to look at how things are alike or different","比較","<mark>Compare</mark> prices before you buy.","買之前先比價。"),
+ W("contact","/ˈkɑːntækt/","n / v","con-:together 一起|tact:touch 碰觸","碰在一起 → 接觸；聯絡","touching; communicating with someone","接觸；聯絡","Please <mark>contact</mark> us with any questions.","有任何問題請與我們聯絡。"),
+ W("community","/kəˈmjuːnəti/","n","com-:together 一起|mun:shared duty 共同的|-ity:n. 名詞","大家共有的 → 社區；群體","a group of people living in one area or sharing interests","社區；群體","The <mark>community</mark> came together after the fire.","火災過後社區團結在一起。"),
+ W("conference","/ˈkɑːnfərəns/","n","con-:together 一起|fer:carry; bring 帶|-ence:n. 名詞","把人帶到一起 → 會議","a large formal meeting","會議；記者會","The mayor held a news <mark>conference</mark>.","市長舉行了記者會。"),
+]});
+// SUFFIXES (字尾) — 10th arg: part-of-speech shift
+F({id:"tion",group:"suffix",morph:"-tion",cores:["tion","ation","ition","ion"],meaning:"the act or result of (→ noun)",meaningZh:"……的動作或結果（變名詞）",origin:"Latin -tiō",
+ tip:"-tion 把動詞變成名詞。看到 -tion 結尾，就知道它是名詞，意思通常是「做這件事」或「做完的結果」。",
+ words:[
+ W("action","/ˈækʃən/","n","act:do 做|-ion:n. 名詞","做這件事 → 行動","something done","行動","Leaders promised <mark>action</mark> on climate change.","領導人承諾對氣候變遷採取行動。","act (v) → action (n)"),
+ W("protection","/prəˈtekʃən/","n","protect:guard 保護|-tion:n. 名詞","保護這件事 → 保護","keeping safe from harm","保護","Sunscreen gives <mark>protection</mark> from UV rays.","防曬乳能防護紫外線。","protect (v) → protection (n)"),
+ W("education","/ˌedʒuˈkeɪʃən/","n","educate:teach 教育|-tion:n. 名詞","教育這件事 → 教育","teaching and learning","教育","The state spends more on <mark>education</mark> this year.","州政府今年增加了教育支出。","educate (v) → education (n)"),
+ W("collection","/kəˈlekʃən/","n","collect:gather 收集|-ion:n. 名詞","收集的結果 → 收藏品","a group of things gathered","收藏；收集","The museum has a huge art <mark>collection</mark>.","這座博物館有大量藝術收藏。","collect (v) → collection (n)"),
+ W("prediction","/prɪˈdɪkʃən/","n","predict:say before 預測|-ion:n. 名詞","預測的結果 → 預言","a statement about the future","預測","His <mark>prediction</mark> turned out to be right.","他的預測結果是對的。","predict (v) → prediction (n)"),
+ W("pollution","/pəˈluːʃən/","n","pollute:make dirty 污染|-tion:n. 名詞","污染的結果 → 污染","dirty or harmful things in air, water, or soil","污染","Air <mark>pollution</mark> is worse in winter.","空氣污染在冬天更嚴重。","pollute (v) → pollution (n)"),
+ W("celebration","/ˌselɪˈbreɪʃən/","n","celebrate:celebrate 慶祝|-tion:n. 名詞","慶祝這件事 → 慶典","a party or event for a happy occasion","慶祝活動","The city held a <mark>celebration</mark> for the team.","市政府為球隊舉辦了慶祝活動。","celebrate (v) → celebration (n)"),
+ W("competition","/ˌkɑːmpəˈtɪʃən/","n","compete:try to win 競爭|-ition:n. 名詞","競爭這件事 → 比賽；競爭","a contest; trying to be better than others","競爭；比賽","More <mark>competition</mark> means lower prices.","競爭越多，價格越低。","compete (v) → competition (n)"),
+ W("invention","/ɪnˈvenʃən/","n","invent:create 發明|-ion:n. 名詞","發明的結果 → 發明物","something new that someone made","發明","The phone was a world-changing <mark>invention</mark>.","電話是一項改變世界的發明。","invent (v) → invention (n)"),
+ W("information","/ˌɪnfərˈmeɪʃən/","n","inform:tell 告知|-ation:n. 名詞","告知的內容 → 資訊","facts about something","資訊","Call for more <mark>information</mark>.","來電詢問更多資訊。","inform (v) → information (n)"),
+]});
+F({id:"ment",group:"suffix",morph:"-ment",meaning:"the act or result of (→ noun)",meaningZh:"……的行為或結果（變名詞）",origin:"Latin -mentum",
+ tip:"-ment 也是把動詞變名詞：agree → agreement，pay → payment。",
+ words:[
+ W("agreement","/əˈɡriːmənt/","n","agree:agree 同意|-ment:n. 名詞","同意的結果 → 協議","a deal between people or groups","協議","The two sides reached an <mark>agreement</mark>.","雙方達成了協議。","agree (v) → agreement (n)"),
+ W("movement","/ˈmuːvmənt/","n","move:move 移動|-ment:n. 名詞","移動這件事 → 動作；運動","an act of moving; a group working for change","移動；社會運動","The civil rights <mark>movement</mark> changed history.","民權運動改變了歷史。","move (v) → movement (n)"),
+ W("payment","/ˈpeɪmənt/","n","pay:pay 付|-ment:n. 名詞","付出去的錢 → 付款","money paid","付款；款項","Your first <mark>payment</mark> is due in June.","你的第一筆款項六月到期。","pay (v) → payment (n)"),
+ W("government","/ˈɡʌvərnmənt/","n","govern:rule 統治|-ment:n. 名詞","統治的組織 → 政府","the group that rules a country or state","政府","The <mark>government</mark> announced new rules.","政府宣布了新規定。","govern (v) → government (n)"),
+ W("development","/dɪˈveləpmənt/","n","develop:grow 發展|-ment:n. 名詞","發展的過程 → 發展；開發案","growth; a new building project","發展；開發","The <mark>development</mark> will add 500 homes.","這個開發案將新增五百戶住宅。","develop (v) → development (n)"),
+ W("treatment","/ˈtriːtmənt/","n","treat:care for 治療|-ment:n. 名詞","治療的方式 → 治療","medical care for an illness","治療；對待","The new <mark>treatment</mark> works for most patients.","新療法對大多數病人有效。","treat (v) → treatment (n)"),
+ W("equipment","/ɪˈkwɪpmənt/","n","equip:supply 配備|-ment:n. 名詞","配備的東西 → 設備","the tools needed for a job","設備；器材","The school bought new sports <mark>equipment</mark>.","學校買了新的運動器材。","equip (v) → equipment (n)"),
+ W("enjoyment","/ɪnˈdʒɔɪmənt/","n","enjoy:enjoy 享受|-ment:n. 名詞","享受的感覺 → 樂趣","pleasure","樂趣；享受","Reading for <mark>enjoyment</mark> builds vocabulary.","為樂趣而閱讀能增加字彙量。","enjoy (v) → enjoyment (n)"),
+ W("improvement","/ɪmˈpruːvmənt/","n","improve:make better 改善|-ment:n. 名詞","改善的結果 → 進步","a change that makes something better","改善；進步","Test scores showed big <mark>improvement</mark>.","考試成績顯示出大幅進步。","improve (v) → improvement (n)"),
+ W("statement","/ˈsteɪtmənt/","n","state:say clearly 陳述|-ment:n. 名詞","陳述的內容 → 聲明","something said or written officially","聲明；陳述","The company released a <mark>statement</mark> on Monday.","這家公司週一發表了聲明。","state (v) → statement (n)"),
+]});
+F({id:"able",group:"suffix",morph:"-able / -ible",cores:["able","ible"],meaning:"can be ___ed (→ adjective)",meaningZh:"可以被……的（變形容詞）",origin:"Latin -ābilis / -ibilis",
+ tip:"-able / -ible = 可以被……的。wash → washable（可以洗的），afford → affordable（負擔得起的）。",
+ words:[
+ W("comfortable","/ˈkʌmftəbəl/","adj","comfort:ease 舒適|-able:adj. 有……的","帶給人舒適的 → 舒服的","giving a relaxed feeling","舒適的","These shoes are very <mark>comfortable</mark>.","這雙鞋很舒服。","comfort (n) → comfortable (adj)"),
+ W("washable","/ˈwɑːʃəbəl/","adj","wash:wash 洗|-able:can be 可以被","可以被洗的","able to be washed","可洗的","The cover is machine <mark>washable</mark>.","這個外套可以用洗衣機洗。","wash (v) → washable (adj)"),
+ W("readable","/ˈriːdəbəl/","adj","read:read 讀|-able:can be 可以被","可以被讀的 → 易讀的","easy to read","易讀的","The report is short and <mark>readable</mark>.","這份報告簡短易讀。","read (v) → readable (adj)"),
+ W("reliable","/rɪˈlaɪəbəl/","adj","rely:depend 依賴|-able:can be 可以被","可以被依賴的 → 可靠的","able to be trusted","可靠的","We need <mark>reliable</mark> public transit.","我們需要可靠的大眾運輸。","rely (v) → reliable (adj)"),
+ W("affordable","/əˈfɔːrdəbəl/","adj","afford:have money for 負擔得起|-able:can be 可以被","可以被負擔的 → 價格合理的","not too expensive","負擔得起的","The city needs more <mark>affordable</mark> housing.","這座城市需要更多平價住宅。","afford (v) → affordable (adj)"),
+ W("enjoyable","/ɪnˈdʒɔɪəbəl/","adj","enjoy:enjoy 享受|-able:can be 可以被","可以被享受的 → 令人愉快的","pleasant","令人愉快的","It was an <mark>enjoyable</mark> trip.","這是一趟愉快的旅程。","enjoy (v) → enjoyable (adj)"),
+ W("breakable","/ˈbreɪkəbəl/","adj","break:break 打破|-able:can be 可以被","可以被打破的 → 易碎的","easy to break","易碎的","Pack <mark>breakable</mark> items carefully.","易碎物品要小心包裝。","break (v) → breakable (adj)"),
+ W("valuable","/ˈvæljəbəl/","adj","value:worth 價值|-able:having 有……的","有價值的 → 寶貴的","worth a lot","有價值的；寶貴的","Time is the most <mark>valuable</mark> thing we have.","時間是我們擁有最寶貴的東西。","value (n) → valuable (adj)"),
+ W("predictable","/prɪˈdɪktəbəl/","adj","predict:say before 預測|-able:can be 可以被","可以被預測的","easy to know in advance","可預測的","The movie's ending was <mark>predictable</mark>.","這部電影的結局很好猜。","predict (v) → predictable (adj)"),
+ W("visible","/ˈvɪzəbəl/","adj","vis:see 看|-ible:can be 可以被","可以被看見的","able to be seen","看得見的","The mountains are <mark>visible</mark> on clear days.","天氣晴朗時看得到山。","vis (see) → visible (adj)"),
+]});
+F({id:"ful",group:"suffix",morph:"-ful",meaning:"full of (→ adjective)",meaningZh:"充滿……的（變形容詞）",origin:"Old English full",
+ tip:"-ful = 充滿。help → helpful（充滿幫助的），注意字尾只有一個 l。",
+ words:[
+ W("helpful","/ˈhelpfəl/","adj","help:help 幫助|-ful:full of 充滿","充滿幫助的 → 有幫助的","giving help","有幫助的","The staff were very <mark>helpful</mark>.","工作人員非常熱心幫忙。","help (n) → helpful (adj)"),
+ W("careful","/ˈkerfəl/","adj","care:attention 注意|-ful:full of 充滿","充滿注意的 → 小心的","paying attention to avoid mistakes","小心的","Be <mark>careful</mark> on icy roads.","在結冰的路上要小心。","care (n) → careful (adj)"),
+ W("useful","/ˈjuːsfəl/","adj","use:use 用途|-ful:full of 充滿","充滿用途的 → 有用的","helpful for doing something","有用的","This app has many <mark>useful</mark> features.","這個 App 有很多實用功能。","use (n) → useful (adj)"),
+ W("powerful","/ˈpaʊərfəl/","adj","power:strength 力量|-ful:full of 充滿","充滿力量的 → 強大的","having great strength or influence","強大的；有權勢的","The storm brought <mark>powerful</mark> winds.","暴風雨帶來強風。","power (n) → powerful (adj)"),
+ W("beautiful","/ˈbjuːtɪfəl/","adj","beauty:beauty 美|-ful:full of 充滿","充滿美的 → 美麗的","very pretty","美麗的","The park is <mark>beautiful</mark> in spring.","春天的公園很美。","beauty (n) → beautiful (adj)"),
+ W("thankful","/ˈθæŋkfəl/","adj","thank:thanks 感謝|-ful:full of 充滿","充滿感謝的 → 感激的","feeling grateful","感激的","We are <mark>thankful</mark> for our volunteers.","我們很感謝志工們。","thank (v) → thankful (adj)"),
+ W("colorful","/ˈkʌlərfəl/","adj","color:color 顏色|-ful:full of 充滿","充滿顏色的 → 多彩的","having many bright colors","色彩繽紛的","The market sells <mark>colorful</mark> fruit.","市場賣著色彩繽紛的水果。","color (n) → colorful (adj)"),
+ W("successful","/səkˈsesfəl/","adj","success:success 成功|-ful:full of 充滿","充滿成功的 → 成功的","achieving what you want","成功的","The launch was <mark>successful</mark>.","這次發射很成功。","success (n) → successful (adj)"),
+ W("peaceful","/ˈpiːsfəl/","adj","peace:peace 和平|-ful:full of 充滿","充滿和平的 → 平靜的","calm; without violence","和平的；寧靜的","The protest was <mark>peaceful</mark>.","這場抗議是和平的。","peace (n) → peaceful (adj)"),
+ W("harmful","/ˈhɑːrmfəl/","adj","harm:damage 傷害|-ful:full of 充滿","充滿傷害的 → 有害的","causing damage","有害的","Too much sugar is <mark>harmful</mark> to kids.","太多糖分對孩子有害。","harm (n) → harmful (adj)"),
+]});
+F({id:"less",group:"suffix",morph:"-less",meaning:"without (→ adjective)",meaningZh:"沒有……的（變形容詞）",origin:"Old English lēas",
+ tip:"-less = 沒有。它常是 -ful 的相反：careful ↔ careless，useful ↔ useless。",
+ words:[
+ W("careless","/ˈkerləs/","adj","care:attention 注意|-less:without 沒有","沒有注意 → 粗心的","not paying attention","粗心的","A <mark>careless</mark> mistake cost him points.","一個粗心的錯誤讓他被扣分。","care (n) → careless (adj)"),
+ W("homeless","/ˈhoʊmləs/","adj","home:home 家|-less:without 沒有","沒有家的 → 無家可歸的","without a place to live","無家可歸的","The shelter helps <mark>homeless</mark> families.","這個收容所幫助無家可歸的家庭。","home (n) → homeless (adj)"),
+ W("helpless","/ˈhelpləs/","adj","help:help 幫助|-less:without 沒有","沒有幫助的 → 無助的","unable to help yourself","無助的","The kitten was cold and <mark>helpless</mark>.","小貓又冷又無助。","help (n) → helpless (adj)"),
+ W("useless","/ˈjuːsləs/","adj","use:use 用途|-less:without 沒有","沒有用途 → 無用的","having no use","無用的","This old charger is <mark>useless</mark>.","這個舊充電器沒用了。","use (n) → useless (adj)"),
+ W("endless","/ˈendləs/","adj","end:end 結束|-less:without 沒有","沒有盡頭 → 無止境的","seeming never to stop","無止境的","The meeting felt <mark>endless</mark>.","這場會議感覺沒完沒了。","end (n) → endless (adj)"),
+ W("fearless","/ˈfɪrləs/","adj","fear:fear 恐懼|-less:without 沒有","沒有恐懼 → 無畏的","not afraid","無所畏懼的","The <mark>fearless</mark> firefighter ran into the building.","無畏的消防員衝進了大樓。","fear (n) → fearless (adj)"),
+ W("hopeless","/ˈhoʊpləs/","adj","hope:hope 希望|-less:without 沒有","沒有希望 → 絕望的","without hope","沒有希望的","Don't feel <mark>hopeless</mark>; things will get better.","別絕望，事情會好轉的。","hope (n) → hopeless (adj)"),
+ W("wireless","/ˈwaɪərləs/","adj","wire:wire 電線|-less:without 沒有","沒有電線 → 無線的","without wires","無線的","Most phones have <mark>wireless</mark> charging now.","大多數手機現在都有無線充電。","wire (n) → wireless (adj)"),
+ W("harmless","/ˈhɑːrmləs/","adj","harm:damage 傷害|-less:without 沒有","沒有傷害 → 無害的","not dangerous","無害的","Most spiders are <mark>harmless</mark> to people.","大多數蜘蛛對人無害。","harm (n) → harmless (adj)"),
+ W("priceless","/ˈpraɪsləs/","adj","price:price 價格|-less:without 沒有","無法標價的 → 無價的","too valuable to have a price","無價的","The painting is <mark>priceless</mark>.","這幅畫是無價之寶。","price (n) → priceless (adj)"),
+]});
+F({id:"ize",group:"suffix",morph:"-ize",meaning:"to make; to become (→ verb)",meaningZh:"使……化；做……（變動詞）",origin:"Greek -izein",
+ tip:"-ize 把名詞或形容詞變成動詞：modern → modernize（使現代化）。英式拼法常寫成 -ise。",
+ words:[
+ W("organize","/ˈɔːrɡənaɪz/","v","organ:part of a system 組成部分|-ize:v. 動詞","使成為有組織的 → 組織；整理","to arrange or plan","整理；籌辦","Students <mark>organized</mark> a food drive.","學生們發起了募集食物活動。","organ → organize (v)"),
+ W("apologize","/əˈpɑːlədʒaɪz/","v","apology:saying sorry 道歉|-ize:v. 動詞","做出道歉 → 道歉","to say you are sorry","道歉","The airline <mark>apologized</mark> for the delay.","航空公司為延誤道歉。","apology (n) → apologize (v)"),
+ W("memorize","/ˈmeməraɪz/","v","memory:memory 記憶|-ize:v. 動詞","放進記憶 → 背誦","to learn by heart","記住；背","<mark>Memorize</mark> these ten words.","背下這十個字。","memory (n) → memorize (v)"),
+ W("modernize","/ˈmɑːdərnaɪz/","v","modern:new 現代的|-ize:v. 動詞","使現代 → 現代化","to make more up to date","使現代化","The airport plans to <mark>modernize</mark> its terminals.","機場計畫將航廈現代化。","modern (adj) → modernize (v)"),
+ W("criticize","/ˈkrɪtɪsaɪz/","v","critic:judge 評論者|-ize:v. 動詞","做評判 → 批評","to say what is wrong with something","批評","Critics <mark>criticized</mark> the plan as too costly.","批評者指責這項計畫成本太高。","critic (n) → criticize (v)"),
+ W("prioritize","/praɪˈɔːrətaɪz/","v","priority:most important thing 優先事項|-ize:v. 動詞","排出優先 → 優先處理","to decide what is most important","優先處理","Schools must <mark>prioritize</mark> student safety.","學校必須優先考量學生安全。","priority (n) → prioritize (v)"),
+ W("summarize","/ˈsʌməraɪz/","v","summary:short version 摘要|-ize:v. 動詞","做摘要 → 總結","to give the main points","總結；摘要","<mark>Summarize</mark> the article in two sentences.","用兩句話總結這篇文章。","summary (n) → summarize (v)"),
+ W("finalize","/ˈfaɪnəlaɪz/","v","final:last 最後的|-ize:v. 動詞","使成為最終版 → 敲定","to complete the last details","最後確定；敲定","The two sides <mark>finalized</mark> the deal.","雙方敲定了這筆交易。","final (adj) → finalize (v)"),
+ W("specialize","/ˈspeʃəlaɪz/","v","special:particular 特別的|-ize:v. 動詞","變得專門 → 專攻","to focus on one area","專精；專攻","She <mark>specializes</mark> in children's health.","她專攻兒童健康。","special (adj) → specialize (v)"),
+ W("visualize","/ˈvɪʒuəlaɪz/","v","visual:seen 視覺的|-ize:v. 動詞","讓它可以被看見 → 想像畫面","to form a picture in your mind","想像；視覺化","<mark>Visualize</mark> the story as you read.","閱讀時在腦中想像故事的畫面。","visual (adj) → visualize (v)"),
+]});
+F({id:"ity",group:"suffix",morph:"-ity",meaning:"state or quality of (→ noun)",meaningZh:"……的狀態或性質（變名詞）",origin:"Latin -itās",
+ tip:"-ity 把形容詞變成抽象名詞：real → reality，secure → security。注意 -able 變成 -ability。",
+ words:[
+ W("ability","/əˈbɪləti/","n","able:can 能夠|-ity:n. 名詞","能夠的狀態 → 能力","the power or skill to do something","能力","Reading builds the <mark>ability</mark> to think clearly.","閱讀能培養清楚思考的能力。","able (adj) → ability (n)"),
+ W("activity","/ækˈtɪvəti/","n","active:busy 活躍的|-ity:n. 名詞","活躍的狀態 → 活動","something people do","活動","After-school <mark>activities</mark> keep kids busy.","課後活動讓孩子保持忙碌。","active (adj) → activity (n)"),
+ W("security","/sɪˈkjʊrəti/","n","secure:safe 安全的|-ity:n. 名詞","安全的狀態 → 安全","protection from danger","安全；保全","Airport <mark>security</mark> lines were long.","機場安檢隊伍很長。","secure (adj) → security (n)"),
+ W("reality","/riˈæləti/","n","real:true 真實的|-ity:n. 名詞","真實的狀態 → 現實","what is actually true","現實","AI is becoming a <mark>reality</mark> in classrooms.","AI 正在教室中成為現實。","real (adj) → reality (n)"),
+ W("electricity","/ɪˌlekˈtrɪsəti/","n","electric:using power 電的|-ity:n. 名詞","電的性質 → 電力","power used for lights and machines","電；電力","The storm cut <mark>electricity</mark> to 50,000 homes.","暴風雨讓五萬戶停電。","electric (adj) → electricity (n)"),
+ W("possibility","/ˌpɑːsəˈbɪləti/","n","possible:can happen 可能的|-ity:n. 名詞","可能的狀態 → 可能性","something that might happen","可能性","There is a <mark>possibility</mark> of snow tonight.","今晚有可能下雪。","possible (adj) → possibility (n)"),
+ W("majority","/məˈdʒɔːrəti/","n","major:greater 較大的|-ity:n. 名詞","較大的那一部分 → 多數","more than half","大多數；多數","A <mark>majority</mark> of voters support the plan.","多數選民支持這項計畫。","major (adj) → majority (n)"),
+ W("creativity","/ˌkriːeɪˈtɪvəti/","n","creative:imaginative 有創意的|-ity:n. 名詞","有創意的性質 → 創造力","the ability to make new things","創造力","Art class builds <mark>creativity</mark>.","美術課能培養創造力。","creative (adj) → creativity (n)"),
+ W("responsibility","/rɪˌspɑːnsəˈbɪləti/","n","responsible:in charge 負責的|-ity:n. 名詞","負責的狀態 → 責任","a duty to take care of something","責任","Feeding the dog is my <mark>responsibility</mark>.","餵狗是我的責任。","responsible (adj) → responsibility (n)"),
+ W("curiosity","/ˌkjʊriˈɑːsəti/","n","curious:wanting to know 好奇的|-ity:n. 名詞","好奇的狀態 → 好奇心","a strong wish to know or learn","好奇心","Children are full of <mark>curiosity</mark>.","孩子們充滿好奇心。","curious (adj) → curiosity (n)"),
+]});
+F({id:"ive",group:"suffix",morph:"-ive",cores:["ive","itive","ative"],meaning:"tending to; having the quality of (→ adjective)",meaningZh:"有……傾向的（變形容詞）",origin:"Latin -īvus",
+ tip:"-ive 把動詞變成形容詞，意思是「會……的、具有……性質的」：create → creative（有創意的）。",
+ words:[
+ W("active","/ˈæktɪv/","adj","act:do 做|-ive:adj. 形容詞","常常在做的 → 活躍的","busy doing things","活躍的；積極的","Stay <mark>active</mark> to stay healthy.","保持活動才能保持健康。","act (v) → active (adj)"),
+ W("creative","/kriˈeɪtɪv/","adj","create:make 創造|-ive:adj. 形容詞","會創造的 → 有創意的","good at making new things","有創意的","She found a <mark>creative</mark> way to save money.","她想到一個有創意的省錢方法。","create (v) → creative (adj)"),
+ W("expensive","/ɪkˈspensɪv/","adj","expense:cost 花費|-ive:adj. 形容詞","會花錢的 → 昂貴的","costing a lot","昂貴的","Housing is <mark>expensive</mark> in California.","加州的房價很貴。","expense (n) → expensive (adj)"),
+ W("effective","/ɪˈfektɪv/","adj","effect:result 效果|-ive:adj. 形容詞","有效果的 → 有效的","working well","有效的","The vaccine is highly <mark>effective</mark>.","這支疫苗非常有效。","effect (n) → effective (adj)"),
+ W("attractive","/əˈtræktɪv/","adj","attract:pull toward 吸引|-ive:adj. 形容詞","會吸引人的 → 有吸引力的","pleasing; appealing","有吸引力的","Low rents make the area <mark>attractive</mark>.","低租金讓這一區很有吸引力。","attract (v) → attractive (adj)"),
+ W("protective","/prəˈtektɪv/","adj","protect:guard 保護|-ive:adj. 形容詞","會保護的 → 保護的","keeping safe","保護性的","Wear <mark>protective</mark> gloves.","戴上防護手套。","protect (v) → protective (adj)"),
+ W("supportive","/səˈpɔːrtɪv/","adj","support:help 支持|-ive:adj. 形容詞","會支持的 → 支持的","giving help and kindness","支持的；給予鼓勵的","My family is very <mark>supportive</mark>.","我的家人非常支持我。","support (v) → supportive (adj)"),
+ W("competitive","/kəmˈpetətɪv/","adj","compete:try to win 競爭|-itive:adj. 形容詞","愛競爭的 → 有競爭力的","wanting to win; able to compete","競爭的；有競爭力的","The job market is very <mark>competitive</mark>.","就業市場競爭很激烈。","compete (v) → competitive (adj)"),
+ W("impressive","/ɪmˈpresɪv/","adj","impress:make people admire 使印象深刻|-ive:adj. 形容詞","會讓人印象深刻的","making people admire it","令人印象深刻的","Her test scores are <mark>impressive</mark>.","她的考試成績令人印象深刻。","impress (v) → impressive (adj)"),
+ W("informative","/ɪnˈfɔːrmətɪv/","adj","inform:tell 告知|-ative:adj. 形容詞","會提供資訊的 → 有知識性的","giving useful information","資訊豐富的","The talk was short and <mark>informative</mark>.","這場演講簡短又有內容。","inform (v) → informative (adj)"),
+]});
+F({id:"er",group:"suffix",morph:"-er / -or",cores:["er","or"],meaning:"a person or thing that does (→ noun)",meaningZh:"做……的人或東西（變名詞）",origin:"Old English -ere; Latin -or",
+ tip:"-er / -or = 做這個動作的人。teach → teacher，act → actor。英文本族語多用 -er，拉丁來源多用 -or。",
+ words:[
+ W("teacher","/ˈtiːtʃər/","n","teach:teach 教|-er:person who 做……的人","教書的人 → 老師","a person who teaches","老師","My <mark>teacher</mark> gives great feedback.","我的老師給的回饋很棒。","teach (v) → teacher (n)"),
+ W("driver","/ˈdraɪvər/","n","drive:drive 開車|-er:person who 做……的人","開車的人 → 司機","a person who drives","司機；駕駛","The bus <mark>driver</mark> waved to the kids.","公車司機向孩子們揮手。","drive (v) → driver (n)"),
+ W("player","/ˈpleɪər/","n","play:play 玩；比賽|-er:person who 做……的人","比賽的人 → 球員；玩家","a person who plays a game or sport","球員；玩家","The <mark>player</mark> scored two goals.","這名球員進了兩球。","play (v) → player (n)"),
+ W("worker","/ˈwɜːrkər/","n","work:work 工作|-er:person who 做……的人","工作的人 → 工人；員工","a person who works","工人；勞工","Factory <mark>workers</mark> went on strike.","工廠工人發起罷工。","work (v) → worker (n)"),
+ W("writer","/ˈraɪtər/","n","write:write 寫|-er:person who 做……的人","寫作的人 → 作家","a person who writes","作家；作者","The <mark>writer</mark> won a prize for her novel.","這位作家的小說得了獎。","write (v) → writer (n)"),
+ W("speaker","/ˈspiːkər/","n","speak:speak 說|-er:person/thing that 做……的人或物","說話的人或東西 → 演講者；喇叭","a person who gives a talk; a device that plays sound","演講者；喇叭","The <mark>speaker</mark> talked about climate change.","講者談到了氣候變遷。","speak (v) → speaker (n)"),
+ W("actor","/ˈæktər/","n","act:act 演|-or:person who 做……的人","演戲的人 → 演員","a person who acts in plays or movies","演員","The <mark>actor</mark> won an award.","這位演員得了獎。","act (v) → actor (n)"),
+ W("inventor","/ɪnˈventər/","n","invent:create 發明|-or:person who 做……的人","發明的人 → 發明家","a person who invents things","發明家","The <mark>inventor</mark> holds 30 patents.","這位發明家擁有三十項專利。","invent (v) → inventor (n)"),
+ W("visitor","/ˈvɪzɪtər/","n","visit:visit 拜訪|-or:person who 做……的人","來拜訪的人 → 訪客","a person who visits","訪客；遊客","The park had a record number of <mark>visitors</mark>.","公園的遊客人數創下紀錄。","visit (v) → visitor (n)"),
+ W("director","/dəˈrektər/","n","direct:guide 指導|-or:person who 做……的人","指揮的人 → 導演；主管","a person who leads a group or makes a film","主任；導演","The <mark>director</mark> of the museum gave a tour.","博物館館長帶領參觀。","direct (v) → director (n)"),
+]});
+F({id:"ly",group:"suffix",morph:"-ly",meaning:"in a ___ way (→ adverb)",meaningZh:"以……的方式（變副詞）",origin:"Old English -līce",
+ tip:"-ly 把形容詞變成副詞，用來形容動作：quick → quickly（很快地）。字尾是 y 的要先改成 i：easy → easily。",
+ words:[
+ W("quickly","/ˈkwɪkli/","adv","quick:fast 快的|-ly:adv. 副詞","以快的方式 → 很快地","fast","很快地","The fire spread <mark>quickly</mark>.","火勢迅速蔓延。","quick (adj) → quickly (adv)"),
+ W("slowly","/ˈsloʊli/","adv","slow:not fast 慢的|-ly:adv. 副詞","以慢的方式 → 慢慢地","not fast","慢慢地","Prices are <mark>slowly</mark> coming down.","物價正在慢慢下降。","slow (adj) → slowly (adv)"),
+ W("carefully","/ˈkerfəli/","adv","careful:paying attention 小心的|-ly:adv. 副詞","以小心的方式 → 小心地","with care","小心地；仔細地","Read the directions <mark>carefully</mark>.","仔細閱讀說明。","careful (adj) → carefully (adv)"),
+ W("suddenly","/ˈsʌdənli/","adv","sudden:quick and unexpected 突然的|-ly:adv. 副詞","以突然的方式 → 突然地","quickly and unexpectedly","突然地","The lights <mark>suddenly</mark> went out.","燈突然熄了。","sudden (adj) → suddenly (adv)"),
+ W("finally","/ˈfaɪnəli/","adv","final:last 最後的|-ly:adv. 副詞","在最後 → 終於","at last","終於；最後","The bill <mark>finally</mark> passed.","法案終於通過了。","final (adj) → finally (adv)"),
+ W("really","/ˈriːəli/","adv","real:true 真的|-ly:adv. 副詞","真的 → 真正地；非常","truly; very","真的；非常","The show was <mark>really</mark> good.","這場表演真的很好看。","real (adj) → really (adv)"),
+ W("safely","/ˈseɪfli/","adv","safe:not in danger 安全的|-ly:adv. 副詞","以安全的方式 → 安全地","without danger","安全地","The plane landed <mark>safely</mark>.","飛機安全降落。","safe (adj) → safely (adv)"),
+ W("quietly","/ˈkwaɪətli/","adv","quiet:silent 安靜的|-ly:adv. 副詞","以安靜的方式 → 安靜地","without much noise","安靜地；悄悄地","The company <mark>quietly</mark> raised prices.","這家公司悄悄地漲價了。","quiet (adj) → quietly (adv)"),
+ W("easily","/ˈiːzəli/","adv","easy:not hard 容易的|-ly:adv. 副詞（y→i）","以容易的方式 → 輕易地","without difficulty","輕易地","She <mark>easily</mark> won the race.","她輕鬆贏得比賽。","easy (adj) → easily (adv)"),
+ W("usually","/ˈjuːʒuəli/","adv","usual:normal 平常的|-ly:adv. 副詞","以平常的方式 → 通常","most of the time","通常","Traffic is <mark>usually</mark> heavy at 5 p.m.","下午五點通常交通很擠。","usual (adj) → usually (adv)"),
+]});
 
+})();
+const RT_GROUPS = [['all','全部 All'],['root','🌱 字根 Roots'],['prefix','⬅️ 字首 Prefixes'],['suffix','➡️ 字尾 Suffixes']];
+const RT_GROUP_ZH = {root:'字根',prefix:'字首',suffix:'字尾'};
+let rtGroup = 'all', rtFam = ROOT_FAMILIES[0].id;
+try{ rtGroup = localStorage.getItem('rt-group') || 'all'; rtFam = localStorage.getItem('rt-fam') || rtFam; }catch(e){}
 function rtEsc(s){return String(s).replace(/"/g,'&quot;');}
 function renderRootFamily(f){
+  const cores = (f.cores || [f.morph]).map(c=>c.replace(/-/g,''));
   const words = f.words.map((d,i)=>{
-    const eq = d.parts.map(([p,g])=>`<div class="rt-part${p.replace(/-/g,'')===f.morph?' core':''}"><b>${p}</b><span>${g}</span></div>`).join('<span class="rt-op">+</span>');
+    const eq = d.parts.map(([p,g])=>`<div class="rt-part${cores.includes(p.replace(/-/g,''))?' core':''}"><b>${p}</b><span>${g}</span></div>`).join('<span class="rt-op">+</span>');
     return `<div class="rt-word">
       <div class="rt-top"><span class="rt-num">${String(i+1).padStart(2,'0')}</span><span class="rt-w">${d.w}</span><span class="rt-ipa">${d.ipa}</span><span class="rt-pos">${d.pos}</span>
         <button type="button" class="rt-say" data-en="${rtEsc(d.w)}" aria-label="Play ${d.w}">▶ 發音</button></div>
       <div class="rt-eq">${eq}</div>
+      ${d.from?`<div class="rt-from">🔁 ${d.from}</div>`:''}
       <div class="rt-meaning"><div class="rt-logic">💡 ${d.logic}</div>
       <div class="rt-def">${d.m}</div><div class="rt-defzh">${d.mZh}</div></div>
       <div class="rt-sent"><span>${d.s}</span><button type="button" class="rt-say" data-en="${rtEsc(d.s.replace(/<\/?mark>/g,''))}" aria-label="Play sentence">▶</button></div>
       <div class="rt-sentzh rt-meaning"><span>${d.z}</span><button type="button" class="zh-speak-btn" data-zh="${rtEsc(d.z)}" aria-label="播放中文例句">🔊 中文</button></div>
     </div>`;}).join('');
-  return `<div class="rt-head"><span class="rt-morph">${f.morph}</span><span class="rt-type">${f.typeZh}</span>
+  return `<div class="rt-head rt-${f.group}"><span class="rt-morph">${f.morph}</span><span class="rt-type">${RT_GROUP_ZH[f.group]}</span>
       <div class="rt-mean"><b>${f.meaning}</b> · ${f.meaningZh}</div><div class="rt-origin">${f.origin}</div>
       <div class="rt-tip">🧭 ${f.tip}</div></div>
     <div class="rt-tools"><button type="button" class="rt-hide-btn">🙈 遮住意思（自我測驗）</button></div>
@@ -6397,9 +6796,25 @@ function renderRootFamily(f){
     ${f.confusable?`<div class="rt-note">⚠️ ${f.confusable}</div>`:''}`;
 }
 function renderRoots(){
-  rootsCounter.textContent = `${ROOT_FAMILIES.length} root family · ${ROOT_FAMILIES.reduce((n,f)=>n+f.words.length,0)} words`;
-  rootsList.innerHTML = ROOT_FAMILIES.map(renderRootFamily).join('');
+  const total = ROOT_FAMILIES.reduce((n,f)=>n+f.words.length,0);
+  rootsCounter.textContent = `${ROOT_FAMILIES.length} families · ${total} words`;
+  const fams = ROOT_FAMILIES.filter(f => rtGroup==='all' || f.group===rtGroup);
+  if(!fams.some(f=>f.id===rtFam)) rtFam = fams[0].id;
+  const cur = ROOT_FAMILIES.find(f=>f.id===rtFam);
+  rootsList.classList.remove('rt-hide');
+  rootsList.innerHTML = `
+    <div class="rt-groups">${RT_GROUPS.map(([g,l])=>`<button type="button" class="rt-gbtn${g===rtGroup?' on':''}" data-g="${g}">${l}</button>`).join('')}</div>
+    <div class="rt-fams">${fams.map(f=>`<button type="button" class="rt-fbtn rt-${f.group}${f.id===rtFam?' on':''}" data-f="${f.id}"><b>${f.morph}</b><span>${f.meaningZh.split('；')[0].replace(/（.*?）/,'')}</span></button>`).join('')}</div>
+    <div id="rtFamily">${renderRootFamily(cur)}</div>`;
+  try{ localStorage.setItem('rt-group', rtGroup); localStorage.setItem('rt-fam', rtFam); }catch(e){}
 }
+document.addEventListener('click', e => {
+  if(!e.target.closest) return;
+  const gb = e.target.closest('.rt-gbtn');
+  if(gb){ rtGroup = gb.getAttribute('data-g'); renderRoots(); return; }
+  const fb = e.target.closest('.rt-fbtn');
+  if(fb){ rtFam = fb.getAttribute('data-f'); renderRoots(); const t=document.getElementById('rtFamily'); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); return; }
+});
 document.addEventListener('click', e => {
   const say = e.target.closest && e.target.closest('.rt-say');
   if(say){ speakText(say.getAttribute('data-en')); return; }
