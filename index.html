@@ -409,7 +409,7 @@
   @media (max-width:600px){ .rt-w{font-size:20px;} .rt-say{min-height:40px;} .rt-tools button{min-height:44px;} }
 
   .rt-vols{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
-  .rt-vbtn{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:8px 6px;font-family:var(--serif);cursor:pointer;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.2;}
+  .rt-vbtn{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:8px 6px;font-family:var(--serif);cursor:pointer;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.2;}
   .rt-vbtn b{font-size:15px;} .rt-vbtn span{font-size:11px;opacity:.75;text-align:center;} .rt-vbtn em{font-size:10px;font-style:normal;opacity:.6;}
   .rt-vbtn.on{background:var(--ink);color:#fff;border-color:var(--ink);} .rt-vbtn.on span{opacity:.9;}
   .rt-vbtn:disabled{cursor:default;opacity:.5;}
@@ -7060,9 +7060,9 @@ F({id:"ward",vol:1,group:"suffix",morph:"-ward",cores:["ward"],meaning:"in the d
 const RT_GROUPS = [['all','全部 All'],['root','🌱 字根 Roots'],['prefix','⬅️ 字首 Prefixes'],['suffix','➡️ 字尾 Suffixes']];
 const RT_GROUP_ZH = {root:'字根',prefix:'字首',suffix:'字尾'};
 const RT_VOLS = [
-  {v:1, label:'Vol I', sub:'Ready for High School', zh:'高中預備'},
-  {v:2, label:'Vol II', sub:'Ready for College', zh:'大學預備'},
-  {v:3, label:'Vol III', sub:'Ready for Grad School', zh:'研究所預備'},
+  {v:1, label:'Vol I'},
+  {v:2, label:'Vol II'},
+  {v:3, label:'Vol III'},
 ];
 let rtVol = 1, rtGroup = 'all', rtFam = ROOT_FAMILIES[0].id;
 try{ rtVol = +localStorage.getItem('rt-vol') || 1; rtGroup = localStorage.getItem('rt-group') || 'all'; rtFam = localStorage.getItem('rt-fam') || rtFam; }catch(e){}
@@ -7094,13 +7094,13 @@ function renderRoots(){
   const volFams = rtVolFams(rtVol);
   const total = volFams.reduce((n,f)=>n+f.words.length,0);
   const vinfo = RT_VOLS.find(x=>x.v===rtVol);
-  rootsCounter.textContent = `${vinfo.label} · ${vinfo.sub} · ${volFams.length} families · ${total} words`;
+  rootsCounter.textContent = `${vinfo.label} · ${volFams.length} families · ${total} words`;
   const fams = volFams.filter(f => rtGroup==='all' || f.group===rtGroup);
   if(!fams.some(f=>f.id===rtFam)) rtFam = fams[0].id;
   const cur = ROOT_FAMILIES.find(f=>f.id===rtFam);
   rootsList.classList.remove('rt-hide');
   rootsList.innerHTML = `
-    <div class="rt-vols">${RT_VOLS.map(x=>{const n=rtVolFams(x.v).length;return `<button type="button" class="rt-vbtn${x.v===rtVol?' on':''}" data-v="${x.v}"${n?'':' disabled'}><b>${x.label}</b><span>${x.zh} · ${x.sub}</span>${n?'':'<em>Coming soon</em>'}</button>`;}).join('')}</div>
+    <div class="rt-vols">${RT_VOLS.map(x=>{const n=rtVolFams(x.v).length;return `<button type="button" class="rt-vbtn${x.v===rtVol?' on':''}" data-v="${x.v}"${n?'':' disabled'}><b>${x.label}</b>${n?'':'<em>Coming soon</em>'}</button>`;}).join('')}</div>
     <div class="rt-groups">${RT_GROUPS.map(([g,l])=>`<button type="button" class="rt-gbtn${g===rtGroup?' on':''}" data-g="${g}">${l}</button>`).join('')}</div>
     <div class="rt-fams">${fams.map(f=>`<button type="button" class="rt-fbtn rt-${f.group}${f.id===rtFam?' on':''}" data-f="${f.id}"><b>${f.morph}</b><span>${f.meaningZh.split('；')[0].replace(/（.*?）/,'')}</span></button>`).join('')}</div>
     <div id="rtFamily">${renderRootFamily(cur)}</div>`;
